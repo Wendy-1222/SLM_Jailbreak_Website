@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLM Jailbreak</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./website/images/background.png') no-repeat center center/contain;
+            color: white;
+        }
+        
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #f8f8f8;
+            color: #333;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #333;
+            color: #fff;
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        .content-section {
+            padding: 80px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 2.5rem;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部背景图和文字部分 -->
+    <header class="hero" id="home">
+        <div class="hero-content">
+            <h1>欢迎来到我的网站</h1>
+            <p>这是一个带有精美背景图的网站，下方有更多精彩内容等待您的探索</p>
+            <a href="#content" class="btn">了解更多</a>
+        </div>
+        <div class="scroll-down" onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})">
+            &#8595;
+        </div>
+    </header>
+
+    <!-- 内容部分 -->
+    <section class="content-section" id="content">
+        <div class="container">
+            <h2 class="section-title">我们的服务</h2>
+            <div class="cards">
+                <div class="card">
+                    <h3>服务项目一</h3>
+                    <p>这里是对服务项目一的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
+                </div>
+                <div class="card">
+                    <h3>服务项目二</h3>
+                    <p>这里是对服务项目二的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
+                </div>
+                <div class="card">
+                    <h3>服务项目三</h3>
+                    <p>这里是对服务项目三的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" style="background-color: #f5f5f5;">
+        <div class="container">
+            <h2 class="section-title">关于我们</h2>
+            <div class="about-content">
+                <p>这里可以添加关于您或您的公司/组织的详细介绍。您可以谈论创立背景、使命愿景、团队成员、成就等内容。</p>
+                <p>添加更多段落以丰富您的介绍，帮助访问者更好地了解您。一个好的"关于我们"页面可以建立信任，并与潜在客户或用户建立情感联系。</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 我的网站. 保留所有权利.</p>
+    </footer>
+
+    <script>
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
