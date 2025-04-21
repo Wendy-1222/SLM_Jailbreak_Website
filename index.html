@@ -1,12 +1,48 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLM Jailbreak</title>
-    <!-- 导入优雅艺术字体 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="description"
+        content="We propose a novel method that enhances jailbreak efficiency through adaptive strategy mining, leveraging unique vulnerabilities across different models and scenarios.">
+    <meta name="keywords" content="Jailbreak, LLMs, Adversarial Prompt, Red Teaming">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent</title>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+    </script>
+
+    <!-- Import elegant font -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+
+    <link href="./website/css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="./website/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="./website/bulma.min.css">
+    <link rel="stylesheet" href="./website/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./website/bulma-slider.min.css">
+    <link rel="stylesheet" href="./website/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./website/academicons.min.css">
+    <link rel="stylesheet" href="./website/index.css">
+    <link rel="icon" href="./website/images/sylvanian.gif">
+
+    <script src="./website/select.js"></script>
+    <script src="./website/bootstrap.min.js"></script>
+    <script src="./website/jquery.min.js.下载"></script>
+    <script defer="" src="./website/fontawesome.all.min.js.下载"></script>
+    <script src="./website/bulma-carousel.min.js.下载"></script>
+    <script src="./website/bulma-slider.min.js.下载"></script>
+    <script src="./website/index.js.下载"></script>
+
     <style>
+        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -17,9 +53,11 @@
         body {
             color: #333;
             line-height: 1.6;
+            padding-top: 0; /* Remove top padding as we're using a full-screen hero */
         }
         
-        .hero {
+        /* Hero Section with Background Image */
+        .hero-background {
             position: relative;
             height: 100vh;
             width: 100%;
@@ -32,8 +70,8 @@
             transition: all 0.5s ease; /* 添加过渡效果 */
         }
         
-        /* 创建背景图片层 */
-        .hero::before {
+        /* Background Image Layer */
+        .hero-background::before {
             content: "";
             position: absolute;
             top: 0;
@@ -41,18 +79,18 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./website/images/background.png') no-repeat center center/contain;
-            filter: brightness(0.6); /* 默认暗色 */
+            filter: brightness(0.4); /* 默认暗色 */
             transition: filter 0.5s ease; /* 过渡效果 */
             z-index: -1;
         }
         
-        /* 悬浮时图片变亮 */
-        .hero:hover::before {
+        /* Background hover effect */
+        .hero-background:hover::before {
             filter: brightness(1); /* 悬浮时恢复正常亮度 */
         }
         
-        /* 添加暗色叠加层，确保文字可读性 */
-        .hero::after {
+        /* Dark overlay for text readability */
+        .hero-background::after {
             content: "";
             position: absolute;
             top: 0;
@@ -64,36 +102,18 @@
             transition: background 0.5s ease; /* 过渡效果 */
         }
         
-        /* 悬浮时减少黑色叠加层的不透明度 */
-        .hero:hover::after {
+        /* Hover effect for overlay */
+        .hero-background:hover::after {
             background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
         }
-        
-        .hero-content {
-            z-index: 1;
-            max-width: 800px;
-            padding: 20px;
-        }
-        
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-content p {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-        
+
         /* 悬浮时减少遮罩的不透明度 */
-        .hero:hover .hero-overlay {
+        .hero-background:hover .hero-overlay {
             background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
         }
         
         .hero-content {
-            z-index: 2; /* 提高内容层级，确保在遮罩之上 */
+            z-index: 2;
             max-width: 800px;
             padding: 20px;
             position: relative;
@@ -102,7 +122,7 @@
             align-items: center;
         }
         
-        /* 艺术字体标题样式 */
+        /* Elegant title styling */
         .elegant-title {
             font-family: 'Playfair Display', cursive;
             font-size: 5rem;
@@ -113,7 +133,7 @@
             font-weight: normal;
         }
         
-        /* 添加装饰分隔线 */
+        /* Decorative divider */
         .divider {
             width: 80%;
             height: 1px;
@@ -122,7 +142,7 @@
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
         
-        /* 副标题艺术字体 */
+        /* Subtitle styling */
         .elegant-subtitle {
             font-family: 'Playfair Display', serif;
             font-style: italic;
@@ -134,25 +154,7 @@
             line-height: 1.4;
         }
         
-        .btn {
-            display: inline-block;
-            background: #f8f8f8;
-            color: #333;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-        
-        .btn:hover {
-            background: #333;
-            color: #fff;
-        }
-        
+        /* Scroll down arrow */
         .scroll-down {
             position: absolute;
             bottom: 30px;
@@ -161,7 +163,8 @@
             font-size: 2rem;
             animation: bounce 2s infinite;
             cursor: pointer;
-            z-index: 2; /* 确保在其他元素上面 */
+            z-index: 2;
+            color: white;
         }
         
         @keyframes bounce {
@@ -176,53 +179,76 @@
             }
         }
         
-        /* 其他CSS保持不变 */
-        .content-section {
-            padding: 80px 20px;
+        /* Navigation styling */
+        .top-right-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .top-right-nav ul {
+            list-style: none;
+            display: flex;
         }
         
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-            font-size: 2.5rem;
+        .top-right-nav ul li {
+            margin-left: 20px;
         }
         
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        .top-right-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
         }
         
-        .card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            transition: transform 0.3s ease;
+        .top-right-nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
         }
         
-        .card:hover {
-            transform: translateY(-10px);
+        /* Original temp.html styles */
+        .header-image {
+            width: 60px;
+            height: auto;
+        }
+
+        .navbar-fixed-top {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: none; /* Initially hidden, will be shown after scroll */
+        }
+
+        /* Target section padding adjustment for smooth scrolling */
+        section:target {
+            padding-top: 70px;
+            margin-top: -70px;
+        }
+
+        ul.nav a:hover {
+            color: rgb(255, 249, 239) !important;
+        }
+
+        .nav.navbar-nav li a:hover {
+            background-color: rgb(82, 127, 159) !important;
+        }
+
+        #highlight {
+            color: rgb(212, 67, 54);
         }
         
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #333;
+        /* Make original content appear below the hero section */
+        .original-content {
+            margin-top: 0;
+            padding-top: 50px;
         }
         
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 30px 0;
-        }
-        
+        /* Media queries for responsive design */
         @media (max-width: 768px) {
             .elegant-title {
                 font-size: 3.5rem;
@@ -232,73 +258,352 @@
                 font-size: 1.4rem;
             }
             
-            .section-title {
-                font-size: 2rem;
+            .top-right-nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            
+            .top-right-nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .top-right-nav ul li {
+                margin: 5px 0;
             }
         }
     </style>
+
+    <!-- Script to show navbar after scrolling past hero section -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var heroHeight = document.querySelector('.hero-background').offsetHeight;
+            var navbar = document.querySelector('.navbar-fixed-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > heroHeight - 70) {
+                    navbar.style.display = 'block';
+                } else {
+                    navbar.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </head>
-<body>
-    <!-- 修改后的头部结构 -->
-    <header class="hero" id="home">
-        <div class="hero-background"></div>
-        <div class="hero-overlay"></div>
+
+<body data-new-gr-c-s-check-loaded="14.1147.0" data-gr-ext-installed="">
+    <!-- Hero Background Section -->
+    <div class="hero-background" id="top">
+        <!-- Top-right Navigation -->
+        <nav class="top-right-nav">
+            <ul>
+                <li><a href="#paper_overview">Overview</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#ethics">Ethics</a></li>
+            </ul>
+        </nav>
+        
         <div class="hero-content">
             <h1 class="elegant-title">SLM Jailbreak</h1>
             <div class="divider"></div>
             <p class="elegant-subtitle">Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</p>
-            <!-- <a href="#content" class="btn">了解更多</a> -->
         </div>
-        <div class="scroll-down" onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})">
+        
+        <div class="scroll-down" onclick="document.getElementById('original-content').scrollIntoView({behavior: 'smooth'})">
             &#8595;
         </div>
-    </header>
+    </div>
 
-    <!-- 内容部分保持不变 -->
-    <section class="content-section" id="content">
-        <div class="container">
-            <h2 class="section-title">我们的服务</h2>
-            <div class="cards">
-                <div class="card">
-                    <h3>服务项目一</h3>
-                    <p>这里是对服务项目一的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
-                </div>
-                <div class="card">
-                    <h3>服务项目二</h3>
-                    <p>这里是对服务项目二的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
-                </div>
-                <div class="card">
-                    <h3>服务项目三</h3>
-                    <p>这里是对服务项目三的详细介绍。可以添加更多内容，描述您提供的服务内容、特点和优势等信息。</p>
+    <!-- Original content from temp.html -->
+    <div id="original-content" class="original-content">
+        <section class="hero">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <div class="columns is-centered">
+                        <div class="column has-text-centered">
+                            <h2 class="title is-2 publication-title">
+                                <img src="./website/images/sylvanian.gif" class="header-image"
+                                    style="vertical-align: middle; margin-right: 10px;">
+                                    RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent
+                            </h2>
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block">Huiyu Xu<sup>12*</sup>, </span>
+                                <span class="author-block">Wenhui Zhang<sup>12*</sup>, </span>
+                                <span class="author-block">Zhibo Wang<sup>12†</sup>, </span>
+                                <span class="author-block">Feng Xiao<sup>3</sup>, </span>
+                                <span class="author-block">Rui Zheng<sup>12</sup>, </span>
+                                <span class="author-block">Yunhe Feng<sup>4</sup>, </span>
+                                <span class="author-block">Zhongjie Ba<sup>12</sup>, </span>
+                                <span class="author-block">Kui Ren<sup>12</sup>, </span>
+                            </div>
+
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block"><sup>1</sup>The State Key Laboratory of Blockchain and Data Security, Zhejiang University, P. R. China&emsp;</span>
+                                <span class="author-block"><sup>2</sup>School of Cyber Science and Technology, Zhejiang University, P. R. China &emsp;</span>
+                                <span class="author-block"><sup>3</sup>Palo Alto Networks, USA &emsp;</span>
+                                <span class="author-block"><sup>4</sup>Department of Computer Science and Engineering, University of North Texas, USA &emsp;</span>
+                                <br />
+                                <span class="author-block"><sup>*</sup>Lead Authors&emsp;</span>
+                                <span class="author-block"><sup>†</sup>Advising Author</span>
+                            </div>
+
+                            <div class="column has-text-centered">
+                                <div class="publication-links">
+                                    <!-- PDF Link. -->
+                                    <span class="link-block">
+                                        <a href="https://arxiv.org/abs/2407.16667"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true"
+                                                    focusable="false" data-prefix="fas" data-icon="file-pdf" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Paper</span>
+                                        </a>
+                                    </span>
+                                    <!-- Code Link. -->
+                                    <span class="link-block">
+                                        <a href="https://github.com/Wendy-1222/RedAgent"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true"
+                                                    focusable="false" data-prefix="fab" data-icon="github" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Code</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="content-section" style="background-color: #f5f5f5;">
-        <div class="container">
-            <h2 class="section-title">关于我们</h2>
-            <div class="about-content">
-                <p>这里可以添加关于您或您的公司/组织的详细介绍。您可以谈论创立背景、使命愿景、团队成员、成就等内容。</p>
-                <p>添加更多段落以丰富您的介绍，帮助访问者更好地了解您。一个好的"关于我们"页面可以建立信任，并与潜在客户或用户建立情感联系。</p>
+        <!-- Add content sections from the original temp.html as needed -->
+        <section class="section" id="paper_overview">
+            <div class="container is-max-desktop">
+                <!-- Abstract. -->
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <h2 class="title is-3">Overview</h2>
+                        <div class="content has-text-justified">
+                            <p>
+                                This project is about a novel jailbreak method that enhances jailbreak efficiency through 
+                                self-reflecting on contextual feedback, leveraging unique vulnerabilities across different 
+                                models and scenarios.
+                                <br><br>
+    
+                                <b>What did we introduce?</b> a multi-agent LLM system named RedAgent that generates context-aware jailbreak prompts.
+                                <br><br>
+                                
+                                <b>What did we find?</b> By generating context-aware jailbreak prompts, we successfully jailbreak most black-box LLMs 
+                                <b><i>in just five queries</i></b>, improving the efficiency of existing red teaming methods by <b><i>two times</i></b>. 
+                                Additionally, RedAgent can jailbreak customized LLM applications more efficiently, e.g., we discover 60 severe vulnerabilities 
+                                of GPTs with only <b><i>two queries</i></b> per vulnerability.
+                                <br><br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="columns is-centered has-text-centered">
+                    <div class="container is-max-desktop" style="display: flex; flex-direction: column; align-items: center;">
+                        <div>
+                            <img src="./website/images/overview.png" alt="" style="width:100%; height:100%;" class="center">
+                        </div>
+                        <div class="content has-text-centered" style="max-width: 100%;">
+                            <p>
+                                <br>
+                                <span style="font-weight: bold; font-size: larger;">Figure 1. </span>
+                                An overview of RedAgent
+                            </p>
+                        </div>
+                    </div>
+                </div>            
             </div>
-        </div>
-    </section>
+        </section>
+    
+        <section class="section" id="results">
+            <!-- Benchmark design. -->
+    
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-full-width">
+                        <h2 class="title is-3">Results</h2>
+                    </div>
+                </div>
+                <br>
+    
+                <div class="content has-text-centered">
+                    <h2 class="title is-4">RedAgent' Comparison with Baselines</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            We compare our method with existing jailbreak methods, including Direct Attack,
+                            <a href="https://arxiv.org/abs/2310.08419" style="color:rgb(0, 115, 255)">PAIR</a>,
+                            <a href="https://arxiv.org/abs/2312.02119" style="color:rgb(0, 115, 255)">TAP</a>,
+                            <a href="https://arxiv.org/abs/2401.06373" style="color:rgb(0, 115, 255)">PAP</a>
+                            and
+                            <a href="https://arxiv.org/abs/2309.10253" style="color:rgb(0, 115, 255)">GPTFuzzer</a>
+                            on AdvBench Subset. The table below shows the comparison of ASR(Attack Success Rate) and 
+                            ANQ (Average number of successful jailbreak queries) across various jailbreak methods.
+    
+                            The experimental results demonstrate that <b>our method achieved similar or even higher 
+                            attack success rates with significantly fewer queries than existing approaches.</b>
+                        </p>
+                    </div>
+                    
+                    <img src="./website/images/comparison_of effectiveness.png" alt="">
+                </div>
+    
+                <br>
+    
+                <div class="content has-text-centered">
+                    <h2 class="title is-4">Ablation Study</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            We conducted ablation experiments on two key hyperparameters: Memory Capacity, and Memory Tags, 
+                            aiming to evaluate the impact of different parameter settings on the ASR and ANQ of our solution.
+                            Experimental results show that a memory capacity of 25, and a default setting of the memory tag
+                            (category, question, prompt, strategy, score) can achieve <b>a good balance between ASR and ANQ.</b>
+                        </p>
+                    </div>
+    
+                    <img src="./website/images/ablation_study.png" alt="">
+                </div>
+    
+                <br>
+    
+                <div class="content has-text-centered">
+                    <h3 class="title is-4">Interpretability Analysis</h3>
+                    <div class="content has-text-justified">
+                        <p>
+                            We analyze the performance of our attack scheme in different jailbreak scenarios 
+                            in order to explore the interaction between category-specific strategies and 
+                            model-specific preferences. Specifically, we create a class-balanced dataset, including
+                            14 jailbreak categories.
+                            The heatmap below shows the differentiated strategy preferences of the model 
+                            when dealing with different jailbreak scenarios.           
+                        </p>
+                    </div>
+                    
+                    <div class="columns is-centered">
+                        <div class="column">
+                            <img src="./website/images/illegal_category_strategy_heatmap_gpt-3.5-turbo-1106_14_category_70.png" alt="">
+                        </div>
+                        <div class="column">
+                            <img src="./website/images/illegal_category_strategy_heatmap_vicuna-7b_14_category_70.png" alt="">
+                        </div>
+                    </div>
+                </div>            
+    
+            </div>
+        </section>
 
-    <footer>
-        <p>&copy; 2023 我的网站. 保留所有权利.</p>
-    </footer>
+    
+    
+    
+        <section class="section" id="ethics">
+            <!-- Benchmark design. -->
+    
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="container is-max-desktop">
+                        <h2 class="title is-3">Ethics and Disclosure</h2>
+                        <div class="content has-text-justified">
+                            <p>
+                                In this study, we adhered to ethical standards to ensure safety and privacy. Our experiments were conducted 
+                                using platforms provided officially or through open-source models deployed in a closed environment. 
+                                We did not disseminate any harmful or illicit content to the public or others. The datasets we employed 
+                                were obtained from public repositories and did not contain any personal information. The main objective of 
+                                this study is to highlight potential vulnerabilities in LLMs, especially given the rapid pace of their adoption. 
+                                Moreover, we have responsibly disclosed our findings to OpenAI and Meta.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <section class="section" id="BibTeX">
+            <div class="container is-max-desktop content">
+                <h2 class="title">BibTeX</h2>
+                <p>
+                    If you find our project useful, please consider citing:
+                </p>
+                <pre><code>@article{xu2024redagent,
+            title={RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent},
+            author={Xu, Huiyu and Zhang, Wenhui and Wang, Zhibo and Xiao, Feng and Zheng, Rui and Feng, Yunhe and Ba, Zhongjie and Ren, Kui},
+            journal={arXiv preprint arXiv:2407.16667},
+            year={2024}
+    }</code></pre>
+            </div>
+        </section>   
+    
+        <footer class="footer">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <div class="content">
+                            <p>
+                                This website is borrowed from <a href="https://chats-lab.github.io/persuasive_jailbreaker/">PAP
+                                </a>, <a href="https://nerfies.github.io/">Nerfies</a>,
+                                <a href="https://jailbreaking-llms.github.io/">PAIR</a>,
+                                and licensed under a <a rel="license"
+                                    href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                                    Commons Attribution-ShareAlike 4.0 International License</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    
+    </body>
+    <grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open">
+            <style>
+                div.grammarly-desktop-integration {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    white-space: nowrap;
+                    border: 0;
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
 
-    <script>
-        // 平滑滚动效果
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
+                div.grammarly-desktop-integration:before {
+                    content: attr(data-content);
+                }
+            </style>
+            <div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration"
+                data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}">
+            </div>
+        </template></grammarly-desktop-integration>
+    
+    
 </html>

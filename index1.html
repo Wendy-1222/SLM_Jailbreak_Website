@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLM Jailbreak</title>
+    <!-- 导入优雅艺术字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -39,7 +41,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./website/images/background.png') no-repeat center center/contain;
-            filter: brightness(0.6); /* 默认暗色 */
+            filter: brightness(0.4); /* 默认暗色 */
             transition: filter 0.5s ease; /* 过渡效果 */
             z-index: -1;
         }
@@ -85,6 +87,53 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
+        /* 悬浮时减少遮罩的不透明度 */
+        .hero:hover .hero-overlay {
+            background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
+        }
+        
+        .hero-content {
+            z-index: 2; /* 提高内容层级，确保在遮罩之上 */
+            max-width: 800px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* 艺术字体标题样式 */
+        .elegant-title {
+            font-family: 'Playfair Display', cursive;
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: white;
+            line-height: 1.2;
+            font-weight: normal;
+        }
+        
+        /* 添加装饰分隔线 */
+        .divider {
+            width: 80%;
+            height: 1px;
+            background-color: white;
+            margin: 15px auto 20px;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 副标题艺术字体 */
+        .elegant-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            margin-top: 5px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            color: white;
+            line-height: 1.4;
+        }
+        
         .btn {
             display: inline-block;
             background: #f8f8f8;
@@ -96,6 +145,7 @@
             font-size: 1.1rem;
             text-decoration: none;
             transition: all 0.3s ease;
+            margin-top: 15px;
         }
         
         .btn:hover {
@@ -174,12 +224,12 @@
         }
         
         @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 2.5rem;
+            .elegant-title {
+                font-size: 3.5rem;
             }
             
-            .hero-content p {
-                font-size: 1.1rem;
+            .elegant-subtitle {
+                font-size: 1.4rem;
             }
             
             .section-title {
@@ -189,11 +239,14 @@
     </style>
 </head>
 <body>
-    <!-- HTML部分保持不变 -->
+    <!-- 修改后的头部结构 -->
     <header class="hero" id="home">
+        <div class="hero-background"></div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>SLM Jailbreak</h1>
-            <p>Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</p>
+            <h1 class="elegant-title">SLM Jailbreak</h1>
+            <div class="divider"></div>
+            <p class="elegant-subtitle">Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</p>
             <!-- <a href="#content" class="btn">了解更多</a> -->
         </div>
         <div class="scroll-down" onclick="document.getElementById('content').scrollIntoView({behavior: 'smooth'})">
