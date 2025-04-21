@@ -8,7 +8,7 @@
         content="We propose a novel method that enhances jailbreak efficiency through adaptive strategy mining, leveraging unique vulnerabilities across different models and scenarios.">
     <meta name="keywords" content="Jailbreak, LLMs, Adversarial Prompt, Red Teaming">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent</title>
+    <title>Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</title>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="./website/fontawesome.all.min.css">
     <link rel="stylesheet" href="./website/academicons.min.css">
     <link rel="stylesheet" href="./website/index.css">
-    <link rel="icon" href="./website/images/sylvanian.gif">
+    <link rel="icon" href="./website/images/dog.gif">
 
     <script src="./website/select.js"></script>
     <script src="./website/bootstrap.min.js"></script>
@@ -241,6 +241,30 @@
         #highlight {
             color: rgb(212, 67, 54);
         }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
         
         /* Make original content appear below the hero section */
         .original-content {
@@ -328,36 +352,28 @@
                     <div class="columns is-centered">
                         <div class="column has-text-centered">
                             <h2 class="title is-2 publication-title">
-                                <img src="./website/images/sylvanian.gif" class="header-image"
+                                <img src="./website/images/dog.gif" class="header-image"
                                     style="vertical-align: middle; margin-right: 10px;">
-                                    RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent
+                                    Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation
                             </h2>
                             <div class="is-size-5 publication-authors">
-                                <span class="author-block">Huiyu Xu<sup>12*</sup>, </span>
-                                <span class="author-block">Wenhui Zhang<sup>12*</sup>, </span>
-                                <span class="author-block">Zhibo Wang<sup>12†</sup>, </span>
-                                <span class="author-block">Feng Xiao<sup>3</sup>, </span>
-                                <span class="author-block">Rui Zheng<sup>12</sup>, </span>
-                                <span class="author-block">Yunhe Feng<sup>4</sup>, </span>
-                                <span class="author-block">Zhongjie Ba<sup>12</sup>, </span>
-                                <span class="author-block">Kui Ren<sup>12</sup>, </span>
+                                <span class="author-block">Zhibo Wang<sup>12</sup>, </span>
+                                <span class="author-block">Wenhui Zhang<sup>12</sup>, </span>
+                                <span class="author-block">Huiyu Xu<sup>12</sup>, </span>
+                                <span class="author-block">Zeqing He<sup>12</sup>, </span>
+                                <span class="author-block">Ziqi Zhu<sup>12</sup>, </span>
                             </div>
 
                             <div class="is-size-5 publication-authors">
                                 <span class="author-block"><sup>1</sup>The State Key Laboratory of Blockchain and Data Security, Zhejiang University, P. R. China&emsp;</span>
                                 <span class="author-block"><sup>2</sup>School of Cyber Science and Technology, Zhejiang University, P. R. China &emsp;</span>
-                                <span class="author-block"><sup>3</sup>Palo Alto Networks, USA &emsp;</span>
-                                <span class="author-block"><sup>4</sup>Department of Computer Science and Engineering, University of North Texas, USA &emsp;</span>
-                                <br />
-                                <span class="author-block"><sup>*</sup>Lead Authors&emsp;</span>
-                                <span class="author-block"><sup>†</sup>Advising Author</span>
                             </div>
 
                             <div class="column has-text-centered">
                                 <div class="publication-links">
                                     <!-- PDF Link. -->
                                     <span class="link-block">
-                                        <a href="https://arxiv.org/abs/2407.16667"
+                                        <a href="https://arxiv.org/abs/2503.06519"
                                             class="external-link button is-normal is-rounded is-dark">
                                             <span class="icon">
                                                 <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true"
@@ -374,7 +390,7 @@
                                     </span>
                                     <!-- Code Link. -->
                                     <span class="link-block">
-                                        <a href="https://github.com/Wendy-1222/RedAgent"
+                                        <a href="https://github.com/Wendy-1222/HarmBench_SLM"
                                             class="external-link button is-normal is-rounded is-dark">
                                             <span class="icon">
                                                 <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true"
@@ -406,7 +422,7 @@
                         <h2 class="title is-3">Overview</h2>
                         <div class="content has-text-justified">
                             <p>
-                                This project is about a novel jailbreak method that enhances jailbreak efficiency through 
+                                <!-- This project is about a novel jailbreak method that enhances jailbreak efficiency through 
                                 self-reflecting on contextual feedback, leveraging unique vulnerabilities across different 
                                 models and scenarios.
                                 <br><br>
@@ -418,7 +434,8 @@
                                 <b><i>in just five queries</i></b>, improving the efficiency of existing red teaming methods by <b><i>two times</i></b>. 
                                 Additionally, RedAgent can jailbreak customized LLM applications more efficiently, e.g., we discover 60 severe vulnerabilities 
                                 of GPTs with only <b><i>two queries</i></b> per vulnerability.
-                                <br><br>
+                                <br><br> -->
+                                TODO
                             </p>
                         </div>
                     </div>
@@ -440,7 +457,33 @@
                 </div>            
             </div>
         </section>
-    
+        
+        <section class="section" id="evaluation-details">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-full-width">
+                        <h2 class="title is-3">Evaluation Details</h2>
+                    </div>
+                </div>
+                <br>
+
+                <div class="cards">
+                    <div class="card">
+                        <h3>SLMs</h3>
+                        <p>TODO</p>
+                    </div>
+                    <div class="card">
+                        <h3>Jailbreak Methods</h3>
+                        <p>TODO</p>
+                    </div>
+                    <div class="card">
+                        <h3>Defense Methods</h3>
+                        <p>TODO</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="results">
             <!-- Benchmark design. -->
     
@@ -453,10 +496,11 @@
                 <br>
     
                 <div class="content has-text-centered">
-                    <h2 class="title is-4">RedAgent' Comparison with Baselines</h2>
+                    <h2 class="title is-4">Main Results</h2>
                     <div class="content has-text-justified">
                         <p>
-                            We compare our method with existing jailbreak methods, including Direct Attack,
+                            TODO
+                            <!-- We compare our method with existing jailbreak methods, including Direct Attack,
                             <a href="https://arxiv.org/abs/2310.08419" style="color:rgb(0, 115, 255)">PAIR</a>,
                             <a href="https://arxiv.org/abs/2312.02119" style="color:rgb(0, 115, 255)">TAP</a>,
                             <a href="https://arxiv.org/abs/2401.06373" style="color:rgb(0, 115, 255)">PAP</a>
@@ -466,52 +510,54 @@
                             ANQ (Average number of successful jailbreak queries) across various jailbreak methods.
     
                             The experimental results demonstrate that <b>our method achieved similar or even higher 
-                            attack success rates with significantly fewer queries than existing approaches.</b>
+                            attack success rates with significantly fewer queries than existing approaches.</b> -->
                         </p>
                     </div>
                     
-                    <img src="./website/images/comparison_of effectiveness.png" alt="">
+                    <!-- <img src="./website/images/comparison_of effectiveness.png" alt=""> -->
                 </div>
     
                 <br>
     
                 <div class="content has-text-centered">
-                    <h2 class="title is-4">Ablation Study</h2>
+                    <h2 class="title is-4">Factor Analysis</h2>
                     <div class="content has-text-justified">
                         <p>
-                            We conducted ablation experiments on two key hyperparameters: Memory Capacity, and Memory Tags, 
+                            TODO
+                            <!-- We conducted ablation experiments on two key hyperparameters: Memory Capacity, and Memory Tags, 
                             aiming to evaluate the impact of different parameter settings on the ASR and ANQ of our solution.
                             Experimental results show that a memory capacity of 25, and a default setting of the memory tag
-                            (category, question, prompt, strategy, score) can achieve <b>a good balance between ASR and ANQ.</b>
+                            (category, question, prompt, strategy, score) can achieve <b>a good balance between ASR and ANQ.</b> -->
                         </p>
                     </div>
     
-                    <img src="./website/images/ablation_study.png" alt="">
+                    <!-- <img src="./website/images/ablation_study.png" alt=""> -->
                 </div>
     
                 <br>
     
                 <div class="content has-text-centered">
-                    <h3 class="title is-4">Interpretability Analysis</h3>
+                    <h3 class="title is-4">Defense Effectiveness</h3>
                     <div class="content has-text-justified">
                         <p>
-                            We analyze the performance of our attack scheme in different jailbreak scenarios 
+                            <!-- We analyze the performance of our attack scheme in different jailbreak scenarios 
                             in order to explore the interaction between category-specific strategies and 
                             model-specific preferences. Specifically, we create a class-balanced dataset, including
                             14 jailbreak categories.
                             The heatmap below shows the differentiated strategy preferences of the model 
-                            when dealing with different jailbreak scenarios.           
+                            when dealing with different jailbreak scenarios.            -->
+                            TODO
                         </p>
                     </div>
                     
-                    <div class="columns is-centered">
+                    <!-- <div class="columns is-centered">
                         <div class="column">
                             <img src="./website/images/illegal_category_strategy_heatmap_gpt-3.5-turbo-1106_14_category_70.png" alt="">
                         </div>
                         <div class="column">
                             <img src="./website/images/illegal_category_strategy_heatmap_vicuna-7b_14_category_70.png" alt="">
                         </div>
-                    </div>
+                    </div> -->
                 </div>            
     
             </div>
@@ -548,11 +594,12 @@
                 <p>
                     If you find our project useful, please consider citing:
                 </p>
-                <pre><code>@article{xu2024redagent,
-            title={RedAgent: Red Teaming Large Language Models with Context-aware Autonomous Language Agent},
-            author={Xu, Huiyu and Zhang, Wenhui and Wang, Zhibo and Xiao, Feng and Zheng, Rui and Feng, Yunhe and Ba, Zhongjie and Ren, Kui},
-            journal={arXiv preprint arXiv:2407.16667},
-            year={2024}
+                <pre><code>@article{zhang2025can,
+                    title={Can Small Language Models Reliably Resist Jailbreak Attacks? A Comprehensive Evaluation},
+                    author={Zhang, Wenhui and Xu, Huiyu and Wang, Zhibo and He, Zeqing and Zhu, Ziqi and Ren, Kui},
+                    journal={arXiv preprint arXiv:2503.06519},
+                    year={2025}
+                  }
     }</code></pre>
             </div>
         </section>   
