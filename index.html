@@ -422,20 +422,26 @@
                         <h2 class="title is-3">Overview</h2>
                         <div class="content has-text-justified">
                             <p>
-                                <!-- This project is about a novel jailbreak method that enhances jailbreak efficiency through 
-                                self-reflecting on contextual feedback, leveraging unique vulnerabilities across different 
-                                models and scenarios.
+                                This project is about a evaluation of the vulnerabilities of SLMs (Small Language Models) against jailbreak attacks. 
+                                
                                 <br><br>
     
-                                <b>What did we introduce?</b> a multi-agent LLM system named RedAgent that generates context-aware jailbreak prompts.
+                                <b>What did we introduce?</b> We develop a framework to systematically assess the vulnerability 
+                                of SLMs to jailbreak attacks. This framework encompasses 14 risk categories and 9 attack methods, 
+                                and it covers 15 SLM families consists of 62 SLMs, ensuring a thorough and diverse evaluation.
                                 <br><br>
                                 
-                                <b>What did we find?</b> By generating context-aware jailbreak prompts, we successfully jailbreak most black-box LLMs 
-                                <b><i>in just five queries</i></b>, improving the efficiency of existing red teaming methods by <b><i>two times</i></b>. 
-                                Additionally, RedAgent can jailbreak customized LLM applications more efficiently, e.g., we discover 60 severe vulnerabilities 
-                                of GPTs with only <b><i>two queries</i></b> per vulnerability.
-                                <br><br> -->
-                                TODO
+                                <b>What did we find?</b> Through systematically evaluation on 62 SLMs from 15 mainstream SLM 
+                                families against 9 state-of-the-art jailbreak methods, we demonstrate that <b>51.6%</b> of evaluated 
+                                SLMs show high susceptibility to jailbreak attacks (ASR > 40%) and <b>38.7%</b> of them can not even 
+                                resist direct harmful query (ASR > 50%). Through correlation analysis, we identify that the 
+                                primary factors behind SLM vulnerabilities lie in the training details (e.g., training dataset 
+                                and method) rather than model size scaling. Additionally, we evaluate the effectiveness of 
+                                mainstream defense methods that can be applied to SLMs and find that none of them achieve 
+                                satisfactory results, exhibiting limited performance and poor generalization across different 
+                                attack methods. Building upon these findings, we highlight the need for security-by-design approaches 
+                                in SLM development and provide valuable insights for building more trustworthy SLM ecosystem.
+                                <br><br>
                             </p>
                         </div>
                     </div>
@@ -450,7 +456,8 @@
                             <p>
                                 <br>
                                 <span style="font-weight: bold; font-size: larger;">Figure 1. </span>
-                                An overview of RedAgent
+                                Overview of our evaluation framework. 
+                                <!-- We evaluate the jailbreak vulnerabilities of 15 SLM families including 62 SLMs against 9 mainstream jailbreak attack methods with a class-balanced dataset (70 questions). -->
                             </p>
                         </div>
                     </div>
