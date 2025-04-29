@@ -328,6 +328,19 @@
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* figs */
+        figure {
+            text-align: center;  /* 使描述居中 */
+            margin: 0;           /* 清除默认的外边距 */
+        }
+
+        figcaption {
+            margin-top: 10px;    /* 为描述和图片之间添加间距 */
+            font-size: 14px;     /* 设置描述字体大小 */
+            color: #666;         /* 设置描述文字颜色 */
+        }
+
 
         /* tabs */
         .tabs {
@@ -980,24 +993,56 @@
                     </div>
                 </div>
                 <br>
-    
-                <div class="content has-text-centered">
-                    <h2 class="title is-4">Main Results</h2>
+
+                <div class="cards-container">
+                    <!-- 卡片1 -->
+                    <div class="card" id="main-results-card" onclick="showContent('main-results')">
+                        <div class="card-title">Main Results</div>
+                    </div>
+                    
+                    <!-- 卡片2 -->
+                    <div class="card" id="factor-analysis-card" onclick="showContent('factor-analysis')">
+                        <div class="card-title">Factor Analysis</div>
+                    </div>
+                    
+                    <!-- 卡片3 -->
+                    <div class="card" id="defense-effectiveness-card" onclick="showContent('defense-effectiveness')">
+                        <div class="card-title">Defense Effectiveness</div>
+                    </div>
+                </div>
+
+                <div id="main-results-content" class="content-area">
+                    <h2 class="content-title">Main Results</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Through a comprehensive evaluation of current SLMs against jailbreak attacks, we find that SLMs exhibit limited safety in the face of jailbreak attacks. Half of evaluated SLMs are highly vulnerable to jailbreak attacks, with average attack success rate~(ASR) greater than 40\%, and 38.7\% of them even show an ASR of more than 50\% when faced with direct harmful query.
+                            Through a comprehensive evaluation of current SLMs against jailbreak attacks, we find that SLMs exhibit limited safety in the face of jailbreak attacks. <b>Half</b> of evaluated SLMs are highly vulnerable to jailbreak attacks, with average attack success rate (ASR) greater than <b>40%</b>, and <b>38.7%</b> of them even show an ASR of more than <b>50%</b> when faced with direct harmful query.
                             Only a small number of SLMs demonstrate relatively good resistance to jailbreak attacks, such as Google's Gemma series and Microsoft's Phi-3 series.
                             
                             <br><br>
-                            Among these results, we observe that SLMs exhibit imbalanced vulnerabilities when facing different attack methods and risk categories. Notably, we find that current SLMs are more vulnerable to advanced, optimization-based attacks~(e.g., GCG~\cite{zou2023GCG} and AutoDAN~\cite{liu2023autodan}) and are highly susceptible to the ``Economic Harm'' risk category~(ASR $\approx$ 100\%), while showing greater safety in the ``Health Consultation'' risk category~(ASR < 20\%). 
+                            Among these results, we observe that SLMs exhibit imbalanced vulnerabilities when facing different attack methods and risk categories. Notably, we find that current SLMs are more vulnerable to advanced, optimization-based attacks (e.g., <a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">GCG</a> and <a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">AutoDAN</a> and are highly susceptible to the <i>"Economic Harm"</i> risk category (ASR ≈ 100%), while showing greater safety in the <i>"Health Consultation"</i> risk category (ASR < 20%). 
                         </p>
                     </div>
+
+                    <div class="columns is-centered">
+                        <div class="column">
+                            <figure>
+                                <img src="./website/images/rq1_attack_specific.png" alt="" style="width: 80%; height: auto;">
+                                <figcaption>The heatmap of SLMs' vulnerabilities across 15 SLM families against 9 jailbreak attacks.</figcaption>
+                            </figure>
+                        </div>
+                        <div class="column">
+                            <figure>
+                                <img src="./website/images/rq1_goal_specific_sort.png" alt="">
+                                <figcaption>The heatmap of SLMs' vulnerabilities across 14 risk categories.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
-    
-                <br>
-    
-                <div class="content has-text-centered">
-                    <h2 class="title is-4">Factor Analysis</h2>
+
+                <div id="factor-analysis-content" class="content-area">
+                    <h2 class="content-title">Factor Analysis</h2>
                     <div class="content has-text-justified">
                         <p>
                             After conducting correlation tests between potential factors and the vulnerability of SLMs, we identify several key factors that significantly impact their susceptibility. 
@@ -1007,38 +1052,48 @@
                             For example, expanding the model's corpus may increase the risk of jailbreak attacks, while moderate degree of sparse techniques may improve robustness. 
                             
                             <br><br>
-                            Notably, supervised fine-tuning~(SFT) models demonstrate 10\textasciitilde 40\% better robustness compared to their DPO-optimized~(Direct Preference Optimization) counterparts at most time. In addition, through evaluating diversity and fluency of jailbreak responses, we found that some SLMs~(e.g., the TinyLlama family) may output repetitive harmful sentences due to limited generation capability. 
+                            Notably, supervised fine-tuning (SFT) models demonstrate 10 ~ 40% better robustness compared to their DPO-optimized (Direct Preference Optimization) counterparts at most time. In addition, through evaluating diversity and fluency of jailbreak responses, we found that some SLMs (e.g., the TinyLlama family) may output repetitive harmful sentences due to limited generation capability. 
                         </p>
                     </div>
-    
-                    <!-- <img src="./website/images/ablation_study.png" alt=""> -->
+                    
+                    <figure>
+                        <img src="./website/images/factor_analysis_results.png" alt="">
+                        <figcaption>The correlation analysis results between key factors, including model size, training tokens, and model capabilities, and jailbreak vulnerabilities (measured by ASR) across different attack methods. Cells where the null hypothesis is rejected (p < 0.05) are highlighted in <span style="color: red;">red</span>, indicating a significant correlation
+                        between the factor and the vulnerability of SLMs.</figcaption>
+                    </figure>
                 </div>
-    
-                <br>
-    
-                <div class="content has-text-centered">
-                    <h3 class="title is-4">Defense Effectiveness</h3>
+
+                <div id="defense-effectiveness-content" class="content-area">
+                    <h2 class="content-title">Defense Effectiveness</h2>
                     <div class="content has-text-justified">
                         <p>
                             we test the effectiveness of four lightweight defense methods in SLMs and found that none of them could achieve perfect performance in all SLMs across different attack methods. This reveals the limitations of existing defense measures and underscores the urgent need for SLM developers to place greater emphasis on security during SLMs design and training.
 
                         </p>
                     </div>
-                    
-                    <!-- <div class="columns is-centered">
-                        <div class="column">
-                            <img src="./website/images/illegal_category_strategy_heatmap_gpt-3.5-turbo-1106_14_category_70.png" alt="">
-                        </div>
-                        <div class="column">
-                            <img src="./website/images/illegal_category_strategy_heatmap_vicuna-7b_14_category_70.png" alt="">
-                        </div>
-                    </div> -->
-                </div>            
-    
+
+                    <figure>
+                        <img src="./website/images/rq3_all_defense.png" alt="">
+                        <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
+                        in 62 SLMs, where a greater drop in the ASR index (i.e., the height difference between adjacent bars) indicates better defense effectiveness.</figcaption>
+                    </figure>
+                </div>          
             </div>
         </section>
 
+        
+        <section class="section" id="examples">
+            <!-- Benchmark design. -->
     
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-full-width">
+                        <h2 class="title is-3">Examples</h2>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </section>
     
     
         <section class="section" id="ethics">
