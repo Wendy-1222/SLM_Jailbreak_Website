@@ -448,6 +448,51 @@
                 margin: 5px 0;
             }
         }
+
+        /* Add dropdown styles */
+        .dropdown-container {
+            margin: 20px 0;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background-color: #f0f8ff; /* Light blue background */
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-select:hover {
+            background-color: #e6f3ff; /* Slightly darker light blue on hover */
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #4a89dc;
+            box-shadow: 0 0 5px rgba(74, 137, 220, 0.3);
+        }
+
+        .content-display {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        .content-display.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 
     <!-- Script to show navbar after scrolling past hero section -->
@@ -693,262 +738,232 @@
                 <!-- 内容区域 - SLMs -->
                 <div id="slms-content" class="content-area">
                     <h2 class="content-title">Small Language Models (SLMs)</h2>
-                    <!-- <div class="tabs">
-                        <div class="tab active" data-tab="slms">SLMs</div>
-                        <div class="tab" data-tab="jailbreak">Jailbreak Methods</div>
-                        <div class="tab" data-tab="defense">Defense Methods</div>
-                    </div> -->
-                    
-                    <div id="slms" class="content-section active">
-                        <div class="slm-table-container">
-                            <table>
-                                <!-- <caption>Details of SLMs used in our experiment. Specifically, we collect 15 SLM families including 62 SLMs released between March 2023 and present, with parameter ranging from 135M to 7B.</caption> -->
-                                <thead>
-                                    <tr>
-                                        <th>Affiliation</th>
-                                        <th>Model</th>
-                                        <th>Size</th>
-                                        <th>Date</th>
-                                        <th>Training Datasets</th>
-                                        <th>Training Techniques</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- DataBricks -->
-                                    <tr class="model-group">
-                                        <td rowspan="2">DataBricks</td>
-                                        <td>Dolly v1</td>
-                                        <td>6B</td>
-                                        <td>2023.3</td>
-                                        <td>Pile; Stanford Alpaca</td>
-                                        <td>RoPE; Fine-tuning; Deepspeed ZeRO 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Dolly v2</td>
-                                        <td>2.8B; 6.9B</td>
-                                        <td>2023.4</td>
-                                        <td>Pile; Databricks-dolly-15k</td>
-                                        <td>Fine-tuning</td>
-                                    </tr>
-                    
-                                    <!-- StabilityAI -->
-                                    <tr class="model-group">
-                                        <td rowspan="2">StabilityAI</td>
-                                        <td>StableLM</td>
-                                        <td>3B</td>
-                                        <td>2023.4</td>
-                                        <td>RefinedWeb; RedPajama; The Pile; StarCoder</td>
-                                        <td>MHA; SiLU; SFT; DPO; RoPE; LayerNorm</td>
-                                    </tr>
-                                    <tr>
-                                        <td>StableLM 2</td>
-                                        <td>1.6B</td>
-                                        <td>2024.2</td>
-                                        <td>RefinedWeb; subsets of the Pile; RedPajama; the Stack; OpenWebText; OpenWebMath; and parts of CulturaX</td>
-                                        <td>RoPE; LayerNorm; No Biases; FlashAttention-2; Multi-stage infinite scheduler; SFT; DPO</td>
-                                    </tr>
-                    
-                                    <!-- Alibaba -->
-                                    <tr class="model-group">
-                                        <td rowspan="4">Alibaba</td>
-                                        <td>Qwen 1</td>
-                                        <td>1.8B; 7B</td>
-                                        <td>2023.9</td>
-                                        <td>Unknown</td>
-                                        <td>MHA; RoPE; SwiGLU; RMSNorm</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Qwen 1.5</td>
-                                        <td>0.5B; 1.8B; 4B; 7B</td>
-                                        <td>2024.2</td>
-                                        <td>Unknown</td>
-                                        <td>MHA; RoPE; SwiGLU; RMSNorm; Multilingual support</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Qwen 2</td>
-                                        <td>0.5B; 1.5B; 7B</td>
-                                        <td>2024.6</td>
-                                        <td>Unknown</td>
-                                        <td>GQA; RoPE; SwiGLU; RMSNorm; Multilingual support</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Qwen 2.5</td>
-                                        <td>0.5B; 1.5B; 3B; 7B</td>
-                                        <td>2024.9</td>
-                                        <td>Unknown</td>
-                                        <td>GQA; RoPE; SwiGLU; RMSNorm; Multilingual support; Larger corpus</td>
-                                    </tr>
-                    
-                                    <!-- Meituan -->
-                                    <tr>
-                                        <td>Meituan</td>
-                                        <td>MobileLLaMA</td>
-                                        <td>1.4B; 2.7B</td>
-                                        <td>2023.12</td>
-                                        <td>RedPajama v1</td>
-                                        <td>RoPE; RMSNorm; SwiGLU; Deep ZERO 1; Flash Attention V2</td>
-                                    </tr>
-                    
-                                    <!-- StabilityAI - TinyLlama -->
-                                    <tr>
-                                        <td>StabilityAI</td>
-                                        <td>TinyLlama v1.1</td>
-                                        <td>1.1B</td>
-                                        <td>2024.1</td>
-                                        <td>SlimPajama</td>
-                                        <td>RoPE; RMSNorm; SwiGLU; GQA; Flash Attention; xFormers</td>
-                                    </tr>
-                    
-                                    <!-- H2O -->
-                                    <tr class="model-group">
-                                        <td rowspan="3">H2O</td>
-                                        <td>H2O-Danube</td>
-                                        <td>1.8B</td>
-                                        <td>2024.1</td>
-                                        <td>Unknown</td>
-                                        <td>RoPE; GQA; RMSNorm; Sliding window</td>
-                                    </tr>
-                                    <tr>
-                                        <td>H2O-Danube2</td>
-                                        <td>1.8B</td>
-                                        <td>2024.4</td>
-                                        <td>Unknown</td>
-                                        <td>RoPE; GQA; RMSNorm; three training stages with different data mixes</td>
-                                    </tr>
-                                    <tr>
-                                        <td>H2O-Danube3</td>
-                                        <td>500M; 4B</td>
-                                        <td>2024.7</td>
-                                        <td>Unknown</td>
-                                        <td>RoPE; GQA; RMSNorm; three training stages with different data mixes</td>
-                                    </tr>
-                    
-                                    <!-- AllenAI -->
-                                    <tr>
-                                        <td>AllenAI</td>
-                                        <td>OLMo</td>
-                                        <td>7B</td>
-                                        <td>2024.2</td>
-                                        <td>Dolma</td>
-                                        <td>SwiGLU; RoPE; Non-parameteric Layer Norm; No biases; ZeRO</td>
-                                    </tr>
-                    
-                                    <!-- MBZUAI -->
-                                    <tr>
-                                        <td>MBZUAI</td>
-                                        <td>MobiLlama</td>
-                                        <td>0.5B; 1.2B</td>
-                                        <td>2024.2</td>
-                                        <td>LLM360 Amber (includes Arxiv, Book, C4, Refined-Web, StarCoder, StackExchange, and Wikipedia)</td>
-                                        <td>RoPE; SwiGLU; RMSNorm; Parameter-sharing; FlashAttention</td>
-                                    </tr>
-                    
-                                    <!-- Google -->
-                                    <tr class="model-group">
-                                        <td rowspan="3">Google</td>
-                                        <td>Gemma</td>
-                                        <td>2B; 7B</td>
-                                        <td>2024.3</td>
-                                        <td>Unknown</td>
-                                        <td>MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gemma 1.1</td>
-                                        <td>2B; 7B</td>
-                                        <td>2024.3</td>
-                                        <td>Unknown</td>
-                                        <td>MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gemma 2</td>
-                                        <td>2B</td>
-                                        <td>2024.7</td>
-                                        <td>Unknown</td>
-                                        <td>GQA; RoPE; GeGLU; Local Sliding Window and Global Attention; Logit Soft-Capping; RMSNorm for Pre and Post-Normalization</td>
-                                    </tr>
-                    
-                                    <!-- Tsinghua Univ -->
-                                    <tr class="model-group">
-                                        <td rowspan="2">Tsinghua Univ.</td>
-                                        <td>MiniCPM</td>
-                                        <td>1.2B; 2.4B</td>
-                                        <td>2024.4</td>
-                                        <td>Dolma; C4; Pile; stack; StarCoder; UltraChat; OssInstruct; EvolInstruct</td>
-                                        <td>Warmup-Stable-Decay (WSD) learning rate scheduler (LRS); SFT; DPO; Embedding Sharing; GQA</td>
-                                    </tr>
-                                    <tr>
-                                        <td>MiniCPM3</td>
-                                        <td>4B</td>
-                                        <td>2024.9</td>
-                                        <td>Unknown</td>
-                                        <td>Unknown</td>
-                                    </tr>
-                    
-                                    <!-- Microsoft -->
-                                    <tr class="model-group">
-                                        <td rowspan="2">Microsoft</td>
-                                        <td>Phi-3</td>
-                                        <td>3.8B</td>
-                                        <td>2024.4</td>
-                                        <td>Scaled-up dataset from phi-2</td>
-                                        <td>MHA; SiLU; RoPE; FlashAttention; Deep ZeRO Stage 2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Phi-3.5</td>
-                                        <td>3.8B</td>
-                                        <td>2024.4</td>
-                                        <td>more multilingual and long-text data</td>
-                                        <td>Multilingual; MHA; SiLU; RoPE; FlashAttention; ZeRO 2</td>
-                                    </tr>
-                    
-                                    <!-- TensorOpera -->
-                                    <tr>
-                                        <td>TensorOpera</td>
-                                        <td>Fox-1</td>
-                                        <td>1.6B</td>
-                                        <td>2024.6</td>
-                                        <td>Unknown</td>
-                                        <td>RMSNorm; RoPE; GQA; Deep architecture; Shared Embedding</td>
-                                    </tr>
-                    
-                                    <!-- HuggingFace -->
-                                    <tr class="model-group">
-                                        <td rowspan="2">HuggingFace</td>
-                                        <td>SmolLM</td>
-                                        <td>135M; 360M; 1.7B</td>
-                                        <td>2024.7</td>
-                                        <td>SmolLM-Corpus</td>
-                                        <td>GQA; trapezoidal LR scheduler</td>
-                                    </tr>
-                                    <tr>
-                                        <td>SmolLM2</td>
-                                        <td>135M; 360M; 1.7B</td>
-                                        <td>2025.2</td>
-                                        <td>Cosmopedia v2; FineWeb-Edu; Stack-Edu; FineMath; DCLM</td>
-                                        <td>Multi-stage training; Warmup-Stable-Decay (WSD) learning rate scheduler</td>
-                                    </tr>
-                    
-                                    <!-- Meta -->
-                                    <tr>
-                                        <td>Meta</td>
-                                        <td>Llama 3.2</td>
-                                        <td>1B; 3B</td>
-                                        <td>2024.9</td>
-                                        <td>Unknown</td>
-                                        <td>GQA; SiLU; Shared Embeddings; Pruning; Knowledge distillation; SFT; RLHF; RS; DPO</td>
-                                    </tr>
-                    
-                                    <!-- DeepSeek -->
-                                    <tr>
-                                        <td>DeepSeek</td>
-                                        <td>DeepSeek-R1</td>
-                                        <td>1.5B; 7B</td>
-                                        <td>2025.1</td>
-                                        <td>Unknown</td>
-                                        <td>SFT; RL; Knowledge distillation</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="dropdown-container">
+                        <select class="custom-select" id="slm-select">
+                            <option value="">Select a model family...</option>
+                            <option value="llama">LLaMA 3.2 family (developed by Meta)</option>
+                            <option value="deepseek">DeepSeek-R1 family (developed by DeepSeek)</option>
+                            <option value="qwen">Qwen family (developed by Alibaba)</option>
+                            <option value="gemma">Gemma family (developed by Google)</option>
+                            <option value="phi">Phi family (developed by Microsoft)</option>
+                            <option value="minicpm">MiniCPM family (developed by OpenBMB)</option>
+                            <option value="h2o">H2O-Danube family (developed by H2O.ai)</option>
+                            <option value="smollm">SmolLM family (developed by Mistral AI)</option>
+                            <option value="stablelm">StableLM family (developed by StabilityAI)</option>
+                            <option value="tinyllama">TinyLlama family (developed by Microsoft Research)</option>
+                            <option value="mobilellama">MobileLLaMA family (developed by Meituan)</option>
+                            <option value="mobillama">MobiLlama family (developed by Intel)</option>
+                            <option value="fox">Fox family (developed by Tencent)</option>
+                            <option value="dolly">Dolly family (developed by Databricks)</option>
+                            <option value="olmo">OLMo family (developed by AllenAI)</option>
+                        </select>
+                        
+                        <!-- Content displays for each model -->
+                        <div id="llama-content" class="content-display">
+                            <p><strong>LLaMA 3.2 (1B; 3B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.9</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: GQA; SiLU; Shared Embeddings; Pruning; Knowledge distillation; SFT; RLHF; RS; DPO</li>
+                            </ul>
+                        </div>
+
+                        <div id="deepseek-content" class="content-display">
+                            <p><strong>DeepSeek-R1 (1.5B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2025.1</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: SFT; RL; Knowledge distillation</li>
+                            </ul>
+                        </div>
+
+                        <div id="qwen-content" class="content-display">
+                            <p><strong>Qwen 1 (1.8B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2023.9</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm</li>
+                            </ul>
+                            <p><strong>Qwen 1.5 (0.5B; 1.8B; 4B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.2</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                            </ul>
+                            <p><strong>Qwen 2 (0.5B; 1.5B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.6</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                            </ul>
+                            <p><strong>Qwen 2.5 (0.5B; 1.5B; 3B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.9</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support; Larger corpus</li>
+                            </ul>
+                        </div>
+
+                        <div id="gemma-content" class="content-display">
+                            <p><strong>Gemma (2B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.3</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</li>
+                            </ul>
+                            <p><strong>Gemma 1.1 (2B; 7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.3</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</li>
+                            </ul>
+                            <p><strong>Gemma 2 (2B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.7</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: GQA; RoPE; GeGLU; Local Sliding Window and Global Attention; Logit Soft-Capping; RMSNorm for Pre and Post-Normalization</li>
+                            </ul>
+                        </div>
+
+                        <div id="phi-content" class="content-display">
+                            <p><strong>Phi-3 (3.8B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.4</li>
+                                <li>Training Data: Scaled-up dataset from phi-2</li>
+                                <li>Techniques: MHA; SiLU; RoPE; FlashAttention; Deep ZeRO Stage 2</li>
+                            </ul>
+                            <p><strong>Phi-3.5 (3.8B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.4</li>
+                                <li>Training Data: More multilingual and long-text data</li>
+                                <li>Techniques: Multilingual; MHA; SiLU; RoPE; FlashAttention; ZeRO 2</li>
+                            </ul>
+                        </div>
+
+                        <div id="minicpm-content" class="content-display">
+                            <p><strong>MiniCPM (1.2B; 2.4B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.4</li>
+                                <li>Training Data: Dolma; C4; Pile; stack; StarCoder; UltraChat; OssInstruct; EvolInstruct</li>
+                                <li>Techniques: Warmup-Stable-Decay (WSD) learning rate scheduler; SFT; DPO; Embedding Sharing; GQA</li>
+                            </ul>
+                            <p><strong>MiniCPM3 (4B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.9</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: Unknown</li>
+                            </ul>
+                        </div>
+
+                        <div id="h2o-content" class="content-display">
+                            <p><strong>H2O-Danube (1.8B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.1</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: RoPE; GQA; RMSNorm; Sliding window</li>
+                            </ul>
+                            <p><strong>H2O-Danube2 (1.8B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.4</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: RoPE; GQA; RMSNorm; three training stages with different data mixes</li>
+                            </ul>
+                            <p><strong>H2O-Danube3 (500M; 4B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.7</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: RoPE; GQA; RMSNorm; three training stages with different data mixes</li>
+                            </ul>
+                        </div>
+
+                        <div id="smollm-content" class="content-display">
+                            <p><strong>SmolLM (135M; 360M; 1.7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.7</li>
+                                <li>Training Data: SmolLM-Corpus</li>
+                                <li>Techniques: GQA; trapezoidal LR scheduler</li>
+                            </ul>
+                            <p><strong>SmolLM2 (135M; 360M; 1.7B)</strong></p>
+                            <ul>
+                                <li>Released: 2025.2</li>
+                                <li>Training Data: Cosmopedia v2; FineWeb-Edu; Stack-Edu; FineMath; DCLM</li>
+                                <li>Techniques: Multi-stage training; Warmup-Stable-Decay (WSD) learning rate scheduler</li>
+                            </ul>
+                        </div>
+
+                        <div id="stablelm-content" class="content-display">
+                            <p><strong>StableLM (3B)</strong></p>
+                            <ul>
+                                <li>Released: 2023.4</li>
+                                <li>Training Data: RefinedWeb; RedPajama; The Pile; StarCoder</li>
+                                <li>Techniques: MHA; SiLU; SFT; DPO; RoPE; LayerNorm</li>
+                            </ul>
+                            <p><strong>StableLM 2 (1.6B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.2</li>
+                                <li>Training Data: RefinedWeb; subsets of the Pile; RedPajama; the Stack; OpenWebText; OpenWebMath; CulturaX</li>
+                                <li>Techniques: RoPE; LayerNorm; No Biases; FlashAttention-2; Multi-stage infinite scheduler; SFT; DPO</li>
+                            </ul>
+                        </div>
+
+                        <div id="tinyllama-content" class="content-display">
+                            <p><strong>TinyLlama v1.1 (1.1B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.1</li>
+                                <li>Training Data: SlimPajama</li>
+                                <li>Techniques: RoPE; RMSNorm; SwiGLU; GQA; Flash Attention; xFormers</li>
+                            </ul>
+                        </div>
+
+                        <div id="mobilellama-content" class="content-display">
+                            <p><strong>MobileLLaMA (1.4B; 2.7B)</strong></p>
+                            <ul>
+                                <li>Released: 2023.12</li>
+                                <li>Training Data: RedPajama v1</li>
+                                <li>Techniques: RoPE; RMSNorm; SwiGLU; Deep ZERO 1; Flash Attention V2</li>
+                            </ul>
+                        </div>
+
+                        <div id="mobillama-content" class="content-display">
+                            <p><strong>MobiLlama (0.5B; 1.2B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.2</li>
+                                <li>Training Data: LLM360 Amber (includes Arxiv, Book, C4, Refined-Web, StarCoder, StackExchange, and Wikipedia)</li>
+                                <li>Techniques: RoPE; SwiGLU; RMSNorm; Parameter-sharing; FlashAttention</li>
+                            </ul>
+                        </div>
+
+                        <div id="fox-content" class="content-display">
+                            <p><strong>Fox-1 (1.6B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.6</li>
+                                <li>Training Data: Unknown</li>
+                                <li>Techniques: RMSNorm; RoPE; GQA; Deep architecture; Shared Embedding</li>
+                            </ul>
+                        </div>
+
+                        <div id="dolly-content" class="content-display">
+                            <p><strong>Dolly v1 (6B)</strong></p>
+                            <ul>
+                                <li>Released: 2023.3</li>
+                                <li>Training Data: Pile; Stanford Alpaca</li>
+                                <li>Techniques: RoPE; Fine-tuning; Deepspeed ZeRO 3</li>
+                            </ul>
+                            <p><strong>Dolly v2 (2.8B; 6.9B)</strong></p>
+                            <ul>
+                                <li>Released: 2023.4</li>
+                                <li>Training Data: Pile; Databricks-dolly-15k</li>
+                                <li>Techniques: Fine-tuning</li>
+                            </ul>
+                        </div>
+
+                        <div id="olmo-content" class="content-display">
+                            <p><strong>OLMo (7B)</strong></p>
+                            <ul>
+                                <li>Released: 2024.2</li>
+                                <li>Training Data: Dolma</li>
+                                <li>Techniques: SwiGLU; RoPE; Non-parameteric Layer Norm; No biases; ZeRO</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -956,28 +971,109 @@
                 <!-- 内容区域 - Jailbreak Methods -->
                 <div id="jailbreak-content" class="content-area">
                     <h2 class="content-title">Jailbreak Methods</h2>
-                    <ul class="content-list">
-                        <li><strong><a href="" style="color:rgb(0, 115, 255)">HumanJailbreaks</a></strong> - This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</li>
-                        <li><strong><a href="https://arxiv.org/abs/2308.03825" style="color:rgb(0, 115, 255)">HumanJailbreaks</a></strong> - This methods uses a fixed set of in-the-wild jailbreak template that can be embedded into any harmful question without additional transformation or optimization.</li>
-                        <li><strong><a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">AutoDAN</a></strong> - This method initialized with handcrafted jailbreak templates as seeds and then optimize these seed using a hierarchical genetic algorithm so as to elicit targeted behaviors from the target model. 。</li>
-                        <li><strong><a href="https://arxiv.org/abs/2401.06373" style="color:rgb(0, 115, 255)">PAP</a></strong> - This method treats the target model as a human-like communicator and use persuasive strategies to induce the target model to answer harmful queries. Specifically, they fine-tune a GPT-3.5-turbo to craft jailbreak prompts according to each persuasive strategy.</li>
-                        <li><strong><a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">GCG</a></strong> - This method optimize an adversarial suffix using a combination of greedy search and gradient-based optimization from random initialization. The suffix is then appended to the harmful query to maximize the likelihood that the target model respond with the expected prefix (e.g., ``Sure, here is a tutorial for how to make a bomb......").</li>
-                        <li><strong><a href="https://arxiv.org/abs/2010.15980" style="color:rgb(0, 115, 255)">AutoPrompt</a></strong> - This method is similar to GCG and also uses a gradient-based approach to optimize an adversarial suffix, but AutoPrompt focuses on adjusting a single coordinate (token) at a time, optimizing it based on gradient information before moving on to the next token. This sequential approach, while effective, is less comprehensive than GCG's method of considering all possible token replacements at each step.</li>
-                        <li><strong><a href="https://arxiv.org/abs/2302.03668" style="color:rgb(0, 115, 255)">PEZ</a></strong> - This method uses a gradient-based method to optimize hard text prompts. Specifically, it combines the ease of soft prompt optimization and the interpretability of hard prompts by maintaining continuous embeddings during optimization and projecting them onto the nearest discrete tokens.</li>
-                        <li><strong><a href="https://arxiv.org/abs/2104.13733" style="color:rgb(0, 115, 255)">GBDA</a></strong> - This method leverages the Gumbel-softmax distribution to optimize a distribution of potential adversarial suffixes. This allows for gradient-based optimization and incorporates differentiable constraints such as BERTScore and language model perplexity to ensure fluency and semantic similarity.</li>
-                        <li><strong><a href="https://arxiv.org/abs/1908.07125" style="color:rgb(0, 115, 255)">UAT</a></strong> - This method iteratively update the embedding for every trigger token to minimizes the target loss’ first-order Taylor approximation around the current token embedding.</li>
-                    </ul>
+                    <div class="dropdown-container">
+                        <select class="custom-select" id="jailbreak-select">
+                            <option value="">Select a jailbreak method...</option>
+                            <option value="humanjailbreaks">HumanJailbreaks</option>
+                            <option value="autodan">AutoDAN</option>
+                            <option value="pap">PAP</option>
+                            <option value="gcg">GCG</option>
+                            <option value="autoprompt">AutoPrompt</option>
+                            <option value="pez">PEZ</option>
+                            <option value="gbda">GBDA</option>
+                            <option value="uat">UAT</option>
+                        </select>
+
+                        <!-- Content displays for jailbreak methods -->
+                        <div id="humanjailbreaks-content" class="content-display">
+                            <h3>HumanJailbreaks</h3>
+                            <p>This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</p>
+                            <p>It uses a fixed set of in-the-wild jailbreak template that can be embedded into any harmful question without additional transformation or optimization.</p>
+                            <p><a href="https://arxiv.org/abs/2308.03825" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="autodan-content" class="content-display">
+                            <h3>AutoDAN</h3>
+                            <p>This method initialized with handcrafted jailbreak templates as seeds and then optimize these seed using a hierarchical genetic algorithm so as to elicit targeted behaviors from the target model.</p>
+                            <p><a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="pap-content" class="content-display">
+                            <h3>PAP (Persuasive Adversarial Prompts)</h3>
+                            <p>This method treats the target model as a human-like communicator and use persuasive strategies to induce the target model to answer harmful queries. Specifically, they fine-tune a GPT-3.5-turbo to craft jailbreak prompts according to each persuasive strategy.</p>
+                            <p><a href="https://arxiv.org/abs/2401.06373" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="gcg-content" class="content-display">
+                            <h3>GCG (Greedy Coordinate Gradient)</h3>
+                            <p>This method optimize an adversarial suffix using a combination of greedy search and gradient-based optimization from random initialization. The suffix is then appended to the harmful query to maximize the likelihood that the target model respond with the expected prefix.</p>
+                            <p><a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="autoprompt-content" class="content-display">
+                            <h3>AutoPrompt</h3>
+                            <p>This method is similar to GCG and also uses a gradient-based approach to optimize an adversarial suffix, but AutoPrompt focuses on adjusting a single coordinate (token) at a time, optimizing it based on gradient information before moving on to the next token.</p>
+                            <p><a href="https://arxiv.org/abs/2010.15980" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="pez-content" class="content-display">
+                            <h3>PEZ</h3>
+                            <p>This method uses a gradient-based method to optimize hard text prompts. Specifically, it combines the ease of soft prompt optimization and the interpretability of hard prompts by maintaining continuous embeddings during optimization and projecting them onto the nearest discrete tokens.</p>
+                            <p><a href="https://arxiv.org/abs/2302.03668" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="gbda-content" class="content-display">
+                            <h3>GBDA (Gumbel-Based Discrete Attack)</h3>
+                            <p>This method leverages the Gumbel-softmax distribution to optimize a distribution of potential adversarial suffixes. This allows for gradient-based optimization and incorporates differentiable constraints such as BERTScore and language model perplexity to ensure fluency and semantic similarity.</p>
+                            <p><a href="https://arxiv.org/abs/2104.13733" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="uat-content" class="content-display">
+                            <h3>UAT (Universal Adversarial Triggers)</h3>
+                            <p>This method iteratively update the embedding for every trigger token to minimizes the target loss' first-order Taylor approximation around the current token embedding.</p>
+                            <p><a href="https://arxiv.org/abs/1908.07125" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 内容区域 - Defense Methods -->
                 <div id="defense-content" class="content-area">
                     <h2 class="content-title">Defense Methods</h2>
-                    <ul class="content-list">
-                        <li><strong><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">PPL</a></strong> - Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix). As a result, PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</li>
-                        <li><strong><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Llama Guard 3-1B</a></strong> - Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated. </li>
-                        <li><strong><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Retokenization</a></strong> - Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</li>
-                        <li><strong><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Self-Reminder</a></strong> - This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</li>
-                    </ul>
+                    <div class="dropdown-container">
+                        <select class="custom-select" id="defense-select">
+                            <option value="">Select a defense method...</option>
+                            <option value="ppl">PPL</option>
+                            <option value="llamaguard">Llama Guard 3-1B</option>
+                            <option value="retokenization">Retokenization</option>
+                            <option value="selfreminder">Self-Reminder</option>
+                        </select>
+
+                        <!-- Content displays for defense methods -->
+                        <div id="ppl-content" class="content-display">
+                            <h3>PPL (Perplexity)</h3>
+                            <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
+                            <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
+                            <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="llamaguard-content" class="content-display">
+                            <h3>Llama Guard 3-1B</h3>
+                            <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
+                            <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="retokenization-content" class="content-display">
+                            <h3>Retokenization</h3>
+                            <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
+                            <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="selfreminder-content" class="content-display">
+                            <h3>Self-Reminder</h3>
+                            <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
+                            <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1184,3 +1280,34 @@
     
     
 </html>
+
+<script>
+    // Function to handle dropdown changes
+    function setupDropdown(selectId, contentPrefix) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        select.addEventListener('change', function() {
+            // Hide all content displays within this section
+            const section = select.closest('.content-area');
+            const allDisplays = section.querySelectorAll('.content-display');
+            allDisplays.forEach(display => display.classList.remove('active'));
+
+            // Show selected content
+            const selectedValue = this.value;
+            if (selectedValue) {
+                const selectedContent = document.getElementById(`${selectedValue}-content`);
+                if (selectedContent) {
+                    selectedContent.classList.add('active');
+                }
+            }
+        });
+    }
+
+    // Set up all dropdowns when the document is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        setupDropdown('slm-select');
+        setupDropdown('jailbreak-select');
+        setupDropdown('defense-select');
+    });
+</script>
