@@ -22,6 +22,8 @@
 
     <!-- Import elegant font -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
     <link href="./website/css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="./website/bootstrap.min.css"> -->
@@ -514,6 +516,125 @@
             border-bottom: 2px solid #e0e0e0;
             padding-bottom: 10px;
         }
+        
+        /* Jailbreak examples styles */
+        .jailbreak-examples-container {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dropdown-container-box {
+            border: 2px solid #4a89dc;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .dropdown-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            gap: 15px;
+        }
+        
+        .dropdown-col {
+            flex: 1;
+        }
+        
+        .output-container {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .question-display {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Audiowide', cursive;
+            font-size: 1.5rem;
+            color: #333;
+            padding: 15px;
+            background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+        }
+        
+        .prompt-message {
+            background-color: #ff7f50; /* 珊瑚色 */
+            color: white;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-end;
+            position: relative;
+        }
+        
+        .response-message {
+            background-color: #f4f4f4;
+            color: black;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-start;
+            position: relative;
+        }
+        
+        .message-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .typewriter-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #555;
+            animation: 
+                typewriter 2.5s steps(50, end) forwards,
+                blink-caret .75s step-end 6,
+                hideCaret 0s 1.5s forwards;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes hideCaret {
+            to {
+                border-right-color: transparent;
+            }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #555; }
+        }
+        
+        .question-display .typewriter-text {
+            display: inline-block;
+            margin: 0 auto;
+        }
     </style>
 
     <!-- Script to show navbar after scrolling past hero section -->
@@ -533,9 +654,9 @@
     </script>
 
     <script>
-        // 跟踪当前激活的内容区域和卡片
-        let activeContent = null;
-        let activeCard = null;
+        // 定义全局变量，跟踪当前激活的内容区域和卡片
+        var activeContent = null;
+        var activeCard = null;
 
         function showContent(contentType) {
             // 获取所有内容区域和卡片
@@ -639,11 +760,142 @@
     </script>
 
     <script>
-        // Set up all dropdowns when the document is loaded
+        // Variable to store the jailbreak examples data
+        let jailbreakExamples = {};
+
+        // Function to load jailbreak examples from JSON file
+        function loadJailbreakExamples() {
+            fetch('./jailbreak_examples.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load jailbreak_examples.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store the loaded data in our global variable
+                    jailbreakExamples = data;
+                    console.log('Successfully loaded examples from jailbreak_examples.json');
+                })
+                .catch(error => {
+                    console.error('Error loading jailbreak_examples.json:', error);
+                    // Fallback to embedded data if JSON loading fails
+                    console.log('Using fallback embedded data');
+                });
+        }
+        
+        function setupJailbreakExamples() {
+            const categorySelect = document.getElementById('category-select');
+            const slmSelect = document.getElementById('slm-attack-select');
+            const jailbreakSelect = document.getElementById('jailbreak-attack-select');
+            const displayContainer = document.getElementById('jailbreak-example-display');
+            
+            // Function to check if all dropdowns are selected
+            function checkAllSelected() {
+                const category = categorySelect.value;
+                const slm = slmSelect.value;
+                const jailbreak = jailbreakSelect.value;
+                
+                if (category && slm && jailbreak) {
+                    // Check if this combination exists in our data
+                    if (jailbreakExamples[category] && 
+                        jailbreakExamples[category][slm] && 
+                        jailbreakExamples[category][slm][jailbreak]) {
+                        displayJailbreakExample(category, slm, jailbreak);
+                    } else {
+                        displayContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No example available for this combination.</div>';
+                    }
+                }
+            }
+            
+            // Add event listeners to all dropdowns
+            categorySelect.addEventListener('change', checkAllSelected);
+            slmSelect.addEventListener('change', checkAllSelected);
+            jailbreakSelect.addEventListener('change', checkAllSelected);
+        }
+        
+        function displayJailbreakExample(category, slm, jailbreak) {
+            const displayContainer = document.getElementById('jailbreak-example-display');
+            displayContainer.innerHTML = ''; // Clear previous content
+            
+            const exampleData = jailbreakExamples[category][slm][jailbreak];
+            const question = exampleData[0];
+            const prompt = exampleData[1];
+            const response = exampleData[2];
+            
+            // Create question display with typewriter effect at the top
+            displayQuestionWithTypewriter(displayContainer, question);
+            
+            // Create and display messages
+            setTimeout(() => {
+                displayPromptMessage(displayContainer, prompt, "prompt-message", "Jailbreak Prompt");
+                
+                setTimeout(() => {
+                    displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response");
+                }, 1000);
+            }, 3000); // Delay after question typewriter completes
+        }
+        
+        function displayQuestionWithTypewriter(container, text) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-display';
+            
+            const typewriterSpan = document.createElement('span');
+            typewriterSpan.className = 'typewriter-text';
+            typewriterSpan.textContent = "Harmful question: " + text;
+            
+            questionDiv.appendChild(typewriterSpan);
+            container.appendChild(questionDiv);
+        }
+        
+        function displayPromptMessage(container, text, className, title) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = className;
+            
+            const messageTitle = document.createElement('span');
+            messageTitle.className = 'message-title';
+            messageTitle.textContent = title;
+            messageDiv.appendChild(messageTitle);
+            
+            messageDiv.appendChild(document.createTextNode(text));
+            container.appendChild(messageDiv);
+        }
+        
+        function displayResponseWithTypewriter(container, text, className, title) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = className;
+            
+            const messageTitle = document.createElement('span');
+            messageTitle.className = 'message-title';
+            messageTitle.textContent = title;
+            messageDiv.appendChild(messageTitle);
+            
+            container.appendChild(messageDiv);
+            
+            // Apply typewriter effect
+            let i = 0;
+            const speed = 10; // typing speed
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    messageDiv.appendChild(document.createTextNode(text[i]));
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Load examples when the document is ready
         document.addEventListener('DOMContentLoaded', function() {
+            loadJailbreakExamples();
             setupDropdown('slm-select');
             setupDropdown('jailbreak-select');
             setupDropdown('defense-select');
+            
+            // Setup jailbreak examples dropdowns
+            setupJailbreakExamples();
         });
     </script>
 </head>
@@ -793,58 +1045,6 @@
             </div>
         </section>
         
-        <section class="section" id="evaluation-details">
-            <div class="container is-max-desktop">
-                <div class="columns is-centered has-text-centered">
-                    <div class="column is-full-width">
-                        <h2 class="title is-3">Evaluation Details</h2>
-                    </div>
-                </div>
-                <br>
-
-
-                <!-- Defense Methods Section -->
-                <div id="defense-content">
-                    <h2 class="content-title">Defense Methods</h2>
-                    <div class="dropdown-container">
-                        <select class="custom-select" id="defense-select">
-                            <option value="">Select a defense method...</option>
-                            <option value="ppl">PPL</option>
-                            <option value="llamaguard">Llama Guard 3-1B</option>
-                            <option value="retokenization">Retokenization</option>
-                            <option value="selfreminder">Self-Reminder</option>
-                        </select>
-
-                        <!-- Content displays for defense methods -->
-                        <div id="ppl-content" class="content-display">
-
-                            <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
-                            <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
-                            <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
-
-                        <div id="llamaguard-content" class="content-display">
-
-                            <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
-                            <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
-
-                        <div id="retokenization-content" class="content-display">
-
-                            <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
-                            <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
-
-                        <div id="selfreminder-content" class="content-display">
-
-                            <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
-                            <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
 
         <section class="section" id="results">
             <!-- Benchmark design. -->
@@ -1216,6 +1416,47 @@
                         </p>
                     </div>
                     
+                    <!-- Jailbreak Examples with Dropdowns -->
+                    <div class="jailbreak-examples-container">
+                        <div class="dropdown-container-box">
+                            <div class="dropdown-row">
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="category-select">
+                                        <option value="">Select a risk category...</option>
+                                        <option value="malware">Malware Creation</option>
+                                        <option value="fraud">Fraud & Deception</option>
+                                        <option value="violence">Violence & Harm</option>
+                                        <option value="hatespeech">Hate Speech</option>
+                                        <option value="economic">Economic Harm</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="slm-attack-select">
+                                        <option value="">Select a SLM...</option>
+                                        <option value="llama">LLaMA 3.2-1B</option>
+                                        <option value="gemma">Gemma 2-2B</option>
+                                        <option value="phi">Phi-3-3.8B</option>
+                                        <option value="qwen">Qwen 2-1.5B</option>
+                                        <option value="tinyllama">TinyLlama-1.1B</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="jailbreak-attack-select">
+                                        <option value="">Select a jailbreak method...</option>
+                                        <option value="direct">Direct</option>
+                                        <option value="autodan">AutoDAN</option>
+                                        <option value="gcg">GCG</option>
+                                        <option value="pap">PAP</option>
+                                        <option value="humanjailbreaks">HumanJailbreaks</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="jailbreak-example-display" class="output-container">
+                            <!-- Content will be dynamically inserted here -->
+                        </div>
+                    </div>
                     
                 </div>
 
@@ -1250,6 +1491,46 @@
                         </p>
                     </div>
 
+                                    <!-- Defense Methods Section -->
+                <div id="defense-content">
+                    <h2 class="content-title">Defense Methods</h2>
+                    <div class="dropdown-container">
+                        <select class="custom-select" id="defense-select">
+                            <option value="">Select a defense method...</option>
+                            <option value="ppl">PPL</option>
+                            <option value="llamaguard">Llama Guard 3-1B</option>
+                            <option value="retokenization">Retokenization</option>
+                            <option value="selfreminder">Self-Reminder</option>
+                        </select>
+
+                        <!-- Content displays for defense methods -->
+                        <div id="ppl-content" class="content-display">
+
+                            <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
+                            <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
+                            <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="llamaguard-content" class="content-display">
+
+                            <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
+                            <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="retokenization-content" class="content-display">
+
+                            <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
+                            <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+
+                        <div id="selfreminder-content" class="content-display">
+
+                            <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
+                            <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+
                     <figure>
                         <img src="./website/images/rq3_all_defense.png" alt="">
                         <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
@@ -1260,18 +1541,7 @@
         </section>
 
         
-        <section class="section" id="examples">
-            <!-- Benchmark design. -->
-    
-            <div class="container is-max-desktop">
-                <div class="columns is-centered has-text-centered">
-                    <div class="column is-full-width">
-                        <h2 class="title is-3">Examples</h2>
-                    </div>
-                </div>
-                <br>
-            </div>
-        </section>
+
     
     
         <section class="section" id="ethics">
