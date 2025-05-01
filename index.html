@@ -558,15 +558,18 @@
         }
         
         .question-display {
-            text-align: center;
+            text-align: left;
             margin-bottom: 20px;
-            font-family: 'Audiowide', cursive;
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
             font-size: 1.5rem;
             color: #333;
             padding: 15px;
             background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-radius: 5px;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.5;
         }
         
         .prompt-message {
@@ -634,6 +637,36 @@
         .question-display .typewriter-text {
             display: inline-block;
             margin: 0 auto;
+            white-space: normal; /* Allow text to wrap */
+            width: 100%; /* Use full width of container */
+            animation: fadeIn 1.5s ease; /* Use fade-in instead of typewriter for wrapping text */
+        }
+
+        /* Update typewriter animation to better handle wrapped text */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .response-label {
+            margin: 10px 0 20px 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+        
+        .response-label.safe {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .response-label.unsafe {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 
@@ -785,23 +818,25 @@
         }
         
         function setupJailbreakExamples() {
-            const categorySelect = document.getElementById('category-select');
             const slmSelect = document.getElementById('slm-attack-select');
             const jailbreakSelect = document.getElementById('jailbreak-attack-select');
+            const categorySelect = document.getElementById('category-select');
             const displayContainer = document.getElementById('jailbreak-example-display');
             
             // Function to check if all dropdowns are selected
             function checkAllSelected() {
-                const category = categorySelect.value;
                 const slm = slmSelect.value;
                 const jailbreak = jailbreakSelect.value;
+                const category = categorySelect.value;
+                console.log('Selected values:', slm, jailbreak, category);
                 
-                if (category && slm && jailbreak) {
+                if (slm && jailbreak && category) {
                     // Check if this combination exists in our data
-                    if (jailbreakExamples[category] && 
-                        jailbreakExamples[category][slm] && 
-                        jailbreakExamples[category][slm][jailbreak]) {
-                        displayJailbreakExample(category, slm, jailbreak);
+                    // console.log(jailbreakExamples);
+                    if (jailbreakExamples[slm] && 
+                        jailbreakExamples[slm][jailbreak] && 
+                        jailbreakExamples[slm][jailbreak][category]) {
+                        displayJailbreakExample(slm, jailbreak, category);
                     } else {
                         displayContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No example available for this combination.</div>';
                     }
@@ -809,19 +844,20 @@
             }
             
             // Add event listeners to all dropdowns
-            categorySelect.addEventListener('change', checkAllSelected);
             slmSelect.addEventListener('change', checkAllSelected);
             jailbreakSelect.addEventListener('change', checkAllSelected);
+            categorySelect.addEventListener('change', checkAllSelected);
         }
         
-        function displayJailbreakExample(category, slm, jailbreak) {
+        function displayJailbreakExample(slm, jailbreak, category) {
             const displayContainer = document.getElementById('jailbreak-example-display');
             displayContainer.innerHTML = ''; // Clear previous content
             
-            const exampleData = jailbreakExamples[category][slm][jailbreak];
+            const exampleData = jailbreakExamples[slm][jailbreak][category];
             const question = exampleData[0];
             const prompt = exampleData[1];
             const response = exampleData[2];
+            const label = exampleData[3]; // Extract the label from example data
             
             // Create question display with typewriter effect at the top
             displayQuestionWithTypewriter(displayContainer, question);
@@ -831,7 +867,7 @@
                 displayPromptMessage(displayContainer, prompt, "prompt-message", "Jailbreak Prompt");
                 
                 setTimeout(() => {
-                    displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response");
+                    displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response", label);
                 }, 1000);
             }, 3000); // Delay after question typewriter completes
         }
@@ -840,12 +876,28 @@
             const questionDiv = document.createElement('div');
             questionDiv.className = 'question-display';
             
-            const typewriterSpan = document.createElement('span');
-            typewriterSpan.className = 'typewriter-text';
-            typewriterSpan.textContent = "Harmful question: " + text;
+            // Create a wrapper for the prefix text
+            const prefixSpan = document.createElement('span');
+            prefixSpan.textContent = "Harmful question: ";
+            prefixSpan.style.fontWeight = "bold";
+            questionDiv.appendChild(prefixSpan);
             
-            questionDiv.appendChild(typewriterSpan);
             container.appendChild(questionDiv);
+            
+            // Apply typewriter effect character by character
+            let i = 0;
+            const speed = 30; // Typing speed for question
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    questionDiv.appendChild(document.createTextNode(text[i]));
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+            
+            // Start typing the text
+            typeWriter();
         }
         
         function displayPromptMessage(container, text, className, title) {
@@ -861,7 +913,7 @@
             container.appendChild(messageDiv);
         }
         
-        function displayResponseWithTypewriter(container, text, className, title) {
+        function displayResponseWithTypewriter(container, text, className, title, label) {
             const messageDiv = document.createElement('div');
             messageDiv.className = className;
             
@@ -874,13 +926,23 @@
             
             // Apply typewriter effect
             let i = 0;
-            const speed = 10; // typing speed
+            const speed = 3; // Speed up typing speed (was 10)
             
             function typeWriter() {
                 if (i < text.length) {
                     messageDiv.appendChild(document.createTextNode(text[i]));
                     i++;
                     setTimeout(typeWriter, speed);
+                } else {
+                    // After typing is complete, add the label
+                    if (label !== undefined) {
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
+                        labelDiv.textContent = "Label: " + label;
+
+                        // Add label below the response message, not inside it
+                        container.appendChild(labelDiv);
+                    }
                 }
             }
             
@@ -1421,35 +1483,58 @@
                         <div class="dropdown-container-box">
                             <div class="dropdown-row">
                                 <div class="dropdown-col">
-                                    <select class="custom-select" id="category-select">
-                                        <option value="">Select a risk category...</option>
-                                        <option value="malware">Malware Creation</option>
-                                        <option value="fraud">Fraud & Deception</option>
-                                        <option value="violence">Violence & Harm</option>
-                                        <option value="hatespeech">Hate Speech</option>
-                                        <option value="economic">Economic Harm</option>
-                                    </select>
-                                </div>
-                                <div class="dropdown-col">
                                     <select class="custom-select" id="slm-attack-select">
                                         <option value="">Select a SLM...</option>
-                                        <option value="llama">LLaMA 3.2-1B</option>
-                                        <option value="gemma">Gemma 2-2B</option>
-                                        <option value="phi">Phi-3-3.8B</option>
-                                        <option value="qwen">Qwen 2-1.5B</option>
-                                        <option value="tinyllama">TinyLlama-1.1B</option>
-                                    </select>
-                                </div>
+                                        <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                        <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                        <option value="Qwen family">Qwen family</option>
+                                        <option value="Gemma family">Gemma family</option>
+                                        <option value="Phi family">Phi family</option>
+                                        <option value="MiniCPM family">MiniCPM family</option>
+                                        <option value="H2O-Danube family">H2O-Danube family</option>
+                                        <option value="SmolLM family">SmolLM family</option>
+                                        <option value="StableLM family">StableLM family</option>
+                                        <option value="TinyLlama family">TinyLlama family</option>
+                                        <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                        <option value="MobiLlama family">MobiLlama family</option>
+                                        <option value="Fox family">Fox family</option>
+                                        <option value="Dolly family">Dolly family</option>
+                                        <option value="OLMo family">OLMo family</option>
+                                    </select>                                    
+                                </div>  
                                 <div class="dropdown-col">
                                     <select class="custom-select" id="jailbreak-attack-select">
                                         <option value="">Select a jailbreak method...</option>
-                                        <option value="direct">Direct</option>
-                                        <option value="autodan">AutoDAN</option>
-                                        <option value="gcg">GCG</option>
-                                        <option value="pap">PAP</option>
-                                        <option value="humanjailbreaks">HumanJailbreaks</option>
+                                        <option value="Direct">Direct</option>
+                                        <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                        <option value="AutoDAN">AutoDAN</option>
+                                        <option value="PAP">PAP</option>
+                                        <option value="GCG">GCG</option>
+                                        <option value="AutoPrompt">AutoPrompt</option>
+                                        <option value="PEZ">PEZ</option>
+                                        <option value="GBDA">GBDA</option>
+                                        <option value="UAT">UAT</option>
                                     </select>
                                 </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="category-select">
+                                        <option value="">Select a risk category...</option>
+                                        <option value="Children Harm">Children Harm</option>
+                                        <option value="Economic Harm">Economic Harm</option>
+                                        <option value="Financial Advice">Financial Advice</option>
+                                        <option value="Fraud">Fraud</option>
+                                        <option value="Gov Decision">Gov Decision</option>
+                                        <option value="Hate Speech">Hate Speech</option>
+                                        <option value="Health Consultation">Health Consultation</option>
+                                        <option value="Illegal Activity">Illegal Activity</option>
+                                        <option value="Legal Opinion">Legal Opinion</option>
+                                        <option value="Malware">Malware</option>
+                                        <option value="Physical Harm">Physical Harm</option>
+                                        <option value="Political Lobbying">Political Lobbying</option>
+                                        <option value="Pornography">Pornography</option>
+                                        <option value="Privacy Violence">Privacy Violence</option>
+                                    </select>
+                                </div>                                                           
                             </div>
                         </div>
                         
