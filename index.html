@@ -583,6 +583,17 @@
             position: relative;
         }
         
+        .defense-message {
+            background-color: #90EE90; /* 浅绿色 */
+            color: black;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-end;
+            position: relative;
+        }
+        
         .response-message {
             background-color: #f4f4f4;
             color: black;
@@ -795,6 +806,8 @@
     <script>
         // Variable to store the jailbreak examples data
         let jailbreakExamples = {};
+        // Variable to store the defense examples data
+        let defenseExamples = {};
 
         // Function to load jailbreak examples from JSON file
         function loadJailbreakExamples() {
@@ -813,6 +826,26 @@
                 .catch(error => {
                     console.error('Error loading jailbreak_examples.json:', error);
                     // Fallback to embedded data if JSON loading fails
+                    console.log('Using fallback embedded data');
+                });
+        }
+
+        // Function to load defense examples from JSON file
+        function loadDefenseExamples() {
+            fetch('./defense_examples.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load defense_examples.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store the loaded data in our global variable
+                    defenseExamples = data;
+                    console.log('Successfully loaded examples from defense_examples.json');
+                })
+                .catch(error => {
+                    console.error('Error loading defense_examples.json:', error);
                     console.log('Using fallback embedded data');
                 });
         }
@@ -849,6 +882,49 @@
             categorySelect.addEventListener('change', checkAllSelected);
         }
         
+        function setupDefenseExamples() {
+            const slmSelect = document.getElementById('defense-slm-select');
+            const jailbreakSelect = document.getElementById('defense-jailbreak-select');
+            const defenseSelect = document.getElementById('defense-method-select');
+            const categorySelect = document.getElementById('defense-category-select');
+            const displayContainer = document.getElementById('defense-example-display');
+            
+            // Function to check if all dropdowns are selected
+            function checkAllSelected() {
+                const slm = slmSelect.value;
+                const jailbreak = jailbreakSelect.value;
+                const defense = defenseSelect.value;
+                const category = categorySelect.value;
+                console.log('Selected defense values:', slm, jailbreak, defense, category);
+                
+                if (slm && jailbreak && defense && category) {
+                    // Check if this combination exists in our data
+                    console.log('Checking if data exists for:', slm, jailbreak, defense, category);
+                    if (defenseExamples[slm]) {
+                        console.log('Defense examples data:', defenseExamples[slm]); // Debug log
+                    } else {
+                        console.log('No defense examples data found for this SLM');
+                    }
+                    if (defenseExamples[slm] && 
+                        defenseExamples[slm][jailbreak] && 
+                        defenseExamples[slm][jailbreak][defense] && 
+                        defenseExamples[slm][jailbreak][defense][category]) {
+                        console.log('Found matching defense example data');
+                        displayDefenseExample(slm, jailbreak, defense, category);
+                    } else {
+                        console.log('No matching defense example data found');
+                        displayContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No example available for this combination.</div>';
+                    }
+                }
+            }
+            
+            // Add event listeners to all dropdowns
+            slmSelect.addEventListener('change', checkAllSelected);
+            jailbreakSelect.addEventListener('change', checkAllSelected);
+            defenseSelect.addEventListener('change', checkAllSelected);
+            categorySelect.addEventListener('change', checkAllSelected);
+        }
+        
         function displayJailbreakExample(slm, jailbreak, category) {
             const displayContainer = document.getElementById('jailbreak-example-display');
             displayContainer.innerHTML = ''; // Clear previous content
@@ -868,6 +944,86 @@
                 
                 setTimeout(() => {
                     displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response", label);
+                }, 1000);
+            }, 3000); // Delay after question typewriter completes
+        }
+        
+        function displayDefenseExample(slm, jailbreak, defense, category) {
+            const displayContainer = document.getElementById('defense-example-display');
+            displayContainer.innerHTML = ''; // Clear previous content
+            
+            const exampleData = defenseExamples[slm][jailbreak][defense][category];
+            console.log('Defense example data:', exampleData); // Debug log
+            
+            const question = exampleData[0];
+            const jailbreakPrompt = exampleData[1];
+            const defensePrompt = exampleData[2];
+            const response = exampleData[3];
+            const label = exampleData[4]; // Extract the label from example data
+            console.log('Extracted defense label:', label); // Debug log
+            
+            // Create question display with typewriter effect at the top
+            displayQuestionWithTypewriter(displayContainer, question);
+            
+            // Get the appropriate title based on the defense method
+            let defenseTitle;
+            switch(defense) {
+                case "PPL":
+                    defenseTitle = "PPL Score";
+                    break;
+                case "Llama Guard 3-1B":
+                    defenseTitle = "Llama-Guard-3-1B Output";
+                    break;
+                case "Retokenization":
+                    defenseTitle = "Retokenized Prompt";
+                    break;
+                case "Self-Reminder":
+                    defenseTitle = "Prompt with Self-Reminder";
+                    break;
+                default:
+                    defenseTitle = "Defense Prompt";
+            }
+            
+            // Create and display messages
+            setTimeout(() => {
+                displayPromptMessage(displayContainer, jailbreakPrompt, "prompt-message", "Jailbreak Prompt");
+                
+                setTimeout(() => {
+                    // Special handling for PPL defense method
+                    if (defense === "PPL") {
+                        // Try to parse the PPL score from defense prompt
+                        try {
+                            // Ensure defensePrompt is a string before using match
+                            const defensePromptStr = String(defensePrompt);
+                            const pplScoreMatch = defensePromptStr.match(/(\d+(\.\d+)?)/);
+                            if (pplScoreMatch) {
+                                const pplScore = parseFloat(pplScoreMatch[0]);
+                                const threshold = 415.87;
+                                
+                                let formattedDefensePrompt;
+                                if (pplScore < threshold) {
+                                    formattedDefensePrompt = `${pplScore} (< threshold ${threshold}, passed)`;
+                                } else {
+                                    formattedDefensePrompt = `${pplScore} (≥ threshold ${threshold}, filtered)`;
+                                }
+                                
+                                displayPromptMessage(displayContainer, formattedDefensePrompt, "defense-message", defenseTitle);
+                            } else {
+                                // Fallback if no number found
+                                displayPromptMessage(displayContainer, defensePromptStr, "defense-message", defenseTitle);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing PPL score:', e);
+                            displayPromptMessage(displayContainer, String(defensePrompt), "defense-message", defenseTitle);
+                        }
+                    } else {
+                        // Normal display for other defense methods
+                        displayPromptMessage(displayContainer, defensePrompt, "defense-message", defenseTitle);
+                    }
+                    
+                    setTimeout(() => {
+                        displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response", label);
+                    }, 1000);
                 }, 1000);
             }, 3000); // Delay after question typewriter completes
         }
@@ -914,6 +1070,7 @@
         }
         
         function displayResponseWithTypewriter(container, text, className, title, label) {
+            console.log('displayResponseWithTypewriter received label:', label); // Debug log
             const messageDiv = document.createElement('div');
             messageDiv.className = className;
             
@@ -936,12 +1093,15 @@
                 } else {
                     // After typing is complete, add the label
                     if (label !== undefined) {
+                        console.log('Adding label element:', label); // Debug log
                         const labelDiv = document.createElement('div');
                         labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
                         labelDiv.textContent = "Label: " + label;
 
                         // Add label below the response message, not inside it
                         container.appendChild(labelDiv);
+                    } else {
+                        console.log('No label provided to add'); // Debug log
                     }
                 }
             }
@@ -952,12 +1112,14 @@
         // Load examples when the document is ready
         document.addEventListener('DOMContentLoaded', function() {
             loadJailbreakExamples();
+            loadDefenseExamples();
             setupDropdown('slm-select');
             setupDropdown('jailbreak-select');
             setupDropdown('defense-select');
             
             // Setup jailbreak examples dropdowns
             setupJailbreakExamples();
+            setupDefenseExamples();
         });
     </script>
 </head>
@@ -1576,51 +1738,133 @@
                         </p>
                     </div>
 
-                                    <!-- Defense Methods Section -->
-                <div id="defense-content">
-                    <h2 class="content-title">Defense Methods</h2>
-                    <div class="dropdown-container">
-                        <select class="custom-select" id="defense-select">
-                            <option value="">Select a defense method...</option>
-                            <option value="ppl">PPL</option>
-                            <option value="llamaguard">Llama Guard 3-1B</option>
-                            <option value="retokenization">Retokenization</option>
-                            <option value="selfreminder">Self-Reminder</option>
-                        </select>
+                    <!-- Defense Methods Section -->
+                    <div id="defense-content">
+                        <!-- <h2 class="content-title">Defense Methods</h2> -->
+                        <div class="dropdown-container">
+                            <select class="custom-select" id="defense-select">
+                                <option value="">Select a defense method...</option>
+                                <option value="ppl">PPL</option>
+                                <option value="llamaguard">Llama Guard 3-1B</option>
+                                <option value="retokenization">Retokenization</option>
+                                <option value="selfreminder">Self-Reminder</option>
+                            </select>
 
-                        <!-- Content displays for defense methods -->
-                        <div id="ppl-content" class="content-display">
+                            <!-- Content displays for defense methods -->
+                            <div id="ppl-content" class="content-display">
 
-                            <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
-                            <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
-                            <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
+                                <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
+                                <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
+                                <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
 
-                        <div id="llamaguard-content" class="content-display">
+                            <div id="llamaguard-content" class="content-display">
 
-                            <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
-                            <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
+                                <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
+                                <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
 
-                        <div id="retokenization-content" class="content-display">
+                            <div id="retokenization-content" class="content-display">
 
-                            <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
-                            <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
-                        </div>
+                                <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
+                                <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
 
-                        <div id="selfreminder-content" class="content-display">
+                            <div id="selfreminder-content" class="content-display">
 
-                            <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
-                            <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                                <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
+                                <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <div class="content has-text-justified">
+                        <p>
+                            Here are some defense examples. For more detailed results, please refer to our <b>leaderboard</b>.                        
+                        </p>
+                    </div>
 
                     <figure>
                         <img src="./website/images/rq3_all_defense.png" alt="">
                         <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
                         in 62 SLMs, where a greater drop in the ASR index (i.e., the height difference between adjacent bars) indicates better defense effectiveness.</figcaption>
                     </figure>
+                    
+                    <!-- Defense Examples with Dropdowns -->
+                    <div class="jailbreak-examples-container">
+                        <!-- <h2 class="content-title">Defense Examples</h2> -->
+                        <div class="dropdown-container-box">
+                            <div class="dropdown-row">
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-slm-select">
+                                        <option value="">Select a SLM...</option>
+                                        <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                        <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                        <option value="Qwen family">Qwen family</option>
+                                        <option value="Gemma family">Gemma family</option>
+                                        <option value="Phi family">Phi family</option>
+                                        <option value="MiniCPM family">MiniCPM family</option>
+                                        <option value="H2O-Danube family">H2O-Danube family</option>
+                                        <option value="SmolLM family">SmolLM family</option>
+                                        <option value="StableLM family">StableLM family</option>
+                                        <option value="TinyLlama family">TinyLlama family</option>
+                                        <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                        <option value="MobiLlama family">MobiLlama family</option>
+                                        <option value="Fox family">Fox family</option>
+                                        <option value="Dolly family">Dolly family</option>
+                                        <option value="OLMo family">OLMo family</option>
+                                    </select>                                    
+                                </div>  
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-jailbreak-select">
+                                        <option value="">Select a jailbreak method...</option>
+                                        <option value="Direct">Direct</option>
+                                        <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                        <option value="AutoDAN">AutoDAN</option>
+                                        <option value="PAP">PAP</option>
+                                        <option value="GCG">GCG</option>
+                                        <option value="AutoPrompt">AutoPrompt</option>
+                                        <option value="PEZ">PEZ</option>
+                                        <option value="GBDA">GBDA</option>
+                                        <option value="UAT">UAT</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-category-select">
+                                        <option value="">Select a risk category...</option>
+                                        <option value="Children Harm">Children Harm</option>
+                                        <option value="Economic Harm">Economic Harm</option>
+                                        <option value="Financial Advice">Financial Advice</option>
+                                        <option value="Fraud">Fraud</option>
+                                        <option value="Gov Decision">Gov Decision</option>
+                                        <option value="Hate Speech">Hate Speech</option>
+                                        <option value="Health Consultation">Health Consultation</option>
+                                        <option value="Illegal Activity">Illegal Activity</option>
+                                        <option value="Legal Opinion">Legal Opinion</option>
+                                        <option value="Malware">Malware</option>
+                                        <option value="Physical Harm">Physical Harm</option>
+                                        <option value="Political Lobbying">Political Lobbying</option>
+                                        <option value="Pornography">Pornography</option>
+                                        <option value="Privacy Violence">Privacy Violence</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-method-select">
+                                        <option value="">Select a defense method...</option>
+                                        <option value="PPL">PPL</option>
+                                        <option value="Llama Guard 3-1B">Llama Guard 3-1B</option>
+                                        <option value="Retokenization">Retokenization</option>
+                                        <option value="Self-Reminder">Self-Reminder</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="defense-example-display" class="output-container">
+                            <!-- Content will be dynamically inserted here -->
+                        </div>
+                    </div>
+
                 </div>          
             </div>
         </section>
