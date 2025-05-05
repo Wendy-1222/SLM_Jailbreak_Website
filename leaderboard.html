@@ -10,8 +10,57 @@
             margin: 0;
             padding: 0;
             display: flex;
+            flex-direction: column;
             min-height: 100vh;
             background-color: #ffffff;
+        }
+        
+        /* Top navigation bar styles */
+        .top-right-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            padding: 15px 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: right;
+            box-sizing: border-box;
+        }
+        
+        .top-right-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .top-right-nav ul li {
+            margin-left: 20px;
+        }
+        
+        .top-right-nav ul li a {
+            color: #777777;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        
+        .top-right-nav ul li a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Adjust main content to account for fixed top nav */
+        .main-content {
+            display: flex;
+            flex: 1;
+            margin-top: 60px; /* Space for the fixed navigation */
         }
         
         .sidebar {
@@ -89,11 +138,31 @@
         }
         
         thead th {
-            background-color: #f2f2f2;
-            font-weight: 600;
-            color: #333;
+            background-color: #eaeaea;
+            font-weight: 500;
+            color: #000000;
             position: sticky;
             top: 0;
+        }
+        
+        /* 确保表格第一行（表头）样式应用 - 添加额外的选择器 */
+        table tr:first-child th,
+        table > tr:first-child > th,
+        table thead tr th,
+        table > thead > tr > th,
+        table tbody tr:first-child th {
+            background-color: #eaeaea;
+            font-weight: 500;
+            color: #000000;
+        }
+        
+        /* 如果表格使用td而不是th作为表头 */
+        table tr:first-child td,
+        table > tr:first-child > td,
+        table thead tr td {
+            background-color: #eaeaea;
+            font-weight: 500;
+            color: #000000;
         }
         
         /* Round the top-left and top-right corners of the first header row */
@@ -130,47 +199,125 @@
         .highlight-value {
             font-weight: bold;
         }
+        
+        /* Responsive styles for the top nav */
+        @media (max-width: 768px) {
+            .top-right-nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+                background-color: white;
+            }
+            
+            .top-right-nav ul {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .top-right-nav ul li {
+                margin: 5px 0;
+            }
+            
+            .main-content {
+                margin-top: 160px; /* 为堆叠的导航栏留出空间 */
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-item active" data-target="main">Main results</div>
-        <div class="sidebar-item" data-target="category">Category Results</div>
-        <div class="sidebar-item" data-target="ppl">Defense Results (PPL)</div>
-        <div class="sidebar-item" data-target="retokenization">Defense Results (Retokenization)</div>
-        <div class="sidebar-item" data-target="self_reminder">Defense Results (Self-Reminder)</div>
-        <div class="sidebar-item" data-target="llama_guard">Defense Results (Llama Guard 3-1B)</div>
-    </div>
-    
-    <div class="content">
-        <div class="table-header">gpt-4-0613</div>
-        
-        <div class="table-container active" id="main">
-            <!-- Table content will be loaded here -->
-        </div>
-        
-        <div class="table-container" id="category">
-            <!-- Table content will be loaded here -->
-        </div>
-        
-        <div class="table-container" id="ppl">
-            <!-- Table content will be loaded here -->
-        </div>
+    <!-- Top Navigation Bar -->
+    <nav class="top-right-nav">
+        <ul>
+            <li><a href="index.html#original-content"><b>Homepage</b></a></li>
+            <li><a href="leaderboard.html"><b>Leaderboard</b></a></li>
+            <li><a href="index.html#paper_overview"><b>Overview</b></a></li>
+            <li><a href="index.html#results"><b>Results</b></a></li>
+            <li><a href="index.html#ethics"><b>Ethics</b></a></li>
+        </ul>
+    </nav>
 
-        <div class="table-container" id="retokenization">
-            <!-- Table content will be loaded here -->
+    <div class="main-content">
+        <div class="sidebar">
+            <div class="sidebar-item active" data-target="main">Main Results</div>
+            <div class="sidebar-item" data-target="category">Category Results</div>
+            <div class="sidebar-item" data-target="ppl">Defense Results (PPL)</div>
+            <div class="sidebar-item" data-target="retokenization">Defense Results (Retokenization)</div>
+            <div class="sidebar-item" data-target="self_reminder">Defense Results (Self-Reminder)</div>
+            <div class="sidebar-item" data-target="llama_guard_3_1B">Defense Results (Llama Guard 3-1B)</div>
         </div>
+        
+        <div class="content">
+            <div class="table-header">Main Results</div>
+            
+            <div class="table-container active" id="main">
+                <!-- Table content will be loaded here -->
+            </div>
+            
+            <div class="table-container" id="category">
+                <!-- 添加图片在表格上方 -->
+                <div class="category-image-container" style="text-align: center; margin-bottom: 20px;">
+                    <img src="./website/images/category.png" alt="Category Results" style="max-width: 100%; height: auto;">
+                </div>
+                <!-- Table content will be loaded here -->
+            </div>
+            
+            <div class="table-container" id="ppl">
+                <!-- Table content will be loaded here -->
+            </div>
 
-        <div class="table-container" id="self_reminder">
-            <!-- Table content will be loaded here -->
-        </div>
+            <div class="table-container" id="retokenization">
+                <!-- Table content will be loaded here -->
+            </div>
 
-        <div class="table-container" id="llama_guard">
-            <!-- Table content will be loaded here -->
+            <div class="table-container" id="self_reminder">
+                <!-- Table content will be loaded here -->
+            </div>
+
+            <div class="table-container" id="llama_guard_3_1B">
+                <!-- Table content will be loaded here -->
+            </div>
         </div>
     </div>
 
     <script>
+        // 添加函数来应用表头样式
+        function applyHeaderStyles(containerId) {
+            const container = document.getElementById(containerId);
+            let tableElement;
+            
+            // 特殊处理category表格
+            if (containerId === 'category') {
+                const tableContentContainer = container.querySelector('.category-table-content');
+                if (tableContentContainer) {
+                    tableElement = tableContentContainer.querySelector('table');
+                }
+            } else {
+                tableElement = container.querySelector('table');
+            }
+            
+            if (tableElement && tableElement.rows.length > 0) {
+                const firstRow = tableElement.rows[0];
+                if (firstRow) {
+                    Array.from(firstRow.cells).forEach(cell => {
+                        cell.style.backgroundColor = '#eaeaea';
+                        cell.style.fontWeight = '500';
+                        cell.style.color = '#000000';
+                    });
+                }
+            }
+        }
+        
         // Function to load table content from external files
         function loadTableContent(containerId, tablePath) {
             const container = document.getElementById(containerId);
@@ -183,21 +330,59 @@
                     return response.text();
                 })
                 .then(html => {
-                    // If the HTML contains a full document, extract just the table
+                    // 解析出表格内容
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
                     const table = doc.querySelector('table');
                     
-                    if (table) {
-                        container.innerHTML = table.outerHTML;
+                    // 特殊处理category表格
+                    if (containerId === 'category') {
+                        // 保留图片容器，只将表格内容添加到图片之后
+                        const imgContainer = container.querySelector('.category-image-container');
+                        if (imgContainer && table) {
+                            // 清除除了图片容器之外的内容
+                            while (container.lastChild !== imgContainer) {
+                                container.removeChild(container.lastChild);
+                            }
+                            // 添加表格
+                            container.appendChild(table);
+                        } else if (table) {
+                            // 如果找不到图片容器但有表格，保留容器中原有内容，添加表格
+                            container.appendChild(table);
+                        } else {
+                            // 保留图片容器，添加其他HTML内容
+                            container.innerHTML = container.querySelector('.category-image-container').outerHTML + html;
+                        }
                     } else {
-                        // If no table tag found, assume the HTML is just the table markup
-                        container.innerHTML = html;
+                        // 其他表格正常处理
+                        if (table) {
+                            container.innerHTML = table.outerHTML;
+                        } else {
+                            container.innerHTML = html;
+                        }
                     }
+                    
+                    // 确保表格第一行样式应用
+                    setTimeout(() => {
+                        applyHeaderStyles(containerId);
+                    }, 100);
                 })
                 .catch(error => {
                     console.error('Error loading table:', error);
-                    container.innerHTML = `<p>Error loading table: ${error.message}</p>`;
+                    const errorMsg = `<p>Error loading table: ${error.message}</p>`;
+                    
+                    if (containerId === 'category') {
+                        // 保留图片容器，添加错误信息
+                        const imgContainer = container.querySelector('.category-image-container');
+                        if (imgContainer) {
+                            // 添加错误信息在图片之后
+                            imgContainer.insertAdjacentHTML('afterend', errorMsg);
+                        } else {
+                            container.innerHTML = errorMsg;
+                        }
+                    } else {
+                        container.innerHTML = errorMsg;
+                    }
                 });
         }
         
@@ -208,13 +393,19 @@
             'ppl': 'tables/defense_results_ppl.html',
             'retokenization': 'tables/defense_results_retokenization.html',
             'self_reminder': 'tables/defense_results_self_reminder.html',
-            'llama_guard': 'tables/defense_results_llama_guard.html'
+            'llama_guard_3_1B': 'tables/defense_results_llama_guard_3_1B.html'
         };
         
         // Load initial table content
         document.addEventListener('DOMContentLoaded', function() {
             loadTableContent('main', tableFiles['main']);
             // We don't load other tables until they're selected to save bandwidth
+            
+            // Set initial table header to match the initial active sidebar item
+            const initialActiveItem = document.querySelector('.sidebar-item.active');
+            if (initialActiveItem) {
+                document.querySelector('.table-header').textContent = initialActiveItem.textContent;
+            }
         });
         
         // Add table switching functionality
@@ -227,6 +418,9 @@
                 // Get target table ID
                 const targetTableId = this.getAttribute('data-target');
                 
+                // Update the table header text to match the clicked sidebar item
+                document.querySelector('.table-header').textContent = this.textContent;
+                
                 // Hide all tables and show the target table
                 document.querySelectorAll('.table-container').forEach(table => {
                     table.classList.remove('active');
@@ -236,8 +430,19 @@
                 targetContainer.classList.add('active');
                 
                 // Load the table content if it hasn't been loaded yet
-                if (targetContainer.innerHTML.trim() === '<!-- Table content will be loaded here -->') {
+                if (
+                    targetTableId === 'category' && 
+                    !targetContainer.querySelector('table')
+                ) {
                     loadTableContent(targetTableId, tableFiles[targetTableId]);
+                } else if (
+                    targetTableId !== 'category' && 
+                    targetContainer.innerHTML.trim() === '<!-- Table content will be loaded here -->'
+                ) {
+                    loadTableContent(targetTableId, tableFiles[targetTableId]);
+                } else {
+                    // 如果表格内容已加载，确保再次应用表头样式
+                    applyHeaderStyles(targetTableId);
                 }
             });
         });

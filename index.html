@@ -188,14 +188,24 @@
         /* Navigation styling */
         .top-right-nav {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 0;
+            right: 0;
+            width: 100%; /* Make the nav span the entire width */
             z-index: 1000;
+            padding: 15px 20px; /* Add more padding for better appearance */
+            transition: background-color 0.3s ease;
+            text-align: right; /* Keep the navigation items on the right */
+            background-color: transparent;
+        }
+        
+        .top-right-nav:hover {
+            background-color: white;
         }
         
         .top-right-nav ul {
             list-style: none;
             display: flex;
+            justify-content: flex-end; /* Align navigation items to the right */
         }
         
         .top-right-nav ul li {
@@ -211,9 +221,18 @@
             border-radius: 5px;
         }
         
+        .top-right-nav:hover ul li a {
+            color: #777777;
+        }
+        
         .top-right-nav ul li a:hover {
             background-color: rgba(255, 255, 255, 0.2);
             color: white;
+        }
+        
+        .top-right-nav:hover ul li a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #777777;
         }
         
         /* Original temp.html styles */
@@ -438,12 +457,17 @@
                 width: 100%;
                 text-align: center;
                 padding: 10px 0;
-                background-color: rgba(0, 0, 0, 0.5);
+                background-color: transparent;
+            }
+            
+            .top-right-nav:hover {
+                background-color: white;
             }
             
             .top-right-nav ul {
                 flex-direction: column;
                 align-items: center;
+                justify-content: center; /* Center items in mobile view */
             }
             
             .top-right-nav ul li {
@@ -1153,11 +1177,11 @@
         <!-- Top-right Navigation -->
         <nav class="top-right-nav">
             <ul>
-                <li><a href="#original-content">Homepage</a></li>
-                <li><a href="leaderboard.html">Leaderboard</a></li>
-                <li><a href="#paper_overview">Overview</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#ethics">Ethics</a></li>
+                <li><a href="#original-content"><b>Homepage</b></a></li>
+                <li><a href="leaderboard.html"><b>Leaderboard</b></a></li>
+                <li><a href="#paper_overview"><b>Overview</b></a></li>
+                <li><a href="#results"><b>Results</b></a></li>
+                <li><a href="#ethics"><b>Ethics</b></a></li>
             </ul>
         </nav>
         
@@ -1660,7 +1684,7 @@
 
                     <div class="content has-text-justified">
                         <p>
-                            Here are some jailbreak examples. For more detailed results, please refer to our <b>leaderboard</b>.                        
+                            Here are some jailbreak examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
                         </p>
                     </div>
                     
@@ -1801,18 +1825,20 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="content has-text-justified">
-                        <p>
-                            Here are some defense examples. For more detailed results, please refer to our <b>leaderboard</b>.                        
-                        </p>
-                    </div>
 
                     <figure>
                         <img src="./website/images/rq3_all_defense.png" alt="">
                         <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
                         in 62 SLMs, where a greater drop in the ASR index (i.e., the height difference between adjacent bars) indicates better defense effectiveness.</figcaption>
                     </figure>
+                    
+                    <br>
+
+                    <div class="content has-text-justified">
+                        <p>
+                            Here are some defense examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
+                        </p>
+                    </div>
                     
                     <!-- Defense Examples with Dropdowns -->
                     <div class="jailbreak-examples-container">
