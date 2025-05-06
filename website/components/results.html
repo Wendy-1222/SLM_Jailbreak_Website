@@ -1,0 +1,413 @@
+<!-- Results Section -->
+<section class="section" id="results">
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-full-width">
+                <h2 class="title is-3">Results</h2>
+            </div>
+        </div>
+        <br>
+
+        <div class="cards-container">
+            <!-- 卡片1 -->
+            <div class="card" id="rq1-card">
+                <div class="card-title">RQ1: Vulnerability of SLM jailbreak</div>
+            </div>
+            
+            <!-- 卡片2 -->
+            <div class="card" id="rq2-card">
+                <div class="card-title">RQ2: Factor Analysis</div>
+            </div>
+            
+            <!-- 卡片3 -->
+            <div class="card" id="rq3-card">
+                <div class="card-title">RQ3: Defense Effectiveness</div>
+            </div>
+        </div>
+
+        <div id="rq1-content" class="content-area">
+            To investigate whether existing SLMs are vulnerable to popular jailbreak attacks, we evaluate 15 SLM families against 9 mainstream jailbreak attack methods.
+            <br><br>
+
+            <!-- SLMs Section -->
+            <div id="slms-content">
+                <h2 class="content-title">Small Language Models (SLMs)</h2>
+                <div class="dropdown-container">
+                    <select class="custom-select" id="slm-select">
+                        <option value="">Select a model family...</option>
+                        <option value="llama">LLaMA 3.2 family (developed by Meta)</option>
+                        <option value="deepseek">DeepSeek-R1 family (developed by DeepSeek)</option>
+                        <option value="qwen">Qwen family (developed by Alibaba)</option>
+                        <option value="gemma">Gemma family (developed by Google)</option>
+                        <option value="phi">Phi family (developed by Microsoft)</option>
+                        <option value="minicpm">MiniCPM family (developed by Tsinghua University)</option>
+                        <option value="h2o">H2O-Danube family (developed by H2O)</option>
+                        <option value="smollm">SmolLM family (developed by HuggingFace)</option>
+                        <option value="stablelm">StableLM family (developed by StabilityAI)</option>
+                        <option value="tinyllama">TinyLlama family (developed by Microsoft)</option>
+                        <option value="mobilellama">MobileLLaMA family (developed by Meituan)</option>
+                        <option value="mobillama">MobiLlama family (developed by MBZUAI)</option>
+                        <option value="fox">Fox family (developed by TensorOpera)</option>
+                        <option value="dolly">Dolly family (developed by DataBricks)</option>
+                        <option value="olmo">OLMo family (developed by AllenAI)</option>
+                    </select>
+                    
+                    <!-- Content displays for each model -->
+                    <div id="llama-content" class="content-display">
+                        <p><strong>LLaMA 3.2 (1B; 3B)</strong></p>
+                        <ul>
+                            <li>Released: 2024.9</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: GQA; SiLU; Shared Embeddings; Pruning; Knowledge distillation; SFT; RLHF; RS; DPO</li>
+                        </ul>
+                    </div>
+
+                    <div id="deepseek-content" class="content-display">
+                        <p><strong>DeepSeek-R1 (1.5B; 7B)</strong></p>
+                        <ul>
+                            <li>Released: 2025.1</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: SFT; RL; Knowledge distillation</li>
+                        </ul>
+                    </div>
+
+                    <div id="qwen-content" class="content-display">
+                        <p><strong>Qwen 1 (1.8B; 7B)</strong></p>
+                        <ul>
+                            <li>Released: 2023.9</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm</li>
+                        </ul>
+                        <p><strong>Qwen 1.5 (0.5B; 1.8B; 4B; 7B)</strong></p>
+                        <ul>
+                            <li>Released: 2024.2</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                        </ul>
+                        <p><strong>Qwen 2 (0.5B; 1.5B; 7B)</strong></p>
+                        <ul>
+                            <li>Released: 2024.6</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                        </ul>
+                        <p><strong>Qwen 2.5 (0.5B; 1.5B; 3B; 7B)</strong></p>
+                        <ul>
+                            <li>Released: 2024.9</li>
+                            <li>Training Data: Unknown</li>
+                            <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support; Larger corpus</li>
+                        </ul>
+                    </div>
+
+                    <!-- More content displays for other models omitted for brevity -->
+                </div>
+            </div>
+    
+            <!-- Jailbreak Methods Section -->
+            <div id="jailbreak-content">
+                <h2 class="content-title">Jailbreak Methods</h2>
+                <div class="dropdown-container">
+                    <select class="custom-select" id="jailbreak-select">
+                        <option value="">Select a jailbreak method...</option>
+                        <option value="direct">Direct</option>
+                        <option value="humanjailbreaks">HumanJailbreaks</option>
+                        <option value="autodan">AutoDAN</option>
+                        <option value="pap">PAP</option>
+                        <option value="gcg">GCG</option>
+                        <option value="autoprompt">AutoPrompt</option>
+                        <option value="pez">PEZ</option>
+                        <option value="gbda">GBDA</option>
+                        <option value="uat">UAT</option>
+                    </select>
+
+                    <!-- Content displays for jailbreak methods -->
+                    <div id="direct-content" class="content-display">
+                        <p>This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</p>
+                    </div>
+
+                    <div id="humanjailbreaks-content" class="content-display">
+                        <p>This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</p>
+                        <p>It uses a fixed set of in-the-wild jailbreak template that can be embedded into any harmful question without additional transformation or optimization.</p>
+                        <p><a href="https://arxiv.org/abs/2308.03825" style="color:rgb(0, 115, 255)">Read more</a></p>
+                    </div>
+
+                    <!-- More content displays for other jailbreak methods omitted for brevity -->
+                </div>
+            </div>
+
+            <div class="content has-text-justified">
+                <p>
+                    Through a comprehensive evaluation of current SLMs against jailbreak attacks, we find that SLMs exhibit limited safety in the face of jailbreak attacks. <b>Half</b> of evaluated SLMs are highly vulnerable to jailbreak attacks, with average attack success rate (ASR) greater than <b>40%</b>, and <b>38.7%</b> of them even show an ASR of more than <b>50%</b> when faced with direct harmful query.
+                    Only a small number of SLMs demonstrate relatively good resistance to jailbreak attacks, such as Google's Gemma series and Microsoft's Phi-3 series.
+                    
+                    <br><br>
+                    Among these results, we observe that SLMs exhibit imbalanced vulnerabilities when facing different attack methods and risk categories. Notably, we find that current SLMs are more vulnerable to advanced, optimization-based attacks (e.g., <a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">GCG</a> and <a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">AutoDAN</a> and are highly susceptible to the <i>"Economic Harm"</i> risk category (ASR ≈ 100%), while showing greater safety in the <i>"Health Consultation"</i> risk category (ASR < 20%). 
+                </p>
+            </div>
+
+            <div class="columns is-centered">
+                <div class="column">
+                    <figure>
+                        <img src="./website/images/rq1_attack_specific.png" alt="" style="width: 80%; height: auto;">
+                        <figcaption>The heatmap of SLMs' vulnerabilities across 15 SLM families against 9 jailbreak attacks.</figcaption>
+                    </figure>
+                </div>
+                <div class="column">
+                    <figure>
+                        <img src="./website/images/rq1_goal_specific_sort.png" alt="">
+                        <figcaption>The heatmap of SLMs' vulnerabilities across 14 risk categories.</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="content has-text-justified">
+                <p>
+                    Here are some jailbreak examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
+                </p>
+            </div>
+            
+            <!-- Jailbreak Examples with Dropdowns -->
+            <div class="jailbreak-examples-container">
+                <div class="dropdown-container-box">
+                    <div class="dropdown-row">
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="slm-attack-select">
+                                <option value="">Select a SLM...</option>
+                                <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                <option value="Qwen family">Qwen family</option>
+                                <option value="Gemma family">Gemma family</option>
+                                <option value="Phi family">Phi family</option>
+                                <option value="MiniCPM family">MiniCPM family</option>
+                                <option value="H2O-Danube family">H2O-Danube family</option>
+                                <option value="SmolLM family">SmolLM family</option>
+                                <option value="StableLM family">StableLM family</option>
+                                <option value="TinyLlama family">TinyLlama family</option>
+                                <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                <option value="MobiLlama family">MobiLlama family</option>
+                                <option value="Fox family">Fox family</option>
+                                <option value="Dolly family">Dolly family</option>
+                                <option value="OLMo family">OLMo family</option>
+                            </select>                                    
+                        </div>  
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="jailbreak-attack-select">
+                                <option value="">Select a jailbreak method...</option>
+                                <option value="Direct">Direct</option>
+                                <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                <option value="AutoDAN">AutoDAN</option>
+                                <option value="PAP">PAP</option>
+                                <option value="GCG">GCG</option>
+                                <option value="AutoPrompt">AutoPrompt</option>
+                                <option value="PEZ">PEZ</option>
+                                <option value="GBDA">GBDA</option>
+                                <option value="UAT">UAT</option>
+                            </select>
+                        </div>
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="category-select">
+                                <option value="">Select a risk category...</option>
+                                <option value="Children Harm">Children Harm</option>
+                                <option value="Economic Harm">Economic Harm</option>
+                                <option value="Financial Advice">Financial Advice</option>
+                                <option value="Fraud">Fraud</option>
+                                <option value="Gov Decision">Gov Decision</option>
+                                <option value="Hate Speech">Hate Speech</option>
+                                <option value="Health Consultation">Health Consultation</option>
+                                <option value="Illegal Activity">Illegal Activity</option>
+                                <option value="Legal Opinion">Legal Opinion</option>
+                                <option value="Malware">Malware</option>
+                                <option value="Physical Harm">Physical Harm</option>
+                                <option value="Political Lobbying">Political Lobbying</option>
+                                <option value="Pornography">Pornography</option>
+                                <option value="Privacy Violence">Privacy Violence</option>
+                            </select>
+                        </div>                                                           
+                    </div>
+                </div>
+                
+                <div id="jailbreak-example-display" class="output-container">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+            
+        </div>
+
+        <div id="rq2-content" class="content-area">
+            <h2 class="content-title">Factor Analysis</h2>
+            <div class="content has-text-justified">
+                <p>
+                    After conducting correlation tests between potential factors and the vulnerability of SLMs, we identify several key factors that significantly impact their susceptibility. 
+                    
+                    <br><br>
+                    Contrary to common intuition, we find that the robustness of SLMs is more influenced by training details than by the model size itself. Interestingly, scaling up the model size and training dataset does not always enhance model safety and can sometimes have an adverse effect.
+                    For example, expanding the model's corpus may increase the risk of jailbreak attacks, while moderate degree of sparse techniques may improve robustness. 
+                    
+                    <br><br>
+                    Notably, supervised fine-tuning (SFT) models demonstrate 10 ~ 40% better robustness compared to their DPO-optimized (Direct Preference Optimization) counterparts at most time. In addition, through evaluating diversity and fluency of jailbreak responses, we found that some SLMs (e.g., the TinyLlama family) may output repetitive harmful sentences due to limited generation capability. 
+                </p>
+            </div>
+            
+            <figure>
+                <img src="./website/images/factor_analysis_results.png" alt="">
+                <figcaption>The correlation analysis results between key factors, including model size, training tokens, and model capabilities, and jailbreak vulnerabilities (measured by ASR) across different attack methods. Cells where the null hypothesis is rejected (p < 0.05) are highlighted in <span style="color: red;">red</span>, indicating a significant correlation
+                between the factor and the vulnerability of SLMs.</figcaption>
+            </figure>
+        </div>
+
+        <div id="rq3-content" class="content-area">
+            <h2 class="content-title">Defense Effectiveness</h2>
+            <div class="content has-text-justified">
+                <p>
+                    we test the effectiveness of four lightweight defense methods in SLMs and found that none of them could achieve perfect performance in all SLMs across different attack methods. This reveals the limitations of existing defense measures and underscores the urgent need for SLM developers to place greater emphasis on security during SLMs design and training.
+
+                </p>
+            </div>
+
+            <!-- Defense Methods Section -->
+            <div id="defense-content">
+                <!-- <h2 class="content-title">Defense Methods</h2> -->
+                <div class="dropdown-container">
+                    <select class="custom-select" id="defense-select">
+                        <option value="">Select a defense method...</option>
+                        <option value="PPL">PPL</option>
+                        <option value="Llama Guard 3-1B">Llama Guard 3-1B</option>
+                        <option value="Retokenization">Retokenization</option>
+                        <option value="Self-Reminder">Self-Reminder</option>
+                    </select>
+
+                    <!-- Content displays for defense methods -->
+                    <div id="ppl-content" class="content-display">
+                        <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
+                        <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
+                        <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
+                    </div>
+
+                    <div id="llamaguard-content" class="content-display">
+                        <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
+                        <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
+                    </div>
+
+                    <div id="retokenization-content" class="content-display">
+                        <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
+                        <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
+                    </div>
+
+                    <div id="selfreminder-content" class="content-display">
+                        <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
+                        <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <figure>
+                <img src="./website/images/rq3_all_defense.png" alt="">
+                <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
+                in 62 SLMs, where a greater drop in the ASR index (i.e., the height difference between adjacent bars) indicates better defense effectiveness.</figcaption>
+            </figure>
+            
+            <br>
+
+            <div class="content has-text-justified">
+                <p>
+                    Here are some defense examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
+                </p>
+            </div>
+            
+            <!-- Defense Examples with Dropdowns -->
+            <div class="jailbreak-examples-container">
+                <!-- <h2 class="content-title">Defense Examples</h2> -->
+                <div class="dropdown-container-box">
+                    <div class="dropdown-row">
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="defense-slm-select">
+                                <option value="">Select a SLM...</option>
+                                <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                <option value="Qwen family">Qwen family</option>
+                                <option value="Gemma family">Gemma family</option>
+                                <option value="Phi family">Phi family</option>
+                                <option value="MiniCPM family">MiniCPM family</option>
+                                <option value="H2O-Danube family">H2O-Danube family</option>
+                                <option value="SmolLM family">SmolLM family</option>
+                                <option value="StableLM family">StableLM family</option>
+                                <option value="TinyLlama family">TinyLlama family</option>
+                                <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                <option value="MobiLlama family">MobiLlama family</option>
+                                <option value="Fox family">Fox family</option>
+                                <option value="Dolly family">Dolly family</option>
+                                <option value="OLMo family">OLMo family</option>
+                            </select>                                    
+                        </div>  
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="defense-jailbreak-select">
+                                <option value="">Select a jailbreak method...</option>
+                                <option value="Direct">Direct</option>
+                                <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                <option value="AutoDAN">AutoDAN</option>
+                                <option value="PAP">PAP</option>
+                                <option value="GCG">GCG</option>
+                                <option value="AutoPrompt">AutoPrompt</option>
+                                <option value="PEZ">PEZ</option>
+                                <option value="GBDA">GBDA</option>
+                                <option value="UAT">UAT</option>
+                            </select>
+                        </div>
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="defense-category-select">
+                                <option value="">Select a risk category...</option>
+                                <option value="Children Harm">Children Harm</option>
+                                <option value="Economic Harm">Economic Harm</option>
+                                <option value="Financial Advice">Financial Advice</option>
+                                <option value="Fraud">Fraud</option>
+                                <option value="Gov Decision">Gov Decision</option>
+                                <option value="Hate Speech">Hate Speech</option>
+                                <option value="Health Consultation">Health Consultation</option>
+                                <option value="Illegal Activity">Illegal Activity</option>
+                                <option value="Legal Opinion">Legal Opinion</option>
+                                <option value="Malware">Malware</option>
+                                <option value="Physical Harm">Physical Harm</option>
+                                <option value="Political Lobbying">Political Lobbying</option>
+                                <option value="Pornography">Pornography</option>
+                                <option value="Privacy Violence">Privacy Violence</option>
+                            </select>
+                        </div>
+                        <div class="dropdown-col">
+                            <select class="custom-select" id="defense-method-select">
+                                <option value="">Select a defense method...</option>
+                                <option value="PPL">PPL</option>
+                                <option value="Llama Guard 3-1B">Llama Guard 3-1B</option>
+                                <option value="Retokenization">Retokenization</option>
+                                <option value="Self-Reminder">Self-Reminder</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="defense-example-display" class="output-container">
+                    <!-- Content will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>          
+    </div>
+    
+    <!-- 添加组件加载完成后初始化脚本 -->
+    <script>
+        // 组件加载完成后初始化卡片点击事件
+        (function() {
+            // 获取卡片元素
+            const rq1Card = document.getElementById('rq1-card');
+            const rq2Card = document.getElementById('rq2-card');
+            const rq3Card = document.getElementById('rq3-card');
+            
+            // 确保showContent函数已加载
+            if (typeof showContent === 'function') {
+                // 添加点击事件
+                if (rq1Card) rq1Card.addEventListener('click', function() { showContent('rq1'); });
+                if (rq2Card) rq2Card.addEventListener('click', function() { showContent('rq2'); });
+                if (rq3Card) rq3Card.addEventListener('click', function() { showContent('rq3'); });
+            } else {
+                console.warn('showContent 函数尚未加载，将等待外部初始化...');
+            }
+        })();
+    </script>
+</section> 

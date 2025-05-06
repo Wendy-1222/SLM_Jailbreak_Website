@@ -1,0 +1,328 @@
+/* leaderboard.css - 包含 leaderboard 页面特有的样式 */
+
+/* ---- 主要布局样式 ---- */
+.main-content {
+    display: flex;
+    flex: 1;
+    margin-top: 60px; /* 为固定导航栏留出空间 */
+    position: relative;
+}
+
+/* 导航样式 */
+.top-right-nav.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: right;
+    box-sizing: border-box;
+}
+
+/* 确保所有导航链接都显示 */
+.top-right-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+}
+
+.top-right-nav ul li {
+    margin-left: 20px;
+    display: inline-block; /* 确保所有项目都显示 */
+}
+
+.top-right-nav ul li a {
+    color: #777777;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: block; /* 确保链接是块级元素以便点击 */
+}
+
+.top-right-nav a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 使活动项样式与普通项目相同 */
+.top-right-nav a.active {
+    color: #777777;
+    font-weight: 500;
+    background-color: transparent;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 200px;
+    background-color: #f5f5f5;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px 0;
+    position: fixed;
+    top: 60px; /* 在导航栏下方 */
+    bottom: 0;
+    left: 0;
+    overflow-y: auto; /* 内容太多时允许滚动 */
+    z-index: 100;
+}
+
+.sidebar-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #0066cc;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-item:hover {
+    background-color: #e9e9e9;
+}
+
+.sidebar-item.active {
+    border-left: 3px solid #0066cc;
+    background-color: #e8f0fe;
+    color: #0066cc;
+    font-weight: 500;
+}
+
+/* 内容区域样式 */
+.content {
+    flex: 1;
+    padding: 20px;
+    margin: 0 auto;
+    margin-left: 200px; /* 与侧边栏宽度匹配 */
+    width: calc(100% - 200px); /* 总宽度减去侧边栏宽度 */
+    box-sizing: border-box;
+}
+
+.table-header {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ---- 表格样式 ---- */
+.table-container {
+    padding: 0;
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    transition: opacity 0.3s ease;
+}
+
+.table-container.active {
+    display: block;
+}
+
+.category-image-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.category-image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 14px;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #e0e0e0;
+}
+
+th, td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+}
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+thead th {
+    background-color: #eaeaea;
+    font-weight: 500;
+    color: #000000;
+    position: sticky;
+    top: 0;
+}
+
+/* 确保表格第一行（表头）样式应用 */
+table tr:first-child th,
+table > tr:first-child > th,
+table thead tr th,
+table > thead > tr > th,
+table tbody tr:first-child th {
+    background-color: #eaeaea;
+    font-weight: 500;
+    color: #000000;
+}
+
+/* 如果表格使用td而不是th作为表头 */
+table tr:first-child td,
+table > tr:first-child > td,
+table thead tr td {
+    background-color: #eaeaea;
+    font-weight: 500;
+    color: #000000;
+}
+
+/* 表格圆角样式 */
+thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tbody tr:hover {
+    background-color: #f0f7ff;
+}
+
+.model-column {
+    text-align: left;
+    font-weight: 500;
+}
+
+.highlight-value {
+    font-weight: bold;
+}
+
+/* ---- 加载指示器样式 ---- */
+.loading-indicator {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px 0;
+}
+
+.loading-indicator.active {
+    display: flex;
+}
+
+.spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #0066cc;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ---- 响应式设计 ---- */
+@media (max-width: 768px) {
+    .top-right-nav.fixed {
+        position: relative;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    .top-right-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .top-right-nav ul li {
+        margin: 5px 0;
+        display: block; /* 在移动视图中确保每个导航项单独一行 */
+        width: 100%;
+        text-align: center;
+    }
+    
+    .top-right-nav ul li a {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .main-content {
+        margin-top: 0;
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        position: static;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px 5px;
+    }
+}
+
+/* 平板设备优化 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .sidebar {
+        width: 180px;
+    }
+    
+    .content {
+        margin-left: 180px;
+        width: calc(100% - 180px);
+    }
+    
+    th, td {
+        padding: 8px 6px;
+    }
+    
+    /* 在平板视图中也确保导航栏完全显示 */
+    .top-right-nav ul li {
+        margin-left: 10px; /* 减少间距以适应更小的屏幕 */
+    }
+    
+    .top-right-nav ul li a {
+        padding: 8px 10px; /* 调整内边距 */
+    }
+} 

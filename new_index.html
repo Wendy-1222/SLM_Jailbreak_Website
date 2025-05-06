@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+
+<head>
+    <!-- 加载头部部分 -->
+    <script>
+        // 加载组件函数
+        function loadComponent(id, url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(id).innerHTML = data;
+                })
+                .catch(error => console.error('Error loading component:', error));
+        }
+
+        // 页面加载完成后加载所有组件
+        document.addEventListener('DOMContentLoaded', function() {
+            loadComponent('header-container', './website/components/header.html');
+            loadComponent('hero-container', './website/components/hero.html');
+            loadComponent('overview-container', './website/components/overview.html');
+            loadComponent('results-container', './website/components/results.html');
+            loadComponent('ethics-container', './website/components/ethics.html');
+            loadComponent('footer-container', './website/components/footer.html');
+        });
+    </script>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1147.0" data-gr-ext-installed="">
+    <!-- 头部容器 -->
+    <div id="header-container"></div>
+    
+    <!-- 英雄背景容器 -->
+    <div id="hero-container"></div>
+    
+    <!-- 概述容器 -->
+    <div id="overview-container"></div>
+    
+    <!-- 结果容器 -->
+    <div id="results-container"></div>
+    
+    <!-- 伦理声明容器 -->
+    <div id="ethics-container"></div>
+    
+    <!-- 页脚容器 -->
+    <div id="footer-container"></div>
+</body>
+
+</html> 

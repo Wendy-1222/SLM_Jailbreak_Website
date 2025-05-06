@@ -1,0 +1,720 @@
+/* 
+ * 主样式表 - 从index.html中提取的样式 
+ */
+
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    color: #333;
+    line-height: 1.6;
+    padding-top: 0; /* Remove top padding as we're using a full-screen hero */
+}
+
+/* Hero Section with Background Image */
+.hero-background {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden; /* 确保背景不溢出 */
+    transition: all 0.5s ease; /* 添加过渡效果 */
+}
+
+/* Background Image Layer */
+.hero-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../images/background.png') no-repeat center center/contain;
+    filter: brightness(0.4); /* 默认暗色 */
+    transition: filter 0.5s ease; /* 过渡效果 */
+    z-index: -1;
+}
+
+/* Background hover effect */
+.hero-background:hover::before {
+    filter: brightness(1); /* 悬浮时恢复正常亮度 */
+}
+
+/* Dark overlay for text readability */
+.hero-background::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* 黑色半透明叠加层 */
+    z-index: -1;
+    transition: background 0.5s ease; /* 过渡效果 */
+}
+
+/* Hover effect for overlay */
+.hero-background:hover::after {
+    background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
+}
+
+/* 悬浮时减少遮罩的不透明度 */
+.hero-background:hover .hero-overlay {
+    background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
+}
+
+.hero-content {
+    z-index: 2;
+    max-width: 800px;
+    padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Elegant title styling */
+.elegant-title {
+    font-family: 'Playfair Display', cursive;
+    font-size: 5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: white;
+    line-height: 1.2;
+    font-weight: normal;
+}
+
+/* Decorative divider */
+.divider {
+    width: 80%;
+    height: 1px;
+    background-color: white;
+    margin: 15px auto 20px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Subtitle styling */
+.elegant-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    margin-top: 5px;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: white;
+    line-height: 1.4;
+}
+
+/* Scroll down arrow */
+.scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    z-index: 2;
+    color: white;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) translateX(-50%);
+    }
+    40% {
+        transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+        transform: translateY(-10px) translateX(-50%);
+    }
+}
+
+/* Navigation styling */
+.top-right-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%; /* Make the nav span the entire width */
+    z-index: 1000;
+    padding: 15px 20px; /* Add more padding for better appearance */
+    transition: background-color 0.3s ease;
+    text-align: right; /* Keep the navigation items on the right */
+    background-color: transparent;
+}
+
+/* 添加固定导航栏样式 */
+.top-right-nav.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 15px 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: right;
+    box-sizing: border-box;
+}
+
+.top-right-nav:hover {
+    background-color: white;
+}
+
+.top-right-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end; /* Align navigation items to the right */
+    margin: 0;
+    padding: 0;
+}
+
+.top-right-nav ul li {
+    margin-left: 20px;
+    display: inline-block; /* 确保所有项目都显示 */
+}
+
+.top-right-nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 5px;
+    display: block; /* 确保链接是块级元素以便点击 */
+}
+
+/* 修改固定导航栏链接文字颜色 */
+.top-right-nav.fixed ul li a {
+    color: #777777;
+}
+
+.top-right-nav:hover ul li a {
+    color: #777777;
+}
+
+.top-right-nav ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.top-right-nav.fixed ul li a:hover,
+.top-right-nav:hover ul li a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #777777;
+}
+
+/* 使活动项样式与普通项目相同 */
+.top-right-nav.fixed a.active {
+    color: #777777;
+    font-weight: 500;
+    background-color: transparent;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+/* Original temp.html styles */
+.header-image {
+    width: 60px;
+    height: auto;
+}
+
+.navbar-fixed-top {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: none; /* Initially hidden, will be shown after scroll */
+}
+
+/* Target section padding adjustment for smooth scrolling */
+section:target {
+    padding-top: 70px;
+    margin-top: -70px;
+}
+
+ul.nav a:hover {
+    color: rgb(255, 249, 239) !important;
+}
+
+.nav.navbar-nav li a:hover {
+    background-color: rgb(82, 127, 159) !important;
+}
+
+#highlight {
+    color: rgb(212, 67, 54);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card.active {
+    background-color: #f0f0f0;
+    border: 2px solid #2196F3;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.content-area {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-top: 30px;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.content-area.active {
+    display: block;
+}
+
+.content-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #14191d;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.content-list {
+    list-style-position: inside;
+    padding-left: 10px;
+}
+
+.content-list li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* figs */
+figure {
+    text-align: center;  /* 使描述居中 */
+    margin: 0;           /* 清除默认的外边距 */
+}
+
+figcaption {
+    margin-top: 10px;    /* 为描述和图片之间添加间距 */
+    font-size: 14px;     /* 设置描述字体大小 */
+    color: #666;         /* 设置描述文字颜色 */
+}
+
+
+/* tabs */
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.tab {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.tab.active {
+    background-color: #4a89dc;
+    color: white;
+    border-color: #4a89dc;
+}
+.tab:hover {
+    background-color: #e0e0e0;
+}
+.tab.active:hover {
+    background-color: #3a70b7;
+}
+.content-section {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    display: none;
+}
+.content-section.active {
+    display: block;
+}
+
+/* Table styles for SLM details */
+.slm-table-container {
+    max-width: 100%;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.model-group {
+    background-color: #eef7ff;
+}
+
+caption {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Make original content appear below the hero section */
+.original-content {
+    margin-top: 0;
+    padding-top: 50px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+    .elegant-title {
+        font-size: 24px;
+    }
+    
+    .elegant-subtitle {
+        font-size: 18px;
+    }
+    
+    .top-right-nav {
+        position: relative;
+        padding: 10px;
+        text-align: center;
+        background-color: white;
+    }
+    
+    .top-right-nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .top-right-nav ul li {
+        margin: 5px 0;
+        display: block; /* 在移动视图中确保每个导航项单独一行 */
+        width: 100%;
+        text-align: center;
+    }
+    
+    .top-right-nav.fixed {
+        position: relative;
+        text-align: center;
+        padding: 10px 0;
+    }
+    
+    .top-right-nav.fixed ul {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .top-right-nav.fixed ul li {
+        margin: 5px 0;
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .top-right-nav.fixed ul li a {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .top-right-nav ul li a,
+    .top-right-nav:hover ul li a,
+    .top-right-nav.fixed ul li a {
+        color: #777777;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Add styles for custom dropdown behavior */
+.dropdown-container {
+    position: relative;
+    margin: 20px 0;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background-color: #f0f8ff; /* Light blue background */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.custom-select:hover {
+    background-color: #e6f3ff; /* Slightly darker light blue on hover */
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #4a89dc;
+    box-shadow: 0 0 5px rgba(74, 137, 220, 0.3);
+}
+
+/* Style for indicating active dropdown */
+.custom-select.active {
+    background-color: #e1f0ff;
+    border-color: #4a89dc;
+}
+
+.content-display {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.content-display.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Content section styles */
+#slms-content, #jailbreak-content, #defense-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.content-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #14191d;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+/* Jailbreak examples styles */
+.jailbreak-examples-container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.dropdown-container-box {
+    border: 2px solid #4a89dc;
+    border-radius: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.dropdown-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0;
+    gap: 15px;
+}
+
+.dropdown-col {
+    flex: 1;
+}
+
+.output-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 15px;
+    margin-top: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.question-display {
+    text-align: left;
+    margin-bottom: 20px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    font-size: 1.5rem;
+    color: #333;
+    padding: 15px;
+    background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    white-space: normal;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.prompt-message {
+    background-color: #ff7f50; /* 珊瑚色 */
+    color: white;
+    max-width: 80%;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    align-self: flex-end;
+    position: relative;
+}
+
+.defense-message {
+    background-color: #90EE90; /* 浅绿色 */
+    color: black;
+    max-width: 80%;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    align-self: flex-end;
+    position: relative;
+}
+
+.response-message {
+    background-color: #f4f4f4;
+    color: black;
+    max-width: 80%;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    align-self: flex-start;
+    position: relative;
+}
+
+.message-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid #555;
+    animation: 
+        typewriter 2.5s steps(50, end) forwards,
+        blink-caret .75s step-end 6,
+        hideCaret 0s 1.5s forwards;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes hideCaret {
+    to {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #555; }
+}
+
+.question-display .typewriter-text {
+    display: inline-block;
+    margin: 0 auto;
+    white-space: normal; /* Allow text to wrap */
+    width: 100%; /* Use full width of container */
+    animation: fadeIn 1.5s ease; /* Use fade-in instead of typewriter for wrapping text */
+}
+
+/* Update typewriter animation to better handle wrapped text */
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.response-label {
+    margin: 10px 0 20px 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    font-weight: bold;
+    align-self: flex-start;
+}
+
+.response-label.safe {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.response-label.unsafe {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+} 

@@ -1,259 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="fontawesome-i2svg-active fontawesome-i2svg-complete">
+
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SLM Vulnerability Tables</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: #ffffff;
-        }
-        
-        /* Top navigation bar styles */
-        .top-right-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            padding: 15px 20px;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: right;
-            box-sizing: border-box;
-        }
-        
-        .top-right-nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: flex-end;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .top-right-nav ul li {
-            margin-left: 20px;
-        }
-        
-        .top-right-nav ul li a {
-            color: #777777;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-size: 16px;
-            white-space: nowrap;
-        }
-        
-        .top-right-nav ul li a:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Adjust main content to account for fixed top nav */
-        .main-content {
-            display: flex;
-            flex: 1;
-            margin-top: 60px; /* Space for the fixed navigation */
-            position: relative; /* Add this to create positioning context */
-        }
-        
-        .sidebar {
-            width: 200px;
-            background-color: #f5f5f5;
-            border-right: 1px solid #e0e0e0;
-            padding: 20px 0;
-            position: fixed;
-            top: 60px; /* Position it below the top nav */
-            bottom: 0;
-            left: 0; /* Ensure it's aligned to the left */
-            overflow-y: auto; /* Allow scrolling within sidebar if it's too tall */
-            z-index: 100; /* Ensure sidebar appears above content when needed */
-        }
-        
-        .sidebar-item {
-            padding: 10px 20px;
-            cursor: pointer;
-            color: #0066cc;
-            font-size: 14px;
-        }
-        
-        .sidebar-item:hover {
-            background-color: #e9e9e9;
-        }
-        
-        .sidebar-item.active {
-            border-left: 3px solid #0066cc;
-            background-color: #e8f0fe;
-            color: #0066cc;
-            font-weight: 500;
-        }
-        
-        .content {
-            flex: 1;
-            padding: 20px;
-            margin: 0 auto;
-            margin-left: 200px; /* Match the sidebar width */
-            width: calc(100% - 200px); /* Total width minus sidebar width */
-            box-sizing: border-box; /* Include padding in width calculation */
-        }
-        
-        .table-header {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .table-container {
-            padding: 0;
-            display: none;
-            max-width: 1200px; /* Move max-width from content to table container */
-            margin: 0 auto; /* Center the table in the content area */
-        }
-        
-        .table-container.active {
-            display: block;
-        }
-        
-        table {
-            border-collapse: separate;
-            border-spacing: 0;
-            width: 100%;
-            font-size: 14px;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 0 1px #e0e0e0;
-        }
-        
-        th, td {
-            padding: 10px 8px;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
-            border-right: 1px solid #e0e0e0;
-        }
-        
-        th:last-child, td:last-child {
-            border-right: none;
-        }
-        
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        thead th {
-            background-color: #eaeaea;
-            font-weight: 500;
-            color: #000000;
-            position: sticky;
-            top: 0;
-        }
-        
-        /* 确保表格第一行（表头）样式应用 - 添加额外的选择器 */
-        table tr:first-child th,
-        table > tr:first-child > th,
-        table thead tr th,
-        table > thead > tr > th,
-        table tbody tr:first-child th {
-            background-color: #eaeaea;
-            font-weight: 500;
-            color: #000000;
-        }
-        
-        /* 如果表格使用td而不是th作为表头 */
-        table tr:first-child td,
-        table > tr:first-child > td,
-        table thead tr td {
-            background-color: #eaeaea;
-            font-weight: 500;
-            color: #000000;
-        }
-        
-        /* Round the top-left and top-right corners of the first header row */
-        thead tr:first-child th:first-child {
-            border-top-left-radius: 8px;
-        }
-        
-        thead tr:first-child th:last-child {
-            border-top-right-radius: 8px;
-        }
-        
-        /* Round the bottom-left and bottom-right corners of the last row */
-        tbody tr:last-child td:first-child {
-            border-bottom-left-radius: 8px;
-        }
-        
-        tbody tr:last-child td:last-child {
-            border-bottom-right-radius: 8px;
-        }
-        
-        tbody tr:nth-child(even) {
-            background-color: #fafafa;
-        }
-        
-        tbody tr:hover {
-            background-color: #f0f7ff;
-        }
-        
-        .model-column {
-            text-align: left;
-            font-weight: 500;
-        }
-        
-        .highlight-value {
-            font-weight: bold;
-        }
-        
-        /* Responsive styles for the top nav */
-        @media (max-width: 768px) {
-            .top-right-nav {
-                position: relative;
-                top: 0;
-                right: 0;
-                width: 100%;
-                text-align: center;
-                padding: 10px 0;
-                background-color: white;
-            }
-            
-            .top-right-nav ul {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .top-right-nav ul li {
-                margin: 5px 0;
-            }
-            
-            .main-content {
-                margin-top: 160px; /* 为堆叠的导航栏留出空间 */
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                position: static; /* Remove fixed positioning on mobile */
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
-            }
-            
-            .content {
-                margin-left: 0; /* Remove left margin on mobile */
-            }
-        }
-    </style>
+    <title>SLM Jailbreak Leaderboard - Vulnerability Rankings</title>
+    <meta name="description" content="Comprehensive leaderboard showing vulnerability rankings of Small Language Models against jailbreak attacks and defense effectiveness.">
+    
+    <!-- 引入共用样式 -->
+    <link rel="stylesheet" href="./website/styles/main.css">
+    
+    <!-- 引入 leaderboard 特定样式 -->
+    <link rel="stylesheet" href="./website/styles/leaderboard.css">
+    
+    <!-- 引入共用 JavaScript -->
+    <script src="./website/js/main.js"></script>
+    
+    <!-- 引入 leaderboard 特定 JavaScript -->
+    <script src="./website/js/leaderboard.js" defer></script>
+    
+    <!-- 引入字体和图标 -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <link rel="icon" href="./website/images/dog.gif">
 </head>
+
 <body>
-    <!-- Top Navigation Bar -->
-    <nav class="top-right-nav">
+    <!-- 顶部导航栏 -->
+    <nav class="top-right-nav fixed">
         <ul>
             <li><a href="index.html#original-content"><b>Homepage</b></a></li>
             <li><a href="leaderboard.html"><b>Leaderboard</b></a></li>
@@ -264,6 +38,7 @@
     </nav>
 
     <div class="main-content">
+        <!-- 侧边栏 -->
         <div class="sidebar">
             <div class="sidebar-item active" data-target="main">Main Results</div>
             <div class="sidebar-item" data-target="category">Category Results</div>
@@ -273,17 +48,25 @@
             <div class="sidebar-item" data-target="llama_guard_3_1B">Defense Results (Llama Guard 3-1B)</div>
         </div>
         
+        <!-- 主要内容区域 -->
         <div class="content">
             <div class="table-header">Main Results</div>
             
+            <!-- 加载指示器 -->
+            <div class="loading-indicator">
+                <div class="spinner"></div>
+                <p>Loading table data...</p>
+            </div>
+            
+            <!-- 表格容器 -->
             <div class="table-container active" id="main">
                 <!-- Table content will be loaded here -->
             </div>
             
             <div class="table-container" id="category">
                 <!-- 添加图片在表格上方 -->
-                <div class="category-image-container" style="text-align: center; margin-bottom: 20px;">
-                    <img src="./website/images/category.png" alt="Category Results" style="max-width: 100%; height: auto;">
+                <div class="category-image-container">
+                    <img src="./website/images/category.png" alt="Category Results">
                 </div>
                 <!-- Table content will be loaded here -->
             </div>
@@ -305,163 +88,5 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // 添加函数来应用表头样式
-        function applyHeaderStyles(containerId) {
-            const container = document.getElementById(containerId);
-            let tableElement;
-            
-            // 特殊处理category表格
-            if (containerId === 'category') {
-                const tableContentContainer = container.querySelector('.category-table-content');
-                if (tableContentContainer) {
-                    tableElement = tableContentContainer.querySelector('table');
-                }
-            } else {
-                tableElement = container.querySelector('table');
-            }
-            
-            if (tableElement && tableElement.rows.length > 0) {
-                const firstRow = tableElement.rows[0];
-                if (firstRow) {
-                    Array.from(firstRow.cells).forEach(cell => {
-                        cell.style.backgroundColor = '#eaeaea';
-                        cell.style.fontWeight = '500';
-                        cell.style.color = '#000000';
-                    });
-                }
-            }
-        }
-        
-        // Function to load table content from external files
-        function loadTableContent(containerId, tablePath) {
-            const container = document.getElementById(containerId);
-            
-            fetch(tablePath)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    // 解析出表格内容
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const table = doc.querySelector('table');
-                    
-                    // 特殊处理category表格
-                    if (containerId === 'category') {
-                        // 保留图片容器，只将表格内容添加到图片之后
-                        const imgContainer = container.querySelector('.category-image-container');
-                        if (imgContainer && table) {
-                            // 清除除了图片容器之外的内容
-                            while (container.lastChild !== imgContainer) {
-                                container.removeChild(container.lastChild);
-                            }
-                            // 添加表格
-                            container.appendChild(table);
-                        } else if (table) {
-                            // 如果找不到图片容器但有表格，保留容器中原有内容，添加表格
-                            container.appendChild(table);
-                        } else {
-                            // 保留图片容器，添加其他HTML内容
-                            container.innerHTML = container.querySelector('.category-image-container').outerHTML + html;
-                        }
-                    } else {
-                        // 其他表格正常处理
-                        if (table) {
-                            container.innerHTML = table.outerHTML;
-                        } else {
-                            container.innerHTML = html;
-                        }
-                    }
-                    
-                    // 确保表格第一行样式应用
-                    setTimeout(() => {
-                        applyHeaderStyles(containerId);
-                    }, 100);
-                })
-                .catch(error => {
-                    console.error('Error loading table:', error);
-                    const errorMsg = `<p>Error loading table: ${error.message}</p>`;
-                    
-                    if (containerId === 'category') {
-                        // 保留图片容器，添加错误信息
-                        const imgContainer = container.querySelector('.category-image-container');
-                        if (imgContainer) {
-                            // 添加错误信息在图片之后
-                            imgContainer.insertAdjacentHTML('afterend', errorMsg);
-                        } else {
-                            container.innerHTML = errorMsg;
-                        }
-                    } else {
-                        container.innerHTML = errorMsg;
-                    }
-                });
-        }
-        
-        // Map of table IDs to file paths
-        const tableFiles = {
-            'main': 'tables/main_results.html',
-            'category': 'tables/category_results.html',
-            'ppl': 'tables/defense_results_ppl.html',
-            'retokenization': 'tables/defense_results_retokenization.html',
-            'self_reminder': 'tables/defense_results_self_reminder.html',
-            'llama_guard_3_1B': 'tables/defense_results_llama_guard_3_1B.html'
-        };
-        
-        // Load initial table content
-        document.addEventListener('DOMContentLoaded', function() {
-            loadTableContent('main', tableFiles['main']);
-            // We don't load other tables until they're selected to save bandwidth
-            
-            // Set initial table header to match the initial active sidebar item
-            const initialActiveItem = document.querySelector('.sidebar-item.active');
-            if (initialActiveItem) {
-                document.querySelector('.table-header').textContent = initialActiveItem.textContent;
-            }
-        });
-        
-        // Add table switching functionality
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.addEventListener('click', function() {
-                // Update active sidebar item
-                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Get target table ID
-                const targetTableId = this.getAttribute('data-target');
-                
-                // Update the table header text to match the clicked sidebar item
-                document.querySelector('.table-header').textContent = this.textContent;
-                
-                // Hide all tables and show the target table
-                document.querySelectorAll('.table-container').forEach(table => {
-                    table.classList.remove('active');
-                });
-                
-                const targetContainer = document.getElementById(targetTableId);
-                targetContainer.classList.add('active');
-                
-                // Load the table content if it hasn't been loaded yet
-                if (
-                    targetTableId === 'category' && 
-                    !targetContainer.querySelector('table')
-                ) {
-                    loadTableContent(targetTableId, tableFiles[targetTableId]);
-                } else if (
-                    targetTableId !== 'category' && 
-                    targetContainer.innerHTML.trim() === '<!-- Table content will be loaded here -->'
-                ) {
-                    loadTableContent(targetTableId, tableFiles[targetTableId]);
-                } else {
-                    // 如果表格内容已加载，确保再次应用表头样式
-                    applyHeaderStyles(targetTableId);
-                }
-            });
-        });
-    </script>
 </body>
 </html>
