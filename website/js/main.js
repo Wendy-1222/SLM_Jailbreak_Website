@@ -6,6 +6,8 @@
 // 定义全局变量，跟踪当前激活的内容区域和卡片
 var activeContent = null;
 var activeCard = null;
+// 添加初始化标志
+var defenseExamplesInitialized = false;
 
 // 当文档加载完成后运行
 document.addEventListener('DOMContentLoaded', function() {
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (defense_method_select) {
             console.log('找到defense-method-select，初始化防御示例相关功能');
-            setupDefenseExamples();
+            // 不要在这里调用 setupDefenseExamples，让它只在 initializeResults 中调用一次
         }
     }, 1000); // 延迟1秒
 
@@ -371,6 +373,14 @@ function setupJailbreakExamples() {
 // 设置defense示例
 function setupDefenseExamples() {
     console.log('设置防御示例...');
+
+    // 添加初始化检查
+    if (defenseExamplesInitialized) {
+        console.log('防御示例已初始化，跳过重复初始化');
+        return;
+    }
+    defenseExamplesInitialized = true;
+    
     const slmSelect = document.getElementById('defense-slm-select');
     const jailbreakSelect = document.getElementById('defense-jailbreak-select');
     const defenseSelect = document.getElementById('defense-method-select');
