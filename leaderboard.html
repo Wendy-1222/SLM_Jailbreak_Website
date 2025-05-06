@@ -61,6 +61,7 @@
             display: flex;
             flex: 1;
             margin-top: 60px; /* Space for the fixed navigation */
+            position: relative; /* Add this to create positioning context */
         }
         
         .sidebar {
@@ -68,6 +69,12 @@
             background-color: #f5f5f5;
             border-right: 1px solid #e0e0e0;
             padding: 20px 0;
+            position: fixed;
+            top: 60px; /* Position it below the top nav */
+            bottom: 0;
+            left: 0; /* Ensure it's aligned to the left */
+            overflow-y: auto; /* Allow scrolling within sidebar if it's too tall */
+            z-index: 100; /* Ensure sidebar appears above content when needed */
         }
         
         .sidebar-item {
@@ -91,8 +98,10 @@
         .content {
             flex: 1;
             padding: 20px;
-            max-width: 1200px;
             margin: 0 auto;
+            margin-left: 200px; /* Match the sidebar width */
+            width: calc(100% - 200px); /* Total width minus sidebar width */
+            box-sizing: border-box; /* Include padding in width calculation */
         }
         
         .table-header {
@@ -105,6 +114,8 @@
         .table-container {
             padding: 0;
             display: none;
+            max-width: 1200px; /* Move max-width from content to table container */
+            margin: 0 auto; /* Center the table in the content area */
         }
         
         .table-container.active {
@@ -228,9 +239,14 @@
             }
             
             .sidebar {
+                position: static; /* Remove fixed positioning on mobile */
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .content {
+                margin-left: 0; /* Remove left margin on mobile */
             }
         }
     </style>
