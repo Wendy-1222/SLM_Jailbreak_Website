@@ -4,12 +4,12 @@
 
 // 表格文件映射
 const tableFiles = {
-    'main': '../tables/main_results.html',
-    'category': '../tables/category_results.html',
-    'ppl': '../tables/defense_results_ppl.html',
-    'retokenization': '../tables/defense_results_retokenization.html',
-    'self_reminder': '../tables/defense_results_self_reminder.html',
-    'llama_guard_3_1B': '../tables/defense_results_llama_guard_3_1B.html'
+    'main': './website/tables/main_results.html',
+    'category': './website/tables/category_results.html',
+    'ppl': './website/tables/defense_results_ppl.html',
+    'retokenization': './website/tables/defense_results_retokenization.html',
+    'self_reminder': './website/tables/defense_results_self_reminder.html',
+    'llama_guard_3_1B': './website/tables/defense_results_llama_guard_3_1B.html'
 };
 
 // 页面加载完成后初始化

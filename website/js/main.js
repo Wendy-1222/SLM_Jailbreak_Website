@@ -39,6 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
             setupDefenseExamples();
         }
     }, 1000); // 延迟1秒
+
+    // 添加点击事件，当点击页面空白处时关闭下拉内容
+    document.addEventListener('click', function(event) {
+        closeDropdownsOnOutsideClick(event);
+    });
 });
 
 // 使用 MutationObserver 监听 results-container 的变化
@@ -666,4 +671,35 @@ function displayResponseWithTypewriter(container, text, className, title, label)
     }
     
     typeWriter();
+}
+
+// 在页面点击空白处时关闭下拉内容
+function closeDropdownsOnOutsideClick(event) {
+    // 获取所有活跃的下拉内容
+    const activeContents = document.querySelectorAll('.content-display.active');
+    
+    // 检查是否点击了下拉内容区域外的地方
+    let clickedOutside = true;
+    
+    // 检查是否点击了下拉选择器
+    const allSelects = document.querySelectorAll('.custom-select');
+    allSelects.forEach(select => {
+        if (select.contains(event.target) || select === event.target) {
+            clickedOutside = false;
+        }
+    });
+    
+    // 检查是否点击了内容区域内部
+    activeContents.forEach(content => {
+        if (content.contains(event.target) || content === event.target) {
+            clickedOutside = false;
+        }
+    });
+    
+    // 如果点击了外部区域，关闭所有活跃的下拉内容
+    if (clickedOutside && activeContents.length > 0) {
+        activeContents.forEach(content => {
+            content.classList.remove('active');
+        });
+    }
 } 

@@ -1,118 +1,2013 @@
+<!DOCTYPE html>
+<html class="fontawesome-i2svg-active fontawesome-i2svg-complete">
 
-\begin{table*}[ht!]
-\centering
-\caption{The attack effectiveness~(i.e., ASR) of different jailbreak attacks across 15 SLM families. We highlight the results with ASR > 0.4, indicating that these SLMs are vulnerable to jailbreak attacks.}
-\footnotesize
-\vspace{-0.5em}
-\def\arraystretch{0.8}  % adjust row height
-% \resizebox{.99\linewidth}{!}{
-\begin{tabular}{@{}lp{0.05\linewidth}ccp{0.05\linewidth}p{0.05\linewidth}cp{0.05\linewidth}p{0.05\linewidth}p{0.05\linewidth}p{0.05\linewidth}}
-\toprule
-& Direct & HumanJailbreaks & AutoDAN & PAP & GCG & AutoPrompt & PEZ & GBDA & UAT & Average\\
-\midrule
-Llama-3.2-1B-Instruct & 0.214 & 0.074 & 0.3 & 0.36 &Direct 0.429 & 0.186 & 0.086 & 0.131 & 0.114 & 0.21  \\ 
-Llama-3.2-3B-Instruct & 0.271 & 0.169 & 0.1 &Direct 0.44 &Direct 0.6 & 0.357 & 0.2 & 0.189 & 0.286 & 0.29  \\ 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-\midrule
-DeepSeek-R1-Distill-Qwen-1.5B & 0.271 & 0.289 & 0.257 & 0.203 & 0.314 & 0.286 & 0.169 & 0.277 & 0.329 & 0.266  \\ 
-DeepSeek-R1-Distill-Qwen-7B &Direct 0.514 & 0.36 &Direct 0.471 & 0.291 &Direct 0.571 & 0.371 & 0.363 & 0.389 & 0.386 &Direct 0.413  \\ 
+    <meta name="description"
+        content="We propose a novel method that enhances jailbreak efficiency through adaptive strategy mining, leveraging unique vulnerabilities across different models and scenarios.">
+    <meta name="keywords" content="Jailbreak, LLMs, Adversarial Prompt, Red Teaming">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</title>
 
-\midrule
-Qwen-1.8B-Chat & 0.143 & 0.18 & 0.271 &Direct 0.4 & 0.386 & 0.343 & 0.323 &Direct 0.451 & 0.243 & 0.304  \\ 
-Qwen-7B-Chat & 0.086 & 0.289 &Direct 0.529 & 0.234 &Direct 0.614 &Direct 0.5 & 0.209 & 0.24 & 0.314 & 0.335  \\ 
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-\midrule
-Qwen1.5-0.5B-Chat & 0.114 & 0.231 & 0.257 & 0.363 &Direct 0.514 &Direct 0.514 &Direct 0.483 &Direct 0.449 &Direct 0.471 & 0.377  \\ 
-Qwen1.5-1.8B-Chat &Direct 0.529 &Direct 0.434 &Direct 0.729 &Direct 0.511 &Direct 0.629 &Direct 0.586 &Direct 0.643 &Direct 0.62 &Direct 0.657 &Direct 0.593  \\ 
-Qwen1.5-4B-Chat & 0.114 & 0.297 &Direct 0.686 &Direct 0.411 &Direct 0.571 &Direct 0.4 & 0.2 &Direct 0.417 &Direct 0.414 & 0.39  \\ 
-Qwen1.5-7B-Chat & 0.186 &Direct 0.563 &Direct 0.771 &Direct 0.426 &Direct 0.671 &Direct 0.529 & 0.294 & 0.351 & 0.343 &Direct 0.459  \\ 
+        function gtag() {
+            dataLayer.push(arguments);
+        }
 
-\midrule
-Qwen2-0.5B-Instruct & 0.1 & 0.2 &Direct 0.414 & 0.351 &Direct 0.571 & 0.357 & 0.331 & 0.391 & 0.343 & 0.34  \\ 
-Qwen2-1.5B-Instruct & 0.1 & 0.18 &Direct 0.657 & 0.366 &Direct 0.571 &Direct 0.4 & 0.137 & 0.383 & 0.286 & 0.342  \\ 
-Qwen2-7B-Instruct & 0.214 & 0.274 &Direct 0.743 &Direct 0.449 &Direct 0.571 &Direct 0.414 & 0.206 & 0.22 & 0.214 & 0.367  \\ 
+        gtag('js', new Date());
+    </script>
 
-\midrule
-Qwen2.5-0.5B-Instruct & 0.129 & 0.149 &Direct 0.586 & 0.363 &Direct 0.557 &Direct 0.414 & 0.326 &Direct 0.506 &Direct 0.443 & 0.386  \\ 
-Qwen2.5-1.5B-Instruct & 0.086 & 0.177 &Direct 0.743 & 0.351 &Direct 0.571 & 0.357 & 0.074 & 0.346 & 0.329 & 0.337  \\ 
-Qwen2.5-3B-Instruct & 0.143 & 0.311 &Direct 0.729 &Direct 0.451 &Direct 0.543 & 0.343 & 0.151 & 0.309 & 0.3 & 0.364  \\ 
-Qwen2.5-7B-Instruct & 0.257 &Direct 0.406 &Direct 0.814 &Direct 0.44 &Direct 0.614 &Direct 0.471 & 0.257 & 0.323 & 0.343 &Direct 0.436  \\ 
+    <!-- Import elegant font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 
-\midrule
-Gemma-2B-it & 0.143 & 0.011 & 0.071 & 0.389 &Direct 0.443 &Direct 0.457 &Direct 0.437 &Direct 0.449 &Direct 0.486 & 0.321  \\ 
-Gemma-7B-it & 0.271 & 0.157 & 0.314 &Direct 0.414 & 0.3 & 0.214 & 0.271 & 0.303 & 0.243 & 0.276  \\ 
-Gemma-1.1-2B-it & 0.243 & 0.046 & 0.214 & 0.38 &Direct 0.4 & 0.343 &Direct 0.44 &Direct 0.466 &Direct 0.443 & 0.331  \\ 
-Gemma-1.1-7B-it & 0.214 & 0.183 &Direct 0.557 & 0.32 & 0.329 & 0.243 & 0.306 & 0.351 & 0.186 & 0.299  \\ 
-Gemma-2-2B-it & 0.114 & 0.377 &Direct 0.857 & 0.271 &Direct 0.457 & 0.2 & 0.154 & 0.194 & 0.186 & 0.312  \\ 
+    <link href="./website/css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="./website/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="./website/bulma.min.css">
+    <link rel="stylesheet" href="./website/bulma-carousel.min.css">
+    <link rel="stylesheet" href="./website/bulma-slider.min.css">
+    <link rel="stylesheet" href="./website/fontawesome.all.min.css">
+    <link rel="stylesheet" href="./website/academicons.min.css">
+    <link rel="stylesheet" href="./website/index.css">
+    <link rel="icon" href="./website/images/dog.gif">
 
-\midrule
-Phi-3-mini-4k-Instruct & 0.143 & 0.157 & 0.171 & 0.291 &Direct 0.471 & 0.186 & 0.177 & 0.203 & 0.171 & 0.219  \\ 
-Phi-3-mini-128k-Instruct & 0.171 & 0.291 & 0.329 & 0.303 &Direct 0.443 & 0.243 & 0.163 & 0.189 & 0.2 & 0.259  \\ 
-Phi-3.5-mini-Instruct & 0.2 & 0.28 & 0.271 & 0.326 &Direct 0.457 & 0.271 & 0.217 & 0.243 & 0.2 & 0.274  \\ 
-
-\midrule
-MiniCPM-1B-sft-bf16 & 0.229 & 0.374 &Direct 0.686 &Direct 0.429 & 0.243 & 0.214 &Direct 0.437 &Direct 0.526 &Direct 0.414 & 0.395  \\ 
-MiniCPM-S-1B-sft & 0.214 &Direct 0.4 &Direct 0.543 & 0.386 & 0.171 & 0.186 &Direct 0.477 & 0.34 &Direct 0.4 & 0.346  \\ 
-MiniCPM-2B-sft-bf16 & 0.186 & 0.36 &Direct 0.786 & 0.389 & 0.129 & 0.186 &Direct 0.44 & 0.366 & 0.243 & 0.343  \\ 
-MiniCPM-2B-dpo-bf16 &Direct 0.457 &Direct 0.543 &Direct 0.829 &Direct 0.497 &Direct 0.5 &Direct 0.471 &Direct 0.706 &Direct 0.62 &Direct 0.514 &Direct 0.571  \\ 
-MiniCPM3-4B & 0.157 & 0.36 &Direct 0.757 & 0.329 & 0.086 & 0.114 & 0.129 & 0.091 & 0.157 & 0.242  \\ 
-
-\midrule
-H2O-Danube-1.8B-SFT &Direct 0.614 & 0.391 &Direct 0.586 &Direct 0.4 &Direct 0.671 &Direct 0.6 &Direct 0.571 &Direct 0.56 &Direct 0.471 &Direct 0.54  \\ 
-H2O-Danube-1.8B-Chat &Direct 0.6 &Direct 0.534 &Direct 0.657 &Direct 0.494 &Direct 0.657 &Direct 0.629 &Direct 0.617 &Direct 0.654 &Direct 0.657 &Direct 0.611  \\ 
-H2O-Danube2-1.8B-SFT &Direct 0.414 & 0.389 &Direct 0.686 &Direct 0.449 &Direct 0.686 &Direct 0.657 &Direct 0.571 &Direct 0.606 &Direct 0.629 &Direct 0.565  \\ 
-H2O-Danube2-1.8B-Chat &Direct 0.514 &Direct 0.58 &Direct 0.643 &Direct 0.477 &Direct 0.729 &Direct 0.757 &Direct 0.671 &Direct 0.654 &Direct 0.7 &Direct 0.636  \\ 
-H2O-Danube3-500M-Chat &Direct 0.629 & 0.363 & 0.243 &Direct 0.463 &Direct 0.629 &Direct 0.586 &Direct 0.606 &Direct 0.6 &Direct 0.571 &Direct 0.521  \\ 
-H2O-Danube3-4B-Chat &Direct 0.486 & 0.351 &Direct 0.657 &Direct 0.531 &Direct 0.743 &Direct 0.614 &Direct 0.431 &Direct 0.503 &Direct 0.514 &Direct 0.537  \\ 
-
-\midrule
-SmoLM-135M-Instruct &Direct 0.486 &Direct 0.406 & 0.014 & 0.26 &Direct 0.4 &Direct 0.414 &Direct 0.4 &Direct 0.431 & 0.386 & 0.355  \\ 
-SmoLM-360M-Instruct &Direct 0.686 &Direct 0.649 & 0.029 &Direct 0.411 &Direct 0.629 &Direct 0.629 &Direct 0.663 &Direct 0.494 &Direct 0.629 &Direct 0.535  \\ 
-SmoLM-1.7B-Instruct &Direct 0.714 &Direct 0.717 & 0.243 &Direct 0.503 &Direct 0.686 &Direct 0.657 &Direct 0.711 &Direct 0.677 &Direct 0.7 &Direct 0.623  \\ 
-SmoLM2-135M-Instruct &Direct 0.471 & 0.274 & 0.0 & 0.306 & 0.314 &Direct 0.429 & 0.38 & 0.351 &Direct 0.414 & 0.327  \\ 
-SmoLM2-360M-Instruct &Direct 0.529 & 0.311 & 0.343 & 0.389 &Direct 0.586 &Direct 0.571 &Direct 0.506 &Direct 0.646 &Direct 0.6 &Direct 0.498  \\ 
-SmoLM2-1.7B-Instruct &Direct 0.443 &Direct 0.42 &Direct 0.614 &Direct 0.426 &Direct 0.729 &Direct 0.686 & 0.326 &Direct 0.614 &Direct 0.543 &Direct 0.533  \\ 
-
-\midrule
-StableLM-Zephyr-3B & 0.3 &Direct 0.543 &Direct 0.757 &Direct 0.411 &Direct 0.6 &Direct 0.6 & 0.386 &Direct 0.409 &Direct 0.4 &Direct 0.49  \\ 
-StableLM-2-1.6B-Chat &Direct 0.757 &Direct 0.591 &Direct 0.657 &Direct 0.503 &Direct 0.686 &Direct 0.757 &Direct 0.677 &Direct 0.686 &Direct 0.743 &Direct 0.673  \\ 
-StableLM-2-Zephyr-1.6B &Direct 0.614 &Direct 0.517 &Direct 0.743 &Direct 0.457 &Direct 0.729 &Direct 0.729 &Direct 0.543 &Direct 0.64 &Direct 0.629 &Direct 0.622  \\ 
-
-\midrule
-TinyLlama-1.1B-Chat-v0.1 &Direct 0.7 & 0.309 & 0.214 & 0.397 &Direct 0.457 &Direct 0.543 &Direct 0.557 &Direct 0.58 &Direct 0.614 &Direct 0.486  \\ 
-TinyLlama-1.1B-Chat-v0.2 &Direct 0.471 & 0.183 & 0.014 & 0.251 & 0.286 & 0.286 & 0.18 & 0.171 & 0.229 & 0.23  \\ 
-TinyLlama-1.1B-Chat-v0.3 &Direct 0.729 & 0.38 & 0.014 & 0.394 &Direct 0.486 &Direct 0.443 &Direct 0.509 &Direct 0.494 &Direct 0.6 &Direct 0.45  \\ 
-TinyLlama-1.1B-Chat-v0.4 &Direct 0.514 & 0.331 & 0.129 & 0.38 &Direct 0.6 &Direct 0.543 &Direct 0.54 &Direct 0.569 &Direct 0.571 &Direct 0.464  \\ 
-TinyLlama-1.1B-Chat-v0.5 &Direct 0.6 & 0.283 & 0.114 & 0.36 &Direct 0.471 & 0.371 &Direct 0.586 &Direct 0.526 &Direct 0.557 &Direct 0.43  \\ 
-TinyLlama-1.1B-Chat-v0.6 &Direct 0.671 &Direct 0.486 & 0.243 &Direct 0.474 &Direct 0.686 &Direct 0.586 &Direct 0.674 &Direct 0.683 &Direct 0.729 &Direct 0.581  \\ 
-TinyLlama-1.1B-Chat-v1.0 &Direct 0.714 &Direct 0.597 & 0.314 &Direct 0.477 &Direct 0.586 &Direct 0.743 &Direct 0.706 &Direct 0.74 &Direct 0.7 &Direct 0.62  \\ 
-
-\midrule
-MobileLLaMA-1.4B-Chat &Direct 0.771 &Direct 0.406 &Direct 0.529 & 0.397 &Direct 0.6 &Direct 0.514 &Direct 0.537 &Direct 0.474 &Direct 0.586 &Direct 0.535  \\ 
-MobileLLaMA-2.7B-Chat &Direct 0.714 &Direct 0.529 &Direct 0.814 &Direct 0.414 &Direct 0.6 &Direct 0.686 &Direct 0.494 &Direct 0.58 &Direct 0.586 &Direct 0.602  \\ 
-
-\midrule
-MobiLlama-0.5B-Chat &Direct 0.529 & 0.023 & 0.0 & 0.18 &Direct 0.443 &Direct 0.5 &Direct 0.437 &Direct 0.463 &Direct 0.471 & 0.338  \\ 
-MobiLlama-1B-Chat &Direct 0.643 & 0.091 & 0.2 & 0.34 &Direct 0.571 &Direct 0.514 &Direct 0.523 &Direct 0.477 &Direct 0.571 &Direct 0.437  \\ 
-
-\midrule
-Fox-1-1.6B-Instruct-v0.1 & 0.243 & 0.1 &Direct 0.786 & 0.397 &Direct 0.571 &Direct 0.429 & 0.157 & 0.374 & 0.229 & 0.365  \\ 
-
-\midrule
-Dolly-v1-6B &Direct 0.571 & - &Direct 0.714 & 0.354 &Direct 0.514 &Direct 0.614 &Direct 0.537 &Direct 0.563 &Direct 0.571 &Direct 0.555  \\ 
-Dolly-v2-3B &Direct 0.757 & 0.397 &Direct 0.486 & 0.36 &Direct 0.5 &Direct 0.486 &Direct 0.514 &Direct 0.511 &Direct 0.514 &Direct 0.503  \\ 
-Dolly-v2-7B &Direct 0.671 &Direct 0.494 &Direct 0.529 &Direct 0.454 &Direct 0.443 &Direct 0.471 &Direct 0.529 &Direct 0.491 &Direct 0.529 &Direct 0.512  \\ 
-
-\midrule
-OLMo-7B-SFT-hf & 0.329 & 0.26 &Direct 0.629 &Direct 0.414 &Direct 0.643 &Direct 0.571 & 0.246 & 0.26 & 0.329 &Direct 0.409  \\ 
-OLMo-7B-Instruct-hf &Direct 0.457 &Direct 0.586 &Direct 0.857 &Direct 0.503 &Direct 0.671 &Direct 0.614 &Direct 0.471 &Direct 0.474 &Direct 0.471 &Direct 0.567  \\ 
+    <script src="./website/select.js"></script>
+    <script src="./website/bootstrap.min.js"></script>
+    <script src="./website/jquery.min.js.下载"></script>
+    <script defer="" src="./website/fontawesome.all.min.js.下载"></script>
+    <script src="./website/bulma-carousel.min.js.下载"></script>
+    <script src="./website/bulma-slider.min.js.下载"></script>
+    <script src="./website/index.js.下载"></script>
+    <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
 
 
-\bottomrule
-\end{tabular}
-% }
-% \vspace{13pt}
-\vspace{-5pt}
-\label{tab:evaluation_result}
-\end{table*}
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            padding-top: 0; /* Remove top padding as we're using a full-screen hero */
+        }
+        
+        /* Hero Section with Background Image */
+        .hero-background {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden; /* 确保背景不溢出 */
+            transition: all 0.5s ease; /* 添加过渡效果 */
+        }
+        
+        /* Background Image Layer */
+        .hero-background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('./website/images/background.png') no-repeat center center/contain;
+            filter: brightness(0.4); /* 默认暗色 */
+            transition: filter 0.5s ease; /* 过渡效果 */
+            z-index: -1;
+        }
+        
+        /* Background hover effect */
+        .hero-background:hover::before {
+            filter: brightness(1); /* 悬浮时恢复正常亮度 */
+        }
+        
+        /* Dark overlay for text readability */
+        .hero-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* 黑色半透明叠加层 */
+            z-index: -1;
+            transition: background 0.5s ease; /* 过渡效果 */
+        }
+        
+        /* Hover effect for overlay */
+        .hero-background:hover::after {
+            background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
+        }
 
+        /* 悬浮时减少遮罩的不透明度 */
+        .hero-background:hover .hero-overlay {
+            background: rgba(0, 0, 0, 0.2); /* 降低黑色叠加层的不透明度 */
+        }
+        
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Elegant title styling */
+        .elegant-title {
+            font-family: 'Playfair Display', cursive;
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: white;
+            line-height: 1.2;
+            font-weight: normal;
+        }
+        
+        /* Decorative divider */
+        .divider {
+            width: 80%;
+            height: 1px;
+            background-color: white;
+            margin: 15px auto 20px;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Subtitle styling */
+        .elegant-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.8rem;
+            margin-top: 5px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            color: white;
+            line-height: 1.4;
+        }
+        
+        /* Scroll down arrow */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            z-index: 2;
+            color: white;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        /* Navigation styling */
+        .top-right-nav {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%; /* Make the nav span the entire width */
+            z-index: 1000;
+            padding: 15px 20px; /* Add more padding for better appearance */
+            transition: background-color 0.3s ease;
+            text-align: right; /* Keep the navigation items on the right */
+            background-color: transparent;
+        }
+        
+        .top-right-nav:hover {
+            background-color: white;
+        }
+        
+        .top-right-nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-end; /* Align navigation items to the right */
+        }
+        
+        .top-right-nav ul li {
+            margin-left: 20px;
+        }
+        
+        .top-right-nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        
+        .top-right-nav:hover ul li a {
+            color: #777777;
+        }
+        
+        .top-right-nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .top-right-nav:hover ul li a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: #777777;
+        }
+        
+        /* Original temp.html styles */
+        .header-image {
+            width: 60px;
+            height: auto;
+        }
+
+        .navbar-fixed-top {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: none; /* Initially hidden, will be shown after scroll */
+        }
+
+        /* Target section padding adjustment for smooth scrolling */
+        section:target {
+            padding-top: 70px;
+            margin-top: -70px;
+        }
+
+        ul.nav a:hover {
+            color: rgb(255, 249, 239) !important;
+        }
+
+        .nav.navbar-nav li a:hover {
+            background-color: rgb(82, 127, 159) !important;
+        }
+
+        #highlight {
+            color: rgb(212, 67, 54);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card.active {
+            background-color: #f0f0f0;
+            border: 2px solid #2196F3;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .content-area {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-area.active {
+            display: block;
+        }
+        
+        .content-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #14191d;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .content-list {
+            list-style-position: inside;
+            padding-left: 10px;
+        }
+        
+        .content-list li {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* figs */
+        figure {
+            text-align: center;  /* 使描述居中 */
+            margin: 0;           /* 清除默认的外边距 */
+        }
+
+        figcaption {
+            margin-top: 10px;    /* 为描述和图片之间添加间距 */
+            font-size: 14px;     /* 设置描述字体大小 */
+            color: #666;         /* 设置描述文字颜色 */
+        }
+
+
+        /* tabs */
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            background-color: #4a89dc;
+            color: white;
+            border-color: #4a89dc;
+        }
+        .tab:hover {
+            background-color: #e0e0e0;
+        }
+        .tab.active:hover {
+            background-color: #3a70b7;
+        }
+        .content-section {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        
+        /* Table styles for SLM details */
+        .slm-table-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .model-group {
+            background-color: #eef7ff;
+        }
+
+        caption {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        /* Make original content appear below the hero section */
+        .original-content {
+            margin-top: 0;
+            padding-top: 50px;
+        }
+        
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            .elegant-title {
+                font-size: 3.5rem;
+            }
+            
+            .elegant-subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .top-right-nav {
+                position: relative;
+                top: 0;
+                right: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+                background-color: transparent;
+            }
+            
+            .top-right-nav:hover {
+                background-color: white;
+            }
+            
+            .top-right-nav ul {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center; /* Center items in mobile view */
+            }
+            
+            .top-right-nav ul li {
+                margin: 5px 0;
+            }
+        }
+
+        /* Add styles for custom dropdown behavior */
+        .dropdown-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .custom-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background-color: #f0f8ff; /* Light blue background */
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:hover {
+            background-color: #e6f3ff; /* Slightly darker light blue on hover */
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #4a89dc;
+            box-shadow: 0 0 5px rgba(74, 137, 220, 0.3);
+        }
+
+        /* Style for indicating active dropdown */
+        .custom-select.active {
+            background-color: #e1f0ff;
+            border-color: #4a89dc;
+        }
+
+        .content-display {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        .content-display.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Content section styles */
+        #slms-content, #jailbreak-content, #defense-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .content-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #14191d;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        /* Jailbreak examples styles */
+        .jailbreak-examples-container {
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dropdown-container-box {
+            border: 2px solid #4a89dc;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .dropdown-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0;
+            gap: 15px;
+        }
+        
+        .dropdown-col {
+            flex: 1;
+        }
+        
+        .output-container {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .question-display {
+            text-align: left;
+            margin-bottom: 20px;
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+            font-size: 1.5rem;
+            color: #333;
+            padding: 15px;
+            background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+        
+        .prompt-message {
+            background-color: #ff7f50; /* 珊瑚色 */
+            color: white;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-end;
+            position: relative;
+        }
+        
+        .defense-message {
+            background-color: #90EE90; /* 浅绿色 */
+            color: black;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-end;
+            position: relative;
+        }
+        
+        .response-message {
+            background-color: #f4f4f4;
+            color: black;
+            max-width: 80%;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 10px;
+            align-self: flex-start;
+            position: relative;
+        }
+        
+        .message-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .typewriter-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #555;
+            animation: 
+                typewriter 2.5s steps(50, end) forwards,
+                blink-caret .75s step-end 6,
+                hideCaret 0s 1.5s forwards;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes hideCaret {
+            to {
+                border-right-color: transparent;
+            }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #555; }
+        }
+        
+        .question-display .typewriter-text {
+            display: inline-block;
+            margin: 0 auto;
+            white-space: normal; /* Allow text to wrap */
+            width: 100%; /* Use full width of container */
+            animation: fadeIn 1.5s ease; /* Use fade-in instead of typewriter for wrapping text */
+        }
+
+        /* Update typewriter animation to better handle wrapped text */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .response-label {
+            margin: 10px 0 20px 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+        
+        .response-label.safe {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .response-label.unsafe {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+
+    <!-- Script to show navbar after scrolling past hero section -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var heroHeight = document.querySelector('.hero-background').offsetHeight;
+            var navbar = document.querySelector('.navbar-fixed-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > heroHeight - 70) {
+                    navbar.style.display = 'block';
+                } else {
+                    navbar.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // 定义全局变量，跟踪当前激活的内容区域和卡片
+        var activeContent = null;
+        var activeCard = null;
+
+        function showContent(contentType) {
+            // 获取所有内容区域和卡片
+            const allContents = document.querySelectorAll('.content-area');
+            const allCards = document.querySelectorAll('.card');
+            const targetContent = document.getElementById(`${contentType}-content`);
+            const targetCard = document.getElementById(`${contentType}-card`);
+            
+            // 如果点击的是当前已激活的卡片，则隐藏内容
+            if (activeContent === contentType) {
+                targetContent.classList.remove('active');
+                targetCard.classList.remove('active');
+                activeContent = null;
+                activeCard = null;
+                return;
+            }
+            
+            // 隐藏所有内容区域并重置所有卡片样式
+            allContents.forEach(content => content.classList.remove('active'));
+            allCards.forEach(card => card.classList.remove('active'));
+            
+            // 显示目标内容并高亮目标卡片
+            targetContent.classList.add('active');
+            targetCard.classList.add('active');
+            
+            // 更新当前激活的内容和卡片
+            activeContent = contentType;
+            activeCard = targetCard;
+        }
+
+        // Function to handle dropdown changes with toggle functionality
+        function setupDropdown(selectId) {
+            const select = document.getElementById(selectId);
+            if (!select) return;
+            
+            // Create a reference to track the current active content
+            let currentActiveContent = null;
+            
+            select.addEventListener('change', function(event) {
+                const selectedValue = this.value;
+                
+                // If nothing is selected (default option), do nothing
+                if (!selectedValue) return;
+                
+                const contentId = `${selectedValue}-content`;
+                const contentElement = document.getElementById(contentId);
+                
+                // If this content is already active, hide it and reset dropdown
+                if (currentActiveContent === contentId && contentElement.classList.contains('active')) {
+                    contentElement.classList.remove('active');
+                    select.classList.remove('active');
+                    currentActiveContent = null;
+                    this.selectedIndex = 0; // Reset to first option
+                    event.preventDefault();
+                    return;
+                }
+                
+                // Hide any currently active content
+                const allContents = select.closest('.dropdown-container').querySelectorAll('.content-display');
+                allContents.forEach(content => content.classList.remove('active'));
+                
+                // Show the selected content
+                if (contentElement) {
+                    contentElement.classList.add('active');
+                    select.classList.add('active');
+                    currentActiveContent = contentId;
+                }
+            });
+            
+            // Add click listener to document to close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                // If click is outside the dropdown and its content
+                if (!select.contains(event.target) && 
+                    currentActiveContent && 
+                    !document.getElementById(currentActiveContent).contains(event.target)) {
+                    // Hide the content
+                    document.getElementById(currentActiveContent).classList.remove('active');
+                    select.classList.remove('active');
+                    select.selectedIndex = 0; // Reset to default option
+                    currentActiveContent = null;
+                }
+            });
+        }
+    </script>
+
+    <script>
+        // 使用 fetch 来加载外部的 LaTeX 文件并渲染它
+        window.onload = function() {
+        fetch('table.tex') // 指向你的 LaTeX 文件
+            .then(response => response.text())
+            .then(data => {
+            // 将 LaTeX 内容插入到页面中
+            document.getElementById('latex-table').innerHTML = `$$ ${data} $$`;
+            // 重新渲染 MathJax
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            })
+            .catch(error => {
+            console.error('加载 LaTeX 文件失败:', error);
+            });
+        }
+    </script>
+
+    <script>
+        // Variable to store the jailbreak examples data
+        let jailbreakExamples = {};
+        // Variable to store the defense examples data
+        let defenseExamples = {};
+
+        // Function to load jailbreak examples from JSON file
+        function loadJailbreakExamples() {
+            fetch('./jailbreak_examples.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load jailbreak_examples.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store the loaded data in our global variable
+                    jailbreakExamples = data;
+                    console.log('Successfully loaded examples from jailbreak_examples.json');
+                })
+                .catch(error => {
+                    console.error('Error loading jailbreak_examples.json:', error);
+                    // Fallback to embedded data if JSON loading fails
+                    console.log('Using fallback embedded data');
+                });
+        }
+
+        // Function to load defense examples from JSON file
+        function loadDefenseExamples() {
+            fetch('./defense_examples.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load defense_examples.json');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store the loaded data in our global variable
+                    defenseExamples = data;
+                    console.log('Successfully loaded examples from defense_examples.json');
+                })
+                .catch(error => {
+                    console.error('Error loading defense_examples.json:', error);
+                    console.log('Using fallback embedded data');
+                });
+        }
+        
+        function setupJailbreakExamples() {
+            const slmSelect = document.getElementById('slm-attack-select');
+            const jailbreakSelect = document.getElementById('jailbreak-attack-select');
+            const categorySelect = document.getElementById('category-select');
+            const displayContainer = document.getElementById('jailbreak-example-display');
+            
+            // Function to check if all dropdowns are selected
+            function checkAllSelected() {
+                const slm = slmSelect.value;
+                const jailbreak = jailbreakSelect.value;
+                const category = categorySelect.value;
+                console.log('Selected values:', slm, jailbreak, category);
+                
+                if (slm && jailbreak && category) {
+                    // Check if this combination exists in our data
+                    // console.log(jailbreakExamples);
+                    if (jailbreakExamples[slm] && 
+                        jailbreakExamples[slm][jailbreak] && 
+                        jailbreakExamples[slm][jailbreak][category]) {
+                        displayJailbreakExample(slm, jailbreak, category);
+                    } else {
+                        displayContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No example available for this combination.</div>';
+                    }
+                }
+            }
+            
+            // Add event listeners to all dropdowns
+            slmSelect.addEventListener('change', checkAllSelected);
+            jailbreakSelect.addEventListener('change', checkAllSelected);
+            categorySelect.addEventListener('change', checkAllSelected);
+        }
+        
+        function setupDefenseExamples() {
+            const slmSelect = document.getElementById('defense-slm-select');
+            const jailbreakSelect = document.getElementById('defense-jailbreak-select');
+            const defenseSelect = document.getElementById('defense-method-select');
+            const categorySelect = document.getElementById('defense-category-select');
+            const displayContainer = document.getElementById('defense-example-display');
+            
+            // Function to check if all dropdowns are selected
+            function checkAllSelected() {
+                const slm = slmSelect.value;
+                const jailbreak = jailbreakSelect.value;
+                const defense = defenseSelect.value;
+                const category = categorySelect.value;
+                console.log('Selected defense values:', slm, jailbreak, defense, category);
+                
+                if (slm && jailbreak && defense && category) {
+                    // Check if this combination exists in our data
+                    console.log('Checking if data exists for:', slm, jailbreak, defense, category);
+                    if (defenseExamples[slm]) {
+                        console.log('Defense examples data:', defenseExamples[slm]); // Debug log
+                    } else {
+                        console.log('No defense examples data found for this SLM');
+                    }
+                    if (defenseExamples[slm] && 
+                        defenseExamples[slm][jailbreak] && 
+                        defenseExamples[slm][jailbreak][defense] && 
+                        defenseExamples[slm][jailbreak][defense][category]) {
+                        console.log('Found matching defense example data');
+                        displayDefenseExample(slm, jailbreak, defense, category);
+                    } else {
+                        console.log('No matching defense example data found');
+                        displayContainer.innerHTML = '<div style="text-align: center; padding: 20px;">No example available for this combination.</div>';
+                    }
+                }
+            }
+            
+            // Add event listeners to all dropdowns
+            slmSelect.addEventListener('change', checkAllSelected);
+            jailbreakSelect.addEventListener('change', checkAllSelected);
+            defenseSelect.addEventListener('change', checkAllSelected);
+            categorySelect.addEventListener('change', checkAllSelected);
+        }
+        
+        function displayJailbreakExample(slm, jailbreak, category) {
+            const displayContainer = document.getElementById('jailbreak-example-display');
+            displayContainer.innerHTML = ''; // Clear previous content
+            
+            const exampleData = jailbreakExamples[slm][jailbreak][category];
+            const question = exampleData[0];
+            const prompt = exampleData[1];
+            const response = exampleData[2];
+            const label = exampleData[3]; // Extract the label from example data
+            
+            // Create question display with typewriter effect at the top
+            displayQuestionWithTypewriter(displayContainer, question);
+            
+            // Create and display messages
+            setTimeout(() => {
+                displayPromptMessage(displayContainer, prompt, "prompt-message", "Jailbreak Prompt");
+                
+                setTimeout(() => {
+                    displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response", label);
+                }, 1000);
+            }, 3000); // Delay after question typewriter completes
+        }
+        
+        function displayDefenseExample(slm, jailbreak, defense, category) {
+            const displayContainer = document.getElementById('defense-example-display');
+            displayContainer.innerHTML = ''; // Clear previous content
+            
+            const exampleData = defenseExamples[slm][jailbreak][defense][category];
+            console.log('Defense example data:', exampleData); // Debug log
+            
+            const question = exampleData[0];
+            const jailbreakPrompt = exampleData[1];
+            const defensePrompt = exampleData[2];
+            const response = exampleData[3];
+            const label = exampleData[4]; // Extract the label from example data
+            console.log('Extracted defense label:', label); // Debug log
+            
+            // Create question display with typewriter effect at the top
+            displayQuestionWithTypewriter(displayContainer, question);
+            
+            // Get the appropriate title based on the defense method
+            let defenseTitle;
+            switch(defense) {
+                case "PPL":
+                    defenseTitle = "PPL Score";
+                    break;
+                case "Llama Guard 3-1B":
+                    defenseTitle = "Llama-Guard-3-1B Output";
+                    break;
+                case "Retokenization":
+                    defenseTitle = "Retokenized Prompt";
+                    break;
+                case "Self-Reminder":
+                    defenseTitle = "Prompt with Self-Reminder";
+                    break;
+                default:
+                    defenseTitle = "Defense Prompt";
+            }
+            
+            // Create and display messages
+            setTimeout(() => {
+                displayPromptMessage(displayContainer, jailbreakPrompt, "prompt-message", "Jailbreak Prompt");
+                
+                setTimeout(() => {
+                    // Special handling for PPL defense method
+                    if (defense === "PPL") {
+                        // Try to parse the PPL score from defense prompt
+                        try {
+                            // Ensure defensePrompt is a string before using match
+                            const defensePromptStr = String(defensePrompt);
+                            const pplScoreMatch = defensePromptStr.match(/(\d+(\.\d+)?)/);
+                            if (pplScoreMatch) {
+                                const pplScore = parseFloat(pplScoreMatch[0]);
+                                const threshold = 415.87;
+                                
+                                let formattedDefensePrompt;
+                                if (pplScore < threshold) {
+                                    formattedDefensePrompt = `${pplScore} (< threshold ${threshold}, passed)`;
+                                } else {
+                                    formattedDefensePrompt = `${pplScore} (≥ threshold ${threshold}, filtered)`;
+                                }
+                                
+                                displayPromptMessage(displayContainer, formattedDefensePrompt, "defense-message", defenseTitle);
+                            } else {
+                                // Fallback if no number found
+                                displayPromptMessage(displayContainer, defensePromptStr, "defense-message", defenseTitle);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing PPL score:', e);
+                            displayPromptMessage(displayContainer, String(defensePrompt), "defense-message", defenseTitle);
+                        }
+                    } else {
+                        // Normal display for other defense methods
+                        displayPromptMessage(displayContainer, defensePrompt, "defense-message", defenseTitle);
+                    }
+                    
+                    setTimeout(() => {
+                        displayResponseWithTypewriter(displayContainer, response, "response-message", "SLM Response", label);
+                    }, 1000);
+                }, 1000);
+            }, 3000); // Delay after question typewriter completes
+        }
+        
+        function displayQuestionWithTypewriter(container, text) {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-display';
+            
+            // Create a wrapper for the prefix text
+            const prefixSpan = document.createElement('span');
+            prefixSpan.textContent = "Harmful question: ";
+            prefixSpan.style.fontWeight = "bold";
+            questionDiv.appendChild(prefixSpan);
+            
+            container.appendChild(questionDiv);
+            
+            // Apply typewriter effect character by character
+            let i = 0;
+            const speed = 30; // Typing speed for question
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    questionDiv.appendChild(document.createTextNode(text[i]));
+                    i++;
+                    setTimeout(typeWriter, speed);
+                }
+            }
+            
+            // Start typing the text
+            typeWriter();
+        }
+        
+        function displayPromptMessage(container, text, className, title) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = className;
+            
+            const messageTitle = document.createElement('span');
+            messageTitle.className = 'message-title';
+            messageTitle.textContent = title;
+            messageDiv.appendChild(messageTitle);
+            
+            messageDiv.appendChild(document.createTextNode(text));
+            container.appendChild(messageDiv);
+        }
+        
+        function displayResponseWithTypewriter(container, text, className, title, label) {
+            console.log('displayResponseWithTypewriter received label:', label); // Debug log
+            const messageDiv = document.createElement('div');
+            messageDiv.className = className;
+            
+            const messageTitle = document.createElement('span');
+            messageTitle.className = 'message-title';
+            messageTitle.textContent = title;
+            messageDiv.appendChild(messageTitle);
+            
+            container.appendChild(messageDiv);
+            
+            // Apply typewriter effect
+            let i = 0;
+            const speed = 3; // Speed up typing speed (was 10)
+            
+            function typeWriter() {
+                if (i < text.length) {
+                    messageDiv.appendChild(document.createTextNode(text[i]));
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    // After typing is complete, add the label
+                    if (label !== undefined) {
+                        console.log('Adding label element:', label); // Debug log
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
+                        labelDiv.textContent = "Label: " + label;
+
+                        // Add label below the response message, not inside it
+                        container.appendChild(labelDiv);
+                    } else {
+                        console.log('No label provided to add'); // Debug log
+                    }
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Load examples when the document is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJailbreakExamples();
+            loadDefenseExamples();
+            setupDropdown('slm-select');
+            setupDropdown('jailbreak-select');
+            setupDropdown('defense-select');
+            
+            // Setup jailbreak examples dropdowns
+            setupJailbreakExamples();
+            setupDefenseExamples();
+        });
+    </script>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1147.0" data-gr-ext-installed="">
+    <!-- Fixed navbar that appears on scroll
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: rgb(255, 249, 239); border-color: white">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#top" class="navbar-brand" style="color: rgb(2, 49, 78); font-weight: 800">SLM Jailbreak</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#paper_overview" style="color: rgb(2, 49, 78); font-weight: 500">Overview</a></li>
+                <li><a href="#results" style="color: rgb(2, 49, 78); font-weight: 500">Results</a></li>
+                <li><a href="leaderboard.html" style="color: rgb(2, 49, 78); font-weight: 500">Leaderboard</a></li>
+                <li><a href="#ethics" style="color: rgb(2, 49, 78); font-weight: 500">Ethics</a></li>
+            </ul>
+        </div>
+    </nav> -->
+
+    <!-- Hero Background Section -->
+    <div class="hero-background" id="top">
+        <!-- Top-right Navigation -->
+        <nav class="top-right-nav">
+            <ul>
+                <li><a href="#original-content"><b>Homepage</b></a></li>
+                <li><a href="leaderboard.html"><b>Leaderboard</b></a></li>
+                <li><a href="#paper_overview"><b>Overview</b></a></li>
+                <li><a href="#results"><b>Results</b></a></li>
+                <li><a href="#ethics"><b>Ethics</b></a></li>
+            </ul>
+        </nav>
+        
+        <div class="hero-content">
+            <h1 class="elegant-title">SLM Jailbreak</h1>
+            <div class="divider"></div>
+            <p class="elegant-subtitle">Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation</p>
+        </div>
+        
+        <div class="scroll-down" onclick="document.getElementById('original-content').scrollIntoView({behavior: 'smooth'})">
+            &#8595;
+        </div>
+    </div>
+
+    <!-- Original content from temp.html -->
+    <div id="original-content" class="original-content">
+        <section class="hero">
+            <div class="hero-body">
+                <div class="container is-max-desktop">
+                    <div class="columns is-centered">
+                        <div class="column has-text-centered">
+                            <h2 class="title is-2 publication-title">
+                                <img src="./website/images/dog.gif" class="header-image"
+                                    style="vertical-align: middle; margin-right: 10px;">
+                                    Can Small Language Model Reliably Resist Jailbreak Attack? A Comprehensive Evaluation
+                            </h2>
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block">Zhibo Wang<sup>12</sup>, </span>
+                                <span class="author-block">Wenhui Zhang<sup>12</sup>, </span>
+                                <span class="author-block">Huiyu Xu<sup>12</sup>, </span>
+                                <span class="author-block">Zeqing He<sup>12</sup>, </span>
+                                <span class="author-block">Ziqi Zhu<sup>12</sup>, </span>
+                            </div>
+
+                            <div class="is-size-5 publication-authors">
+                                <span class="author-block"><sup>1</sup>The State Key Laboratory of Blockchain and Data Security, Zhejiang University, P. R. China&emsp;</span>
+                                <span class="author-block"><sup>2</sup>School of Cyber Science and Technology, Zhejiang University, P. R. China &emsp;</span>
+                            </div>
+
+                            <div class="column has-text-centered">
+                                <div class="publication-links">
+                                    <!-- PDF Link. -->
+                                    <span class="link-block">
+                                        <a href="https://arxiv.org/abs/2503.06519"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-file-pdf fa-w-12" aria-hidden="true"
+                                                    focusable="false" data-prefix="fas" data-icon="file-pdf" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M181.9 256.1c-5-16-4.9-46.9-2-46.9 8.4 0 7.6 36.9 2 46.9zm-1.7 47.2c-7.7 20.2-17.3 43.3-28.4 62.7 18.3-7 39-17.2 62.9-21.9-12.7-9.6-24.9-23.4-34.5-40.8zM86.1 428.1c0 .8 13.2-5.4 34.9-40.2-6.7 6.3-29.1 24.5-34.9 40.2zM248 160h136v328c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24V24C0 10.7 10.7 0 24 0h200v136c0 13.2 10.8 24 24 24zm-8 171.8c-20-12.2-33.3-29-42.7-53.8 4.5-18.5 11.6-46.6 6.2-64.2-4.7-29.4-42.4-26.5-47.8-6.8-5 18.3-.4 44.1 8.1 77-11.6 27.6-28.7 64.6-40.8 85.8-.1 0-.1.1-.2.1-27.1 13.9-73.6 44.5-54.5 68 5.6 6.9 16 10 21.5 10 17.9 0 35.7-18 61.1-61.8 25.8-8.5 54.1-19.1 79-23.2 21.7 11.8 47.1 19.5 64 19.5 29.2 0 31.2-32 19.7-43.4-13.9-13.6-54.3-9.7-73.6-7.2zM377 105L279 7c-4.5-4.5-10.6-7-17-7h-6v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-74.1 255.3c4.1-2.7-2.5-11.9-42.8-9 37.1 15.8 42.8 9 42.8 9z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Paper</span>
+                                        </a>
+                                    </span>
+                                    <!-- Code Link. -->
+                                    <span class="link-block">
+                                        <a href="https://github.com/Wendy-1222/HarmBench_SLM"
+                                            class="external-link button is-normal is-rounded is-dark">
+                                            <span class="icon">
+                                                <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true"
+                                                    focusable="false" data-prefix="fab" data-icon="github" role="img"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"
+                                                    data-fa-i2svg="">
+                                                    <path fill="currentColor"
+                                                        d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                            <span>Code</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add content sections from the original temp.html as needed -->
+        <section class="section" id="paper_overview">
+            <div class="container is-max-desktop">
+                <!-- Abstract. -->
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-four-fifths">
+                        <h2 class="title is-3">Overview</h2>
+                        <div class="content has-text-justified">
+                            <p>
+                                This project is about a evaluation of the vulnerabilities of SLMs (Small Language Models) against jailbreak attacks. 
+                                
+                                <br><br>
+    
+                                <b>What did we introduce?</b> We develop a framework to systematically assess the vulnerability 
+                                of SLMs to jailbreak attacks. This framework encompasses 14 risk categories and 9 attack methods, 
+                                and it covers 15 SLM families consists of 62 SLMs, ensuring a thorough and diverse evaluation.
+                                <br><br>
+                                
+                                <b>What did we find?</b> Through systematically evaluation on 62 SLMs from 15 mainstream SLM 
+                                families against 9 state-of-the-art jailbreak methods, we demonstrate that <b>51.6%</b> of evaluated 
+                                SLMs show high susceptibility to jailbreak attacks (ASR > 40%) and <b>38.7%</b> of them can not even 
+                                resist direct harmful query (ASR > 50%). Through correlation analysis, we identify that the 
+                                primary factors behind SLM vulnerabilities lie in the training details (e.g., training dataset 
+                                and method) rather than model size scaling. Additionally, we evaluate the effectiveness of 
+                                mainstream defense methods that can be applied to SLMs and find that none of them achieve 
+                                satisfactory results, exhibiting limited performance and poor generalization across different 
+                                attack methods. Building upon these findings, we highlight the need for security-by-design approaches 
+                                in SLM development and provide valuable insights for building more trustworthy SLM ecosystem.
+                                <br><br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="columns is-centered has-text-centered">
+                    <div class="container is-max-desktop" style="display: flex; flex-direction: column; align-items: center;">
+                        <div>
+                            <img src="./website/images/overview.png" alt="" style="width:100%; height:100%;" class="center">
+                        </div>
+                        <div class="content has-text-centered" style="max-width: 100%;">
+                            <p>
+                                <br>
+                                <span style="font-weight: bold; font-size: larger;">Figure 1. </span>
+                                Overview of our evaluation framework. 
+                                <!-- We evaluate the jailbreak vulnerabilities of 15 SLM families including 62 SLMs against 9 mainstream jailbreak attack methods with a class-balanced dataset (70 questions). -->
+                            </p>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+        </section>
+        
+
+        <section class="section" id="results">
+            <!-- Benchmark design. -->
+    
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column is-full-width">
+                        <h2 class="title is-3">Results</h2>
+                    </div>
+                </div>
+                <br>
+
+                <div class="cards-container">
+                    <!-- 卡片1 -->
+                    <div class="card" id="rq1-card" onclick="showContent('rq1')">
+                        <div class="card-title">RQ1: Vulnerability of SLM jailbreak</div>
+                    </div>
+                    
+                    <!-- 卡片2 -->
+                    <div class="card" id="rq2-card" onclick="showContent('rq2')">
+                        <div class="card-title">RQ2: Factor Analysis</div>
+                    </div>
+                    
+                    <!-- 卡片3 -->
+                    <div class="card" id="rq3-card" onclick="showContent('rq3')">
+                        <div class="card-title">RQ3: Defense Effectiveness</div>
+                    </div>
+                </div>
+
+                <div id="rq1-content" class="content-area">
+                    To investigate whether existing SLMs are vulnerable to popular jailbreak attacks, we evaluate 15 SLM families against 9 mainstream jailbreak attack methods.
+                    <br><br>
+
+                    <!-- SLMs Section -->
+                    <div id="slms-content">
+                        <h2 class="content-title">Small Language Models (SLMs)</h2>
+                        <div class="dropdown-container">
+                            <select class="custom-select" id="slm-select">
+                                <option value="">Select a model family...</option>
+                                <option value="llama">LLaMA 3.2 family (developed by Meta)</option>
+                                <option value="deepseek">DeepSeek-R1 family (developed by DeepSeek)</option>
+                                <option value="qwen">Qwen family (developed by Alibaba)</option>
+                                <option value="gemma">Gemma family (developed by Google)</option>
+                                <option value="phi">Phi family (developed by Microsoft)</option>
+                                <option value="minicpm">MiniCPM family (developed by Tsinghua University)</option>
+                                <option value="h2o">H2O-Danube family (developed by H2O)</option>
+                                <option value="smollm">SmolLM family (developed by HuggingFace)</option>
+                                <option value="stablelm">StableLM family (developed by StabilityAI)</option>
+                                <option value="tinyllama">TinyLlama family (developed by Microsoft)</option>
+                                <option value="mobilellama">MobileLLaMA family (developed by Meituan)</option>
+                                <option value="mobillama">MobiLlama family (developed by MBZUAI)</option>
+                                <option value="fox">Fox family (developed by TensorOpera)</option>
+                                <option value="dolly">Dolly family (developed by DataBricks)</option>
+                                <option value="olmo">OLMo family (developed by AllenAI)</option>
+                            </select>
+                            
+                            <!-- Content displays for each model -->
+                            <div id="llama-content" class="content-display">
+                                <p><strong>LLaMA 3.2 (1B; 3B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.9</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: GQA; SiLU; Shared Embeddings; Pruning; Knowledge distillation; SFT; RLHF; RS; DPO</li>
+                                </ul>
+                            </div>
+
+                            <div id="deepseek-content" class="content-display">
+                                <p><strong>DeepSeek-R1 (1.5B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2025.1</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: SFT; RL; Knowledge distillation</li>
+                                </ul>
+                            </div>
+
+                            <div id="qwen-content" class="content-display">
+                                <p><strong>Qwen 1 (1.8B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2023.9</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm</li>
+                                </ul>
+                                <p><strong>Qwen 1.5 (0.5B; 1.8B; 4B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.2</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: MHA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                                </ul>
+                                <p><strong>Qwen 2 (0.5B; 1.5B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.6</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support</li>
+                                </ul>
+                                <p><strong>Qwen 2.5 (0.5B; 1.5B; 3B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.9</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: GQA; RoPE; SwiGLU; RMSNorm; Multilingual support; Larger corpus</li>
+                                </ul>
+                            </div>
+
+                            <div id="gemma-content" class="content-display">
+                                <p><strong>Gemma (2B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.3</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</li>
+                                </ul>
+                                <p><strong>Gemma 1.1 (2B; 7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.3</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: MHA; RoPE; GeGLU; RMSNorm; SFT; RLHF</li>
+                                </ul>
+                                <p><strong>Gemma 2 (2B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.7</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: GQA; RoPE; GeGLU; Local Sliding Window and Global Attention; Logit Soft-Capping; RMSNorm for Pre and Post-Normalization</li>
+                                </ul>
+                            </div>
+
+                            <div id="phi-content" class="content-display">
+                                <p><strong>Phi-3 (3.8B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.4</li>
+                                    <li>Training Data: Scaled-up dataset from phi-2</li>
+                                    <li>Techniques: MHA; SiLU; RoPE; FlashAttention; Deep ZeRO Stage 2</li>
+                                </ul>
+                                <p><strong>Phi-3.5 (3.8B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.4</li>
+                                    <li>Training Data: More multilingual and long-text data</li>
+                                    <li>Techniques: Multilingual; MHA; SiLU; RoPE; FlashAttention; ZeRO 2</li>
+                                </ul>
+                            </div>
+
+                            <div id="minicpm-content" class="content-display">
+                                <p><strong>MiniCPM (1.2B; 2.4B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.4</li>
+                                    <li>Training Data: Dolma; C4; Pile; stack; StarCoder; UltraChat; OssInstruct; EvolInstruct</li>
+                                    <li>Techniques: Warmup-Stable-Decay (WSD) learning rate scheduler; SFT; DPO; Embedding Sharing; GQA</li>
+                                </ul>
+                                <p><strong>MiniCPM3 (4B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.9</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: Unknown</li>
+                                </ul>
+                            </div>
+
+                            <div id="h2o-content" class="content-display">
+                                <p><strong>H2O-Danube (1.8B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.1</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: RoPE; GQA; RMSNorm; Sliding window</li>
+                                </ul>
+                                <p><strong>H2O-Danube2 (1.8B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.4</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: RoPE; GQA; RMSNorm; three training stages with different data mixes</li>
+                                </ul>
+                                <p><strong>H2O-Danube3 (500M; 4B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.7</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: RoPE; GQA; RMSNorm; three training stages with different data mixes</li>
+                                </ul>
+                            </div>
+
+                            <div id="smollm-content" class="content-display">
+                                <p><strong>SmolLM (135M; 360M; 1.7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.7</li>
+                                    <li>Training Data: SmolLM-Corpus</li>
+                                    <li>Techniques: GQA; trapezoidal LR scheduler</li>
+                                </ul>
+                                <p><strong>SmolLM2 (135M; 360M; 1.7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2025.2</li>
+                                    <li>Training Data: Cosmopedia v2; FineWeb-Edu; Stack-Edu; FineMath; DCLM</li>
+                                    <li>Techniques: Multi-stage training; Warmup-Stable-Decay (WSD) learning rate scheduler</li>
+                                </ul>
+                            </div>
+
+                            <div id="stablelm-content" class="content-display">
+                                <p><strong>StableLM (3B)</strong></p>
+                                <ul>
+                                    <li>Released: 2023.4</li>
+                                    <li>Training Data: RefinedWeb; RedPajama; The Pile; StarCoder</li>
+                                    <li>Techniques: MHA; SiLU; SFT; DPO; RoPE; LayerNorm</li>
+                                </ul>
+                                <p><strong>StableLM 2 (1.6B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.2</li>
+                                    <li>Training Data: RefinedWeb; subsets of the Pile; RedPajama; the Stack; OpenWebText; OpenWebMath; CulturaX</li>
+                                    <li>Techniques: RoPE; LayerNorm; No Biases; FlashAttention-2; Multi-stage infinite scheduler; SFT; DPO</li>
+                                </ul>
+                            </div>
+
+                            <div id="tinyllama-content" class="content-display">
+                                <p><strong>TinyLlama v1.1 (1.1B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.1</li>
+                                    <li>Training Data: SlimPajama</li>
+                                    <li>Techniques: RoPE; RMSNorm; SwiGLU; GQA; Flash Attention; xFormers</li>
+                                </ul>
+                            </div>
+
+                            <div id="mobilellama-content" class="content-display">
+                                <p><strong>MobileLLaMA (1.4B; 2.7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2023.12</li>
+                                    <li>Training Data: RedPajama v1</li>
+                                    <li>Techniques: RoPE; RMSNorm; SwiGLU; Deep ZERO 1; Flash Attention V2</li>
+                                </ul>
+                            </div>
+
+                            <div id="mobillama-content" class="content-display">
+                                <p><strong>MobiLlama (0.5B; 1.2B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.2</li>
+                                    <li>Training Data: LLM360 Amber (includes Arxiv, Book, C4, Refined-Web, StarCoder, StackExchange, and Wikipedia)</li>
+                                    <li>Techniques: RoPE; SwiGLU; RMSNorm; Parameter-sharing; FlashAttention</li>
+                                </ul>
+                            </div>
+
+                            <div id="fox-content" class="content-display">
+                                <p><strong>Fox-1 (1.6B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.6</li>
+                                    <li>Training Data: Unknown</li>
+                                    <li>Techniques: RMSNorm; RoPE; GQA; Deep architecture; Shared Embedding</li>
+                                </ul>
+                            </div>
+
+                            <div id="dolly-content" class="content-display">
+                                <p><strong>Dolly v1 (6B)</strong></p>
+                                <ul>
+                                    <li>Released: 2023.3</li>
+                                    <li>Training Data: Pile; Stanford Alpaca</li>
+                                    <li>Techniques: RoPE; Fine-tuning; Deepspeed ZeRO 3</li>
+                                </ul>
+                                <p><strong>Dolly v2 (2.8B; 6.9B)</strong></p>
+                                <ul>
+                                    <li>Released: 2023.4</li>
+                                    <li>Training Data: Pile; Databricks-dolly-15k</li>
+                                    <li>Techniques: Fine-tuning</li>
+                                </ul>
+                            </div>
+
+                            <div id="olmo-content" class="content-display">
+                                <p><strong>OLMo (7B)</strong></p>
+                                <ul>
+                                    <li>Released: 2024.2</li>
+                                    <li>Training Data: Dolma</li>
+                                    <li>Techniques: SwiGLU; RoPE; Non-parameteric Layer Norm; No biases; ZeRO</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Jailbreak Methods Section -->
+                    <div id="jailbreak-content">
+                        <h2 class="content-title">Jailbreak Methods</h2>
+                        <div class="dropdown-container">
+                            <select class="custom-select" id="jailbreak-select">
+                                <option value="">Select a jailbreak method...</option>
+                                <option value="direct">Direct</option>
+                                <option value="humanjailbreaks">HumanJailbreaks</option>
+                                <option value="autodan">AutoDAN</option>
+                                <option value="pap">PAP</option>
+                                <option value="gcg">GCG</option>
+                                <option value="autoprompt">AutoPrompt</option>
+                                <option value="pez">PEZ</option>
+                                <option value="gbda">GBDA</option>
+                                <option value="uat">UAT</option>
+                            </select>
+
+                            <!-- Content displays for jailbreak methods -->
+                            <div id="direct-content" class="content-display">
+                                <p>This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</p>
+                            </div>
+
+                            <!-- Content displays for jailbreak methods -->
+                            <div id="humanjailbreaks-content" class="content-display">
+
+                                <p>This method uses the vanilla harmful query to test whether the model can identify the malicious intent and reject to engage in policy-violating activities such as making a bomb.</p>
+                                <p>It uses a fixed set of in-the-wild jailbreak template that can be embedded into any harmful question without additional transformation or optimization.</p>
+                                <p><a href="https://arxiv.org/abs/2308.03825" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="autodan-content" class="content-display">
+
+                                <p>This method initialized with handcrafted jailbreak templates as seeds and then optimize these seed using a hierarchical genetic algorithm so as to elicit targeted behaviors from the target model.</p>
+                                <p><a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="pap-content" class="content-display">
+
+                                <p>This method treats the target model as a human-like communicator and use persuasive strategies to induce the target model to answer harmful queries. Specifically, they fine-tune a GPT-3.5-turbo to craft jailbreak prompts according to each persuasive strategy.</p>
+                                <p><a href="https://arxiv.org/abs/2401.06373" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="gcg-content" class="content-display">
+
+                                <p>This method optimize an adversarial suffix using a combination of greedy search and gradient-based optimization from random initialization. The suffix is then appended to the harmful query to maximize the likelihood that the target model respond with the expected prefix.</p>
+                                <p><a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="autoprompt-content" class="content-display">
+
+                                <p>This method is similar to GCG and also uses a gradient-based approach to optimize an adversarial suffix, but AutoPrompt focuses on adjusting a single coordinate (token) at a time, optimizing it based on gradient information before moving on to the next token.</p>
+                                <p><a href="https://arxiv.org/abs/2010.15980" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="pez-content" class="content-display">
+
+                                <p>This method uses a gradient-based method to optimize hard text prompts. Specifically, it combines the ease of soft prompt optimization and the interpretability of hard prompts by maintaining continuous embeddings during optimization and projecting them onto the nearest discrete tokens.</p>
+                                <p><a href="https://arxiv.org/abs/2302.03668" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="gbda-content" class="content-display">
+
+                                <p>This method leverages the Gumbel-softmax distribution to optimize a distribution of potential adversarial suffixes. This allows for gradient-based optimization and incorporates differentiable constraints such as BERTScore and language model perplexity to ensure fluency and semantic similarity.</p>
+                                <p><a href="https://arxiv.org/abs/2104.13733" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="uat-content" class="content-display">
+
+                                <p>This method iteratively update the embedding for every trigger token to minimizes the target loss' first-order Taylor approximation around the current token embedding.</p>
+                                <p><a href="https://arxiv.org/abs/1908.07125" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content has-text-justified">
+                        <p>
+                            Through a comprehensive evaluation of current SLMs against jailbreak attacks, we find that SLMs exhibit limited safety in the face of jailbreak attacks. <b>Half</b> of evaluated SLMs are highly vulnerable to jailbreak attacks, with average attack success rate (ASR) greater than <b>40%</b>, and <b>38.7%</b> of them even show an ASR of more than <b>50%</b> when faced with direct harmful query.
+                            Only a small number of SLMs demonstrate relatively good resistance to jailbreak attacks, such as Google's Gemma series and Microsoft's Phi-3 series.
+                            
+                            <br><br>
+                            Among these results, we observe that SLMs exhibit imbalanced vulnerabilities when facing different attack methods and risk categories. Notably, we find that current SLMs are more vulnerable to advanced, optimization-based attacks (e.g., <a href="https://arxiv.org/abs/2307.15043" style="color:rgb(0, 115, 255)">GCG</a> and <a href="https://arxiv.org/abs/2310.04451" style="color:rgb(0, 115, 255)">AutoDAN</a> and are highly susceptible to the <i>"Economic Harm"</i> risk category (ASR ≈ 100%), while showing greater safety in the <i>"Health Consultation"</i> risk category (ASR < 20%). 
+                        </p>
+                    </div>
+
+                    <div class="columns is-centered">
+                        <div class="column">
+                            <figure>
+                                <img src="./website/images/rq1_attack_specific.png" alt="" style="width: 80%; height: auto;">
+                                <figcaption>The heatmap of SLMs' vulnerabilities across 15 SLM families against 9 jailbreak attacks.</figcaption>
+                            </figure>
+                        </div>
+                        <div class="column">
+                            <figure>
+                                <img src="./website/images/rq1_goal_specific_sort.png" alt="">
+                                <figcaption>The heatmap of SLMs' vulnerabilities across 14 risk categories.</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+
+                    <div class="content has-text-justified">
+                        <p>
+                            Here are some jailbreak examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
+                        </p>
+                    </div>
+                    
+                    <!-- Jailbreak Examples with Dropdowns -->
+                    <div class="jailbreak-examples-container">
+                        <div class="dropdown-container-box">
+                            <div class="dropdown-row">
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="slm-attack-select">
+                                        <option value="">Select a SLM...</option>
+                                        <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                        <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                        <option value="Qwen family">Qwen family</option>
+                                        <option value="Gemma family">Gemma family</option>
+                                        <option value="Phi family">Phi family</option>
+                                        <option value="MiniCPM family">MiniCPM family</option>
+                                        <option value="H2O-Danube family">H2O-Danube family</option>
+                                        <option value="SmolLM family">SmolLM family</option>
+                                        <option value="StableLM family">StableLM family</option>
+                                        <option value="TinyLlama family">TinyLlama family</option>
+                                        <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                        <option value="MobiLlama family">MobiLlama family</option>
+                                        <option value="Fox family">Fox family</option>
+                                        <option value="Dolly family">Dolly family</option>
+                                        <option value="OLMo family">OLMo family</option>
+                                    </select>                                    
+                                </div>  
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="jailbreak-attack-select">
+                                        <option value="">Select a jailbreak method...</option>
+                                        <option value="Direct">Direct</option>
+                                        <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                        <option value="AutoDAN">AutoDAN</option>
+                                        <option value="PAP">PAP</option>
+                                        <option value="GCG">GCG</option>
+                                        <option value="AutoPrompt">AutoPrompt</option>
+                                        <option value="PEZ">PEZ</option>
+                                        <option value="GBDA">GBDA</option>
+                                        <option value="UAT">UAT</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="category-select">
+                                        <option value="">Select a risk category...</option>
+                                        <option value="Children Harm">Children Harm</option>
+                                        <option value="Economic Harm">Economic Harm</option>
+                                        <option value="Financial Advice">Financial Advice</option>
+                                        <option value="Fraud">Fraud</option>
+                                        <option value="Gov Decision">Gov Decision</option>
+                                        <option value="Hate Speech">Hate Speech</option>
+                                        <option value="Health Consultation">Health Consultation</option>
+                                        <option value="Illegal Activity">Illegal Activity</option>
+                                        <option value="Legal Opinion">Legal Opinion</option>
+                                        <option value="Malware">Malware</option>
+                                        <option value="Physical Harm">Physical Harm</option>
+                                        <option value="Political Lobbying">Political Lobbying</option>
+                                        <option value="Pornography">Pornography</option>
+                                        <option value="Privacy Violence">Privacy Violence</option>
+                                    </select>
+                                </div>                                                           
+                            </div>
+                        </div>
+                        
+                        <div id="jailbreak-example-display" class="output-container">
+                            <!-- Content will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div id="rq2-content" class="content-area">
+                    <h2 class="content-title">Factor Analysis</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            After conducting correlation tests between potential factors and the vulnerability of SLMs, we identify several key factors that significantly impact their susceptibility. 
+                            
+                            <br><br>
+                            Contrary to common intuition, we find that the robustness of SLMs is more influenced by training details than by the model size itself. Interestingly, scaling up the model size and training dataset does not always enhance model safety and can sometimes have an adverse effect.
+                            For example, expanding the model's corpus may increase the risk of jailbreak attacks, while moderate degree of sparse techniques may improve robustness. 
+                            
+                            <br><br>
+                            Notably, supervised fine-tuning (SFT) models demonstrate 10 ~ 40% better robustness compared to their DPO-optimized (Direct Preference Optimization) counterparts at most time. In addition, through evaluating diversity and fluency of jailbreak responses, we found that some SLMs (e.g., the TinyLlama family) may output repetitive harmful sentences due to limited generation capability. 
+                        </p>
+                    </div>
+                    
+                    <figure>
+                        <img src="./website/images/factor_analysis_results.png" alt="">
+                        <figcaption>The correlation analysis results between key factors, including model size, training tokens, and model capabilities, and jailbreak vulnerabilities (measured by ASR) across different attack methods. Cells where the null hypothesis is rejected (p < 0.05) are highlighted in <span style="color: red;">red</span>, indicating a significant correlation
+                        between the factor and the vulnerability of SLMs.</figcaption>
+                    </figure>
+                </div>
+
+                <div id="rq3-content" class="content-area">
+                    <h2 class="content-title">Defense Effectiveness</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            we test the effectiveness of four lightweight defense methods in SLMs and found that none of them could achieve perfect performance in all SLMs across different attack methods. This reveals the limitations of existing defense measures and underscores the urgent need for SLM developers to place greater emphasis on security during SLMs design and training.
+
+                        </p>
+                    </div>
+
+                    <!-- Defense Methods Section -->
+                    <div id="defense-content">
+                        <!-- <h2 class="content-title">Defense Methods</h2> -->
+                        <div class="dropdown-container">
+                            <select class="custom-select" id="defense-select">
+                                <option value="">Select a defense method...</option>
+                                <option value="ppl">PPL</option>
+                                <option value="llamaguard">Llama Guard 3-1B</option>
+                                <option value="retokenization">Retokenization</option>
+                                <option value="selfreminder">Self-Reminder</option>
+                            </select>
+
+                            <!-- Content displays for defense methods -->
+                            <div id="ppl-content" class="content-display">
+
+                                <p>Perplexity is a metric used to assess the accuracy of a language model in predicting the next word. When the perplexity of a model abnormally increases, it indicates that the input contains unnatural linguistic structures that the model has not learned (e.g., adversarial suffix).</p>
+                                <p>PPL-based defense method sets a perplexity threshold and filters out input prompts whose perplexity is higher than the threshold.</p>
+                                <p><a href="https://arxiv.org/abs/2308.14132" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="llamaguard-content" class="content-display">
+
+                                <p>Llama Guard 3-1B, developed by Meta, is a fine-tuned Llama-3.2-1B pretrained model for content safety classification. Given a text, the model generates output that indicates whether a given prompt or response is safe or unsafe, and if unsafe, it also lists the content categories violated.</p>
+                                <p><a href="https://github.com/meta-llama/PurpleLlama/blob/main/Llama-Guard3/1B/MODEL_CARD.md" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="retokenization-content" class="content-display">
+
+                                <p>Tokenization is the process of converting a text prompt into a sequence of tokens that the language model can process (e.g., words, subwords, or characters), while the Retokenization defense retokenizes the input prompt using alternative schemes, altering boundaries or adding noise, thus disrupt the jailbreak features.</p>
+                                <p><a href="https://arxiv.org/abs/2309.00614" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+
+                            <div id="selfreminder-content" class="content-display">
+
+                                <p>This defense is inspired by the psychological concept of self-reminders, and add safety reminders in the system prompt of target model to induce the model to respond responsibly.</p>
+                                <p><a href="https://www.nature.com/articles/s42256-023-00765-8" style="color:rgb(0, 115, 255)">Read more</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <figure>
+                        <img src="./website/images/rq3_all_defense.png" alt="">
+                        <figcaption>Performance of different jailbreak defense methods (i.e., PPL, Llama Guard 3-1B, Retokenization, and Self-Reminder) against 9 attack methods
+                        in 62 SLMs, where a greater drop in the ASR index (i.e., the height difference between adjacent bars) indicates better defense effectiveness.</figcaption>
+                    </figure>
+                    
+                    <br>
+
+                    <div class="content has-text-justified">
+                        <p>
+                            Here are some defense examples. For more detailed results, please refer to our <b><a href="leaderboard.html" style="color: #0066cc;">leaderboard</a></b>.                        
+                        </p>
+                    </div>
+                    
+                    <!-- Defense Examples with Dropdowns -->
+                    <div class="jailbreak-examples-container">
+                        <!-- <h2 class="content-title">Defense Examples</h2> -->
+                        <div class="dropdown-container-box">
+                            <div class="dropdown-row">
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-slm-select">
+                                        <option value="">Select a SLM...</option>
+                                        <option value="LLaMA 3.2 family">LLaMA 3.2 family</option>
+                                        <option value="DeepSeek-R1 family">DeepSeek-R1 family</option>
+                                        <option value="Qwen family">Qwen family</option>
+                                        <option value="Gemma family">Gemma family</option>
+                                        <option value="Phi family">Phi family</option>
+                                        <option value="MiniCPM family">MiniCPM family</option>
+                                        <option value="H2O-Danube family">H2O-Danube family</option>
+                                        <option value="SmolLM family">SmolLM family</option>
+                                        <option value="StableLM family">StableLM family</option>
+                                        <option value="TinyLlama family">TinyLlama family</option>
+                                        <option value="MobileLLaMA family">MobileLLaMA family</option>
+                                        <option value="MobiLlama family">MobiLlama family</option>
+                                        <option value="Fox family">Fox family</option>
+                                        <option value="Dolly family">Dolly family</option>
+                                        <option value="OLMo family">OLMo family</option>
+                                    </select>                                    
+                                </div>  
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-jailbreak-select">
+                                        <option value="">Select a jailbreak method...</option>
+                                        <option value="Direct">Direct</option>
+                                        <option value="HumanJailbreaks">HumanJailbreaks</option>
+                                        <option value="AutoDAN">AutoDAN</option>
+                                        <option value="PAP">PAP</option>
+                                        <option value="GCG">GCG</option>
+                                        <option value="AutoPrompt">AutoPrompt</option>
+                                        <option value="PEZ">PEZ</option>
+                                        <option value="GBDA">GBDA</option>
+                                        <option value="UAT">UAT</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-category-select">
+                                        <option value="">Select a risk category...</option>
+                                        <option value="Children Harm">Children Harm</option>
+                                        <option value="Economic Harm">Economic Harm</option>
+                                        <option value="Financial Advice">Financial Advice</option>
+                                        <option value="Fraud">Fraud</option>
+                                        <option value="Gov Decision">Gov Decision</option>
+                                        <option value="Hate Speech">Hate Speech</option>
+                                        <option value="Health Consultation">Health Consultation</option>
+                                        <option value="Illegal Activity">Illegal Activity</option>
+                                        <option value="Legal Opinion">Legal Opinion</option>
+                                        <option value="Malware">Malware</option>
+                                        <option value="Physical Harm">Physical Harm</option>
+                                        <option value="Political Lobbying">Political Lobbying</option>
+                                        <option value="Pornography">Pornography</option>
+                                        <option value="Privacy Violence">Privacy Violence</option>
+                                    </select>
+                                </div>
+                                <div class="dropdown-col">
+                                    <select class="custom-select" id="defense-method-select">
+                                        <option value="">Select a defense method...</option>
+                                        <option value="PPL">PPL</option>
+                                        <option value="Llama Guard 3-1B">Llama Guard 3-1B</option>
+                                        <option value="Retokenization">Retokenization</option>
+                                        <option value="Self-Reminder">Self-Reminder</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="defense-example-display" class="output-container">
+                            <!-- Content will be dynamically inserted here -->
+                        </div>
+                    </div>
+
+                </div>          
+            </div>
+        </section>
+
+        
+
+    
+    
+        <section class="section" id="ethics">
+            <!-- Benchmark design. -->
+    
+            <div class="container is-max-desktop">
+                <div class="columns is-centered has-text-centered">
+                    <div class="container is-max-desktop">
+                        <h2 class="title is-3">Ethics and Disclosure</h2>
+                        <div class="content has-text-justified">
+                            <p>
+                                In this study, we adhered to ethical standards to ensure safety and privacy. Our experiments were conducted 
+                                using platforms provided officially or through open-source models deployed in a closed environment. 
+                                We did not disseminate any harmful or illicit content to the public or others. The datasets we employed 
+                                were obtained from public repositories and did not contain any personal information. The main objective of 
+                                this study is to highlight potential vulnerabilities in LLMs, especially given the rapid pace of their adoption. 
+                                Moreover, we have responsibly disclosed our findings to OpenAI and Meta.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <section class="section" id="BibTeX">
+            <div class="container is-max-desktop content">
+                <h2 class="title">BibTeX</h2>
+                <p>
+                    If you find our project useful, please consider citing:
+                </p>
+                <pre><code>@article{zhang2025can,
+                    title={Can Small Language Models Reliably Resist Jailbreak Attacks? A Comprehensive Evaluation},
+                    author={Zhang, Wenhui and Xu, Huiyu and Wang, Zhibo and He, Zeqing and Zhu, Ziqi and Ren, Kui},
+                    journal={arXiv preprint arXiv:2503.06519},
+                    year={2025}
+                  }
+    }</code></pre>
+            </div>
+        </section>   
+    
+        <footer class="footer">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        <div class="content">
+                            <p>
+                                This website is borrowed from <a href="https://chats-lab.github.io/persuasive_jailbreaker/">PAP
+                                </a>, <a href="https://nerfies.github.io/">Nerfies</a>,
+                                <a href="https://jailbreaking-llms.github.io/">PAIR</a>,
+                                and licensed under a <a rel="license"
+                                    href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                                    Commons Attribution-ShareAlike 4.0 International License</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+    
+    </body>
+    <grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open">
+            <style>
+                div.grammarly-desktop-integration {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    white-space: nowrap;
+                    border: 0;
+                    -moz-user-select: none;
+                    -webkit-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                div.grammarly-desktop-integration:before {
+                    content: attr(data-content);
+                }
+            </style>
+            <div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration"
+                data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}">
+            </div>
+        </template></grammarly-desktop-integration>
+    
+    
+</html>
