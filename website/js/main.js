@@ -670,7 +670,12 @@ function displayResponseWithTypewriter(container, text, className, title, label)
                 console.log('Adding label element:', label); // Debug日志
                 const labelDiv = document.createElement('div');
                 labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
-                labelDiv.textContent = "Label: " + label;
+                if (label === 0) {
+                    labelDiv.textContent = "Jailbreak Fail";
+                } else {
+                    labelDiv.textContent = "Jailbreak Success!"
+                }
+                // labelDiv.textContent = "Label: " + label;
 
                 // 将标签添加到响应消息下方，而不是其中
                 container.appendChild(labelDiv);

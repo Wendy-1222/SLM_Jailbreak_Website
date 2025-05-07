@@ -600,7 +600,7 @@ caption {
     text-align: left;
     margin-bottom: 20px;
     font-family: 'Roboto', 'Segoe UI', sans-serif;
-    font-size: 1.5rem;
+    font-size: 17px;
     color: #333;
     padding: 15px;
     background: linear-gradient(to right, #f8f8f8, #ffffff, #f8f8f8);
@@ -618,6 +618,7 @@ caption {
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    font-size: 15px;
     align-self: flex-end;
     position: relative;
 }
@@ -629,6 +630,7 @@ caption {
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    font-size: 15px;
     align-self: flex-end;
     position: relative;
 }
@@ -640,6 +642,7 @@ caption {
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
+    font-size: 15px;
     align-self: flex-start;
     position: relative;
 }
