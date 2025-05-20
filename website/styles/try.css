@@ -1,1 +1,92 @@
- 
+/* Terminal Styles */
+.terminal-container {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.terminal-header {
+    background-color: #f5f5f5;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.terminal-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.terminal-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.terminal-content {
+    height: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    transition: all 0.3s ease-in-out;
+}
+
+.terminal-content.collapsed {
+    max-height: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    border-top: none;
+}
+
+.terminal-output {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    padding: 12px;
+    min-height: 100px;
+    white-space: pre-wrap;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Terminal button styles */
+#clear-terminal, #toggle-terminal {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 3px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+#clear-terminal:hover, #toggle-terminal:hover {
+    background-color: #e0e0e0;
+}
+
+#toggle-icon {
+    font-size: 10px;
+    line-height: 1;
+}
+
+/* Terminal line styling */
+.terminal-line {
+    margin-bottom: 4px;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    .terminal-container {
+        margin-top: 15px;
+    }
+    
+    .terminal-output {
+        font-size: 12px;
+    }
+} 

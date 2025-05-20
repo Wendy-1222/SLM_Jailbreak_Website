@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Defense下拉菜单初始化失败：', e);
     }
     
-    // 设置清除终端按钮
-    setupClearTerminalButton();
+    // 监听try容器的变化，以便在加载完成后设置终端按钮
+    observeTryContainer();
     
     // 添加延迟检查，确保所有组件加载后再尝试初始化RQ3相关功能
     setTimeout(() => {
@@ -104,6 +104,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('找到try-slm-family-select，重新初始化');
             setupSLMFamilyDropdown();
         }
+        
+        // 再次尝试设置终端按钮
+        setupClearTerminalButton();
     }, 1000); // 延迟1秒
 
     // 添加点击事件，当点击页面空白处时关闭下拉内容
@@ -111,6 +114,30 @@ document.addEventListener('DOMContentLoaded', function() {
         closeDropdownsOnOutsideClick(event);
     });
 });
+
+// 使用 MutationObserver 监听 try-container 的变化
+function observeTryContainer() {
+    const tryContainer = document.getElementById('try-container');
+    if (!tryContainer) {
+        console.log('try-container 未找到，无法监听变化');
+        return;
+    }
+    
+    console.log('开始监听 try-container 的变化');
+    
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                console.log('try-container 内容已变化，设置终端按钮');
+                // 当 try-container 内容变化时设置终端按钮
+                setupClearTerminalButton();
+            }
+        });
+    });
+    
+    // 开始观察 try-container 的子节点变化
+    observer.observe(tryContainer, { childList: true });
+}
 
 // 设置SLM家族下拉菜单，当选择家族时填充相应的SLM模型
 function setupSLMFamilyDropdown() {
@@ -1027,16 +1054,78 @@ function closeDropdownsOnOutsideClick(event) {
 
 // 设置清除终端按钮
 function setupClearTerminalButton() {
+    console.log('Setting up terminal buttons...');
+    
     const clearButton = document.getElementById('clear-terminal');
+    const toggleButton = document.getElementById('toggle-terminal');
     const terminalOutput = document.getElementById('terminal-output');
+    const terminalContent = document.getElementById('terminal-content');
+    const toggleIcon = document.getElementById('toggle-icon');
+    const toggleText = document.getElementById('toggle-text');
+    
+    console.log('Terminal elements found:', {
+        clearButton: !!clearButton,
+        toggleButton: !!toggleButton,
+        terminalOutput: !!terminalOutput,
+        terminalContent: !!terminalContent,
+        toggleIcon: !!toggleIcon,
+        toggleText: !!toggleText
+    });
     
     if (!clearButton || !terminalOutput) {
         console.log('清除终端按钮或终端输出元素未找到');
         return;
     }
     
-    clearButton.addEventListener('click', function() {
-        console.log('清除终端输出');
+    // 初始化终端内容
+    if (terminalOutput.innerHTML.trim() === '') {
+        const timestamp = new Date().toLocaleTimeString();
+        terminalOutput.innerHTML = `<div class="terminal-line">[${timestamp}] SLM Jailbreak Terminal initialized</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] Ready to test jailbreak methods on SLMs</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] Select an SLM family, model, and jailbreak method to begin</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">--------------------------------------------------</div>`;
+    }
+    
+    clearButton.addEventListener('click', function(event) {
+        console.log('清除终端按钮被点击');
         terminalOutput.innerHTML = '';
+        event.preventDefault(); // 防止事件冒泡
+        event.stopPropagation(); // 阻止事件传播
     });
+    
+    // 添加折叠/展开终端功能
+    if (toggleButton && terminalContent && toggleIcon && toggleText) {
+        console.log('设置终端折叠功能');
+        
+        // 确保初始状态是展开的
+        terminalContent.classList.remove('collapsed');
+        toggleIcon.textContent = '▼';
+        toggleText.textContent = 'Fold';
+        
+        toggleButton.addEventListener('click', function(event) {
+            console.log('折叠/展开按钮被点击');
+            
+            // 切换折叠状态
+            const isCurrentlyCollapsed = terminalContent.classList.contains('collapsed');
+            
+            if (isCurrentlyCollapsed) {
+                // 如果当前是折叠的，则展开
+                terminalContent.classList.remove('collapsed');
+                toggleIcon.textContent = '▼';
+                toggleText.textContent = 'Fold';
+                console.log('终端已展开');
+            } else {
+                // 如果当前是展开的，则折叠
+                terminalContent.classList.add('collapsed');
+                toggleIcon.textContent = '▲';
+                toggleText.textContent = 'Expand';
+                console.log('终端已折叠');
+            }
+            
+            event.preventDefault(); // 防止事件冒泡
+            event.stopPropagation(); // 阻止事件传播
+        });
+    } else {
+        console.log('终端折叠按钮或相关元素未找到');
+    }
 } 

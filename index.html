@@ -9,6 +9,7 @@
     
     <!-- 引入样式 -->
     <link rel="stylesheet" href="./website/styles/main.css">
+    <link rel="stylesheet" href="./website/styles/try.css">
     
     <!-- 引入JavaScript库 -->
     <script src="./website/js/main.js"></script>
@@ -21,6 +22,18 @@
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById(id).innerHTML = data;
+                    
+                    // 如果加载的是try组件，则初始化终端按钮
+                    if (id === 'try-container') {
+                        console.log('try组件加载完成，初始化终端按钮');
+                        setTimeout(() => {
+                            if (typeof setupClearTerminalButton === 'function') {
+                                setupClearTerminalButton();
+                            } else {
+                                console.error('setupClearTerminalButton function not found');
+                            }
+                        }, 100); // 短暂延迟确保DOM已完全更新
+                    }
                 })
                 .catch(error => console.error('Error loading component:', error));
         }

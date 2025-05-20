@@ -85,10 +85,18 @@
             <!-- Terminal Output Area -->
             <div id="terminal-container" class="terminal-container">
                 <div class="terminal-header">
-                    <h4>Terminal Output</h4>
-                    <button id="clear-terminal" class="button is-small">Clear</button>
+                    <div class="terminal-title">Terminal</div>
+                    <div class="terminal-controls">
+                        <button id="toggle-terminal" class="button is-small">
+                            <span id="toggle-icon">▼</span>
+                            <span id="toggle-text">Fold</span>
+                        </button>
+                        <button id="clear-terminal" class="button is-small">Clear</button>
+                    </div>
                 </div>
-                <div id="terminal-output" class="terminal-output"></div>
+                <div id="terminal-content" class="terminal-content">
+                    <div id="terminal-output" class="terminal-output"></div>
+                </div>
             </div>
         </div>
     </div>
