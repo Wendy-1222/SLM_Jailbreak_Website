@@ -1,0 +1,95 @@
+{
+    "Llama3.2": [
+        "llama3_2_1b_instruct",
+        "llama3_2_3b_instruct"
+    ],
+    "DeepSeek-R1": [
+        "DeepSeek-R1-Distill-Qwen-1.5B",
+        "DeepSeek-R1-Distill-Qwen-7B"
+    ],
+    "Qwen": [
+        "qwen_1_8b_chat",
+        "qwen_7b_chat",
+        "qwen1_5_0_5b_chat",
+        "qwen1_5_1_8b_chat",
+        "qwen1_5_4b_chat",
+        "qwen1_5_7b_chat",
+        "qwen2_0_5b_instruct",
+        "qwen2_1_5b_instruct",
+        "qwen2_7b_instruct",
+        "qwen2_5_0_5b_instruct",
+        "qwen2_5_1_5b_instruct",
+        "qwen2_5_3b_instruct",
+        "qwen2_5_7b_instruct"
+    ],
+    "Gemma": [
+        "gemma-2b-it",
+        "gemma-7b-it",
+        "gemma-1.1-2b-it",
+        "gemma-1.1-7b-it",
+        "gemma-2-2b-it",
+        "recurrentgemma-2b-it"
+    ],
+    "Phi": [
+        "phi_3_mini_4k_instruct",
+        "phi_3_mini_128k_instruct",
+        "phi_3_5_mini_instruct"
+    ],
+    "MiniCPM": [
+        "minicpm-1B-sft-bf16",
+        "minicpm-S-1B-sft",
+        "minicpm-2B-sft-bf16",
+        "minicpm-2B-dpo-bf16",
+        "minicpm3-4B"
+    ],
+    "H2O-Danube": [
+        "h2o-danube-1.8b-sft",
+        "h2o-danube-1.8b-chat",
+        "h2o-danube2-1.8b-sft",
+        "h2o-danube2-1.8b-chat",
+        "h2o-danube3-500m-chat",
+        "h2o-danube3-4b-chat"
+    ],
+    "SmolLM": [
+        "smollm-135M-instruct",
+        "smollm-360M-instruct",
+        "smollm-1.7B-instruct",
+        "smollm2-135M-instruct",
+        "smollm2-360M-instruct",
+        "smollm2-1.7B-instruct"
+    ],
+    "StableLM": [
+        "stablelm-2-zephyr-1_6b",
+        "stablelm-2-1_6b-chat",
+        "stablelm-zephyr-3b"
+    ],
+    "TinyLlama": [
+        "tinyllama-1.1B-chat-v0.1",
+        "tinyllama-1.1B-chat-v0.2",
+        "tinyllama-1.1B-chat-v0.3",
+        "tinyllama-1.1B-chat-v0.4",
+        "tinyllama-1.1B-chat-v0.5",
+        "tinyllama-1.1B-chat-v0.6",
+        "tinyllama-1.1B-chat-v1.0"
+    ],
+    "MobileLlama": [
+        "mobilellama-1.4B-chat",
+        "mobilellama-2.7B-chat"
+    ],
+    "MobiLlama": [
+        "mobillama-0.5B-chat",
+        "mobillama-1B-chat"
+    ],
+    "Fox": [
+        "fox-1-1.6B-Instruct-v0.1"
+    ],
+    "Dolly": [
+        "dolly-v1-6b",
+        "dolly-v2-3b",
+        "dolly-v2-7b"
+    ],
+    "OLMo": [
+        "OLMo-7B-SFT-hf",
+        "OLMo-7B-Instruct-hf"
+    ]
+}

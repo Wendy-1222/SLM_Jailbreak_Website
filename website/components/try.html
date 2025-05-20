@@ -1,0 +1,95 @@
+<!-- "Take a try for SLM jailbreak" Section -->
+<section class="section" id="try">
+    <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+            <div class="column is-full-width">
+                <h2 class="title is-3">Take a try for SLM jailbreak</h2>
+            </div>
+        </div>
+        <br>
+        
+        <div class="content has-text-justified">
+            <p>
+                This interactive section allows you to experiment with different jailbreak methods on small language models in real-time. 
+                Select an SLM family, a specific model, and a jailbreak method, then input your query to see if you can successfully 
+                bypass the model's safety guardrails.
+            </p>
+        </div>
+        
+        <!-- Jailbreak Examples with Dropdowns -->
+        <div class="jailbreak-examples-container">
+            <div class="dropdown-container-box">
+                <div class="dropdown-row">
+                    <!-- SLM Family Selection -->
+                    <div class="dropdown-col">
+                        <select class="custom-select" id="try-slm-family-select">
+                            <option value="">Select an SLM family...</option>
+                            <option value="Llama3.2">LLaMA 3.2 family</option>
+                            <option value="DeepSeek-R1">DeepSeek-R1 family</option>
+                            <option value="Qwen">Qwen family</option>
+                            <option value="Gemma">Gemma family</option>
+                            <option value="Phi">Phi family</option>
+                            <option value="MiniCPM">MiniCPM family</option>
+                            <option value="H2O-Danube">H2O-Danube family</option>
+                            <option value="SmolLM">SmolLM family</option>
+                            <option value="StableLM">StableLM family</option>
+                            <option value="TinyLlama">TinyLlama family</option>
+                            <option value="MobileLlama">MobileLLaMA family</option>
+                            <option value="MobiLlama">MobiLlama family</option>
+                            <option value="Fox">Fox family</option>
+                            <option value="Dolly">Dolly family</option>
+                            <option value="OLMo">OLMo family</option>
+                        </select>
+                    </div>
+                    
+                    <!-- SLM Selection -->
+                    <div class="dropdown-col">
+                        <select class="custom-select" id="try-slm-select">
+                            <option value="">Select an SLM model...</option>
+                            <!-- Options will be populated dynamically based on selected family -->
+                        </select>
+                    </div>
+                    
+                    <!-- Jailbreak Method Selection -->
+                    <div class="dropdown-col">
+                        <select class="custom-select" id="try-jailbreak-select">
+                            <option value="">Select a jailbreak method...</option>
+                            <option value="Direct">Direct</option>
+                            <option value="HumanJailbreaks">HumanJailbreaks</option>
+                            <option value="AutoDAN">AutoDAN</option>
+                            <option value="PAP">PAP</option>
+                            <option value="GCG">GCG</option>
+                            <option value="AutoPrompt">AutoPrompt</option>
+                            <option value="PEZ">PEZ</option>
+                            <option value="GBDA">GBDA</option>
+                            <option value="UAT">UAT</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="input-area">
+                <label for="jailbreak-query">Enter your jailbreak query:</label>
+                <textarea id="jailbreak-query" class="jailbreak-query-input" 
+                          placeholder="Type your harmful query here to test the SLM's safety guardrails..." rows="4"></textarea>
+                <button id="submit-query" class="submit-button" disabled>Submit Query</button>
+            </div>
+            
+            <!-- Results Display Area -->
+            <div id="jailbreak-try-display" class="output-container">
+                <div id="jailbreak-prompt-display" class="prompt-display"></div>
+                <div id="model-response-display" class="response-display"></div>
+            </div>
+            
+            <!-- Terminal Output Area -->
+            <div id="terminal-container" class="terminal-container">
+                <div class="terminal-header">
+                    <h4>Terminal Output</h4>
+                    <button id="clear-terminal" class="button is-small">Clear</button>
+                </div>
+                <div id="terminal-output" class="terminal-output"></div>
+            </div>
+        </div>
+    </div>
+</section> 

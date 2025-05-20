@@ -9,6 +9,25 @@ var activeCard = null;
 // 添加初始化标志
 var defenseExamplesInitialized = false;
 
+// 定义SLM模型数据，用于填充二级下拉菜单
+var slmModelsData = {
+    "Llama3.2": ["LLaMA 3.2 1B", "LLaMA 3.2 3B", "LLaMA 3.2 8B", "LLaMA 3.2 11B", "LLaMA 3.2 70B"],
+    "DeepSeek-R1": ["DeepSeek-R1 1.3B", "DeepSeek-R1 1.3B-Chat", "DeepSeek-R1 3B", "DeepSeek-R1 3B-Chat"],
+    "Qwen": ["Qwen 1.5 0.5B", "Qwen 1.5 1.8B", "Qwen 1.5 4B", "Qwen 1.5 7B", "Qwen 1.5 14B", "Qwen 1.5 32B", "Qwen 1.5 72B"],
+    "Gemma": ["Gemma 2B", "Gemma 7B"],
+    "Phi": ["Phi-1 1.3B", "Phi-1.5 1.3B", "Phi-2 2.7B", "Phi-3 3.8B", "Phi-3 7B", "Phi-3 14B"],
+    "MiniCPM": ["MiniCPM 2B", "MiniCPM-V 2B", "MiniCPM-Llama3 2.4B"],
+    "H2O-Danube": ["H2O-Danube 1.8B"],
+    "SmolLM": ["SmolLM 1.7B"],
+    "StableLM": ["StableLM 3B"],
+    "TinyLlama": ["TinyLlama 1.1B"],
+    "MobileLlama": ["MobileLLaMA 1.4B"],
+    "MobiLlama": ["MobiLlama 1B", "MobiLlama 2.7B"],
+    "Fox": ["Fox 1B"],
+    "Dolly": ["Dolly 3B"],
+    "OLMo": ["OLMo 1B", "OLMo 7B"]
+};
+
 // 当文档加载完成后运行
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOMContentLoaded 事件触发');
@@ -17,6 +36,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 设置滚动导航栏
     setupScrollNavbar();
+
+    // 初始化try.html页面的SLM家族下拉菜单
+    try {
+        setupSLMFamilyDropdown();
+        console.log('SLM家族下拉菜单初始化完成');
+    } catch (e) {
+        console.warn('SLM家族下拉菜单初始化失败：', e);
+    }
     
     // 尝试直接调用defense下拉菜单初始化
     try {
@@ -30,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         const defense_select = document.getElementById('defense-select');
         const defense_method_select = document.getElementById('defense-method-select');
+        const try_slm_family_select = document.getElementById('try-slm-family-select');
         
         if (defense_select) {
             console.log('找到defense-select，重新初始化');
@@ -40,6 +68,12 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('找到defense-method-select，初始化防御示例相关功能');
             // 不要在这里调用 setupDefenseExamples，让它只在 initializeResults 中调用一次
         }
+
+        // 再次检查try.html的下拉菜单，确保它们被正确初始化
+        if (try_slm_family_select) {
+            console.log('找到try-slm-family-select，重新初始化');
+            setupSLMFamilyDropdown();
+        }
     }, 1000); // 延迟1秒
 
     // 添加点击事件，当点击页面空白处时关闭下拉内容
@@ -47,6 +81,135 @@ document.addEventListener('DOMContentLoaded', function() {
         closeDropdownsOnOutsideClick(event);
     });
 });
+
+// 设置SLM家族下拉菜单，当选择家族时填充相应的SLM模型
+function setupSLMFamilyDropdown() {
+    const slmFamilySelect = document.getElementById('try-slm-family-select');
+    const slmSelect = document.getElementById('try-slm-select');
+    const jailbreakSelect = document.getElementById('try-jailbreak-select');
+    
+    // 添加详细的调试日志
+    console.log('setupSLMFamilyDropdown 开始执行');
+    console.log('找到try-slm-family-select元素:', !!slmFamilySelect);
+    console.log('找到try-slm-select元素:', !!slmSelect);
+    console.log('找到try-jailbreak-select元素:', !!jailbreakSelect);
+    
+    if (!slmFamilySelect || !slmSelect) {
+        console.warn('SLM家族下拉菜单或SLM模型下拉菜单未找到');
+        return;
+    }
+    
+    console.log('初始化SLM家族下拉菜单');
+    console.log('可用的SLM家族数据:', Object.keys(slmModelsData));
+    
+    // 初始化时禁用SLM模型下拉菜单，直到用户选择了SLM家族
+    slmSelect.disabled = true;
+    
+    // 当选择SLM家族时，填充对应的SLM模型选项
+    slmFamilySelect.addEventListener('change', function() {
+        const selectedFamily = this.value;
+        console.log('选择的SLM家族：', selectedFamily);
+        
+        // 清空当前的SLM模型选项
+        slmSelect.innerHTML = '<option value="">Select an SLM model...</option>';
+        
+        // 如果选择了有效的家族，添加对应的模型选项
+        if (selectedFamily && slmModelsData[selectedFamily]) {
+            const models = slmModelsData[selectedFamily];
+            console.log(`为家族 "${selectedFamily}" 添加模型:`, models);
+            
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                slmSelect.appendChild(option);
+            });
+            
+            // 启用SLM模型下拉菜单
+            slmSelect.disabled = false;
+            console.log('SLM模型下拉菜单已启用');
+        } else {
+            // 如果没有选择有效的家族，禁用SLM模型下拉菜单
+            slmSelect.disabled = true;
+            console.log('SLM模型下拉菜单已禁用');
+        }
+        
+        // 更新提交按钮状态
+        updateSubmitButtonState();
+    });
+    
+    // 为其他下拉菜单添加事件监听器，以更新提交按钮状态
+    slmSelect.addEventListener('change', function() {
+        console.log('选择的SLM模型:', this.value);
+        updateSubmitButtonState();
+    });
+    
+    jailbreakSelect.addEventListener('change', function() {
+        console.log('选择的Jailbreak方法:', this.value);
+        updateSubmitButtonState();
+    });
+    
+    // 为查询输入框添加事件监听器
+    const jailbreakQuery = document.getElementById('jailbreak-query');
+    if (jailbreakQuery) {
+        jailbreakQuery.addEventListener('input', function() {
+            console.log('Jailbreak查询已更新，长度:', this.value.trim().length);
+            updateSubmitButtonState();
+        });
+    } else {
+        console.warn('未找到jailbreak-query元素');
+    }
+    
+    // 初始化时更新提交按钮状态
+    updateSubmitButtonState();
+    
+    // 记录初始化完成
+    console.log('SLM家族下拉菜单初始化完成');
+}
+
+// 更新提交按钮的启用/禁用状态
+function updateSubmitButtonState() {
+    console.log('执行updateSubmitButtonState...');
+    
+    const slmFamilySelect = document.getElementById('try-slm-family-select');
+    const slmSelect = document.getElementById('try-slm-select');
+    const jailbreakSelect = document.getElementById('try-jailbreak-select');
+    const jailbreakQuery = document.getElementById('jailbreak-query');
+    const submitButton = document.getElementById('submit-query');
+    
+    console.log('表单元素状态:', {
+        'slmFamilySelect': slmFamilySelect ? `找到，值=${slmFamilySelect.value}` : '未找到',
+        'slmSelect': slmSelect ? `找到，值=${slmSelect.value}` : '未找到',
+        'jailbreakSelect': jailbreakSelect ? `找到，值=${jailbreakSelect.value}` : '未找到',
+        'jailbreakQuery': jailbreakQuery ? `找到，值长度=${jailbreakQuery.value.trim().length}` : '未找到',
+        'submitButton': submitButton ? '找到' : '未找到'
+    });
+    
+    if (!slmFamilySelect || !slmSelect || !jailbreakSelect || !jailbreakQuery || !submitButton) {
+        console.warn('更新提交按钮状态失败：缺少必要的表单元素');
+        return;
+    }
+    
+    // 检查所有必填字段是否已填写
+    const isFormValid = 
+        slmFamilySelect.value !== "" && 
+        slmSelect.value !== "" && 
+        jailbreakSelect.value !== "" && 
+        jailbreakQuery.value.trim() !== "";
+    
+    console.log('表单是否有效:', isFormValid);
+    
+    submitButton.disabled = !isFormValid;
+    
+    // 如果表单有效，则启用提交按钮；否则禁用
+    if (isFormValid) {
+        submitButton.classList.add('active');
+        console.log('提交按钮已启用');
+    } else {
+        submitButton.classList.remove('active');
+        console.log('提交按钮已禁用');
+    }
+}
 
 // 使用 MutationObserver 监听 results-container 的变化
 function observeResultsContainer() {

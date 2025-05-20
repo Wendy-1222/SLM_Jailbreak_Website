@@ -1,0 +1,118 @@
+
+\begin{table*}[ht!]
+\centering
+\caption{The attack effectiveness~(i.e., ASR) of different jailbreak attacks across 15 SLM families. We highlight the results with ASR > 0.4, indicating that these SLMs are vulnerable to jailbreak attacks.}
+\footnotesize
+\vspace{-0.5em}
+\def\arraystretch{0.8}  % adjust row height
+% \resizebox{.99\linewidth}{!}{
+\begin{tabular}{@{}lp{0.05\linewidth}ccp{0.05\linewidth}p{0.05\linewidth}cp{0.05\linewidth}p{0.05\linewidth}p{0.05\linewidth}p{0.05\linewidth}}
+\toprule
+& Direct & HumanJailbreaks & AutoDAN & PAP & GCG & AutoPrompt & PEZ & GBDA & UAT & Average\\
+\midrule
+Llama-3.2-1B-Instruct & 0.214 & 0.074 & 0.3 & 0.36 &Direct 0.429 & 0.186 & 0.086 & 0.131 & 0.114 & 0.21  \\ 
+Llama-3.2-3B-Instruct & 0.271 & 0.169 & 0.1 &Direct 0.44 &Direct 0.6 & 0.357 & 0.2 & 0.189 & 0.286 & 0.29  \\ 
+
+\midrule
+DeepSeek-R1-Distill-Qwen-1.5B & 0.271 & 0.289 & 0.257 & 0.203 & 0.314 & 0.286 & 0.169 & 0.277 & 0.329 & 0.266  \\ 
+DeepSeek-R1-Distill-Qwen-7B &Direct 0.514 & 0.36 &Direct 0.471 & 0.291 &Direct 0.571 & 0.371 & 0.363 & 0.389 & 0.386 &Direct 0.413  \\ 
+
+\midrule
+Qwen-1.8B-Chat & 0.143 & 0.18 & 0.271 &Direct 0.4 & 0.386 & 0.343 & 0.323 &Direct 0.451 & 0.243 & 0.304  \\ 
+Qwen-7B-Chat & 0.086 & 0.289 &Direct 0.529 & 0.234 &Direct 0.614 &Direct 0.5 & 0.209 & 0.24 & 0.314 & 0.335  \\ 
+
+\midrule
+Qwen1.5-0.5B-Chat & 0.114 & 0.231 & 0.257 & 0.363 &Direct 0.514 &Direct 0.514 &Direct 0.483 &Direct 0.449 &Direct 0.471 & 0.377  \\ 
+Qwen1.5-1.8B-Chat &Direct 0.529 &Direct 0.434 &Direct 0.729 &Direct 0.511 &Direct 0.629 &Direct 0.586 &Direct 0.643 &Direct 0.62 &Direct 0.657 &Direct 0.593  \\ 
+Qwen1.5-4B-Chat & 0.114 & 0.297 &Direct 0.686 &Direct 0.411 &Direct 0.571 &Direct 0.4 & 0.2 &Direct 0.417 &Direct 0.414 & 0.39  \\ 
+Qwen1.5-7B-Chat & 0.186 &Direct 0.563 &Direct 0.771 &Direct 0.426 &Direct 0.671 &Direct 0.529 & 0.294 & 0.351 & 0.343 &Direct 0.459  \\ 
+
+\midrule
+Qwen2-0.5B-Instruct & 0.1 & 0.2 &Direct 0.414 & 0.351 &Direct 0.571 & 0.357 & 0.331 & 0.391 & 0.343 & 0.34  \\ 
+Qwen2-1.5B-Instruct & 0.1 & 0.18 &Direct 0.657 & 0.366 &Direct 0.571 &Direct 0.4 & 0.137 & 0.383 & 0.286 & 0.342  \\ 
+Qwen2-7B-Instruct & 0.214 & 0.274 &Direct 0.743 &Direct 0.449 &Direct 0.571 &Direct 0.414 & 0.206 & 0.22 & 0.214 & 0.367  \\ 
+
+\midrule
+Qwen2.5-0.5B-Instruct & 0.129 & 0.149 &Direct 0.586 & 0.363 &Direct 0.557 &Direct 0.414 & 0.326 &Direct 0.506 &Direct 0.443 & 0.386  \\ 
+Qwen2.5-1.5B-Instruct & 0.086 & 0.177 &Direct 0.743 & 0.351 &Direct 0.571 & 0.357 & 0.074 & 0.346 & 0.329 & 0.337  \\ 
+Qwen2.5-3B-Instruct & 0.143 & 0.311 &Direct 0.729 &Direct 0.451 &Direct 0.543 & 0.343 & 0.151 & 0.309 & 0.3 & 0.364  \\ 
+Qwen2.5-7B-Instruct & 0.257 &Direct 0.406 &Direct 0.814 &Direct 0.44 &Direct 0.614 &Direct 0.471 & 0.257 & 0.323 & 0.343 &Direct 0.436  \\ 
+
+\midrule
+Gemma-2B-it & 0.143 & 0.011 & 0.071 & 0.389 &Direct 0.443 &Direct 0.457 &Direct 0.437 &Direct 0.449 &Direct 0.486 & 0.321  \\ 
+Gemma-7B-it & 0.271 & 0.157 & 0.314 &Direct 0.414 & 0.3 & 0.214 & 0.271 & 0.303 & 0.243 & 0.276  \\ 
+Gemma-1.1-2B-it & 0.243 & 0.046 & 0.214 & 0.38 &Direct 0.4 & 0.343 &Direct 0.44 &Direct 0.466 &Direct 0.443 & 0.331  \\ 
+Gemma-1.1-7B-it & 0.214 & 0.183 &Direct 0.557 & 0.32 & 0.329 & 0.243 & 0.306 & 0.351 & 0.186 & 0.299  \\ 
+Gemma-2-2B-it & 0.114 & 0.377 &Direct 0.857 & 0.271 &Direct 0.457 & 0.2 & 0.154 & 0.194 & 0.186 & 0.312  \\ 
+
+\midrule
+Phi-3-mini-4k-Instruct & 0.143 & 0.157 & 0.171 & 0.291 &Direct 0.471 & 0.186 & 0.177 & 0.203 & 0.171 & 0.219  \\ 
+Phi-3-mini-128k-Instruct & 0.171 & 0.291 & 0.329 & 0.303 &Direct 0.443 & 0.243 & 0.163 & 0.189 & 0.2 & 0.259  \\ 
+Phi-3.5-mini-Instruct & 0.2 & 0.28 & 0.271 & 0.326 &Direct 0.457 & 0.271 & 0.217 & 0.243 & 0.2 & 0.274  \\ 
+
+\midrule
+MiniCPM-1B-sft-bf16 & 0.229 & 0.374 &Direct 0.686 &Direct 0.429 & 0.243 & 0.214 &Direct 0.437 &Direct 0.526 &Direct 0.414 & 0.395  \\ 
+MiniCPM-S-1B-sft & 0.214 &Direct 0.4 &Direct 0.543 & 0.386 & 0.171 & 0.186 &Direct 0.477 & 0.34 &Direct 0.4 & 0.346  \\ 
+MiniCPM-2B-sft-bf16 & 0.186 & 0.36 &Direct 0.786 & 0.389 & 0.129 & 0.186 &Direct 0.44 & 0.366 & 0.243 & 0.343  \\ 
+MiniCPM-2B-dpo-bf16 &Direct 0.457 &Direct 0.543 &Direct 0.829 &Direct 0.497 &Direct 0.5 &Direct 0.471 &Direct 0.706 &Direct 0.62 &Direct 0.514 &Direct 0.571  \\ 
+MiniCPM3-4B & 0.157 & 0.36 &Direct 0.757 & 0.329 & 0.086 & 0.114 & 0.129 & 0.091 & 0.157 & 0.242  \\ 
+
+\midrule
+H2O-Danube-1.8B-SFT &Direct 0.614 & 0.391 &Direct 0.586 &Direct 0.4 &Direct 0.671 &Direct 0.6 &Direct 0.571 &Direct 0.56 &Direct 0.471 &Direct 0.54  \\ 
+H2O-Danube-1.8B-Chat &Direct 0.6 &Direct 0.534 &Direct 0.657 &Direct 0.494 &Direct 0.657 &Direct 0.629 &Direct 0.617 &Direct 0.654 &Direct 0.657 &Direct 0.611  \\ 
+H2O-Danube2-1.8B-SFT &Direct 0.414 & 0.389 &Direct 0.686 &Direct 0.449 &Direct 0.686 &Direct 0.657 &Direct 0.571 &Direct 0.606 &Direct 0.629 &Direct 0.565  \\ 
+H2O-Danube2-1.8B-Chat &Direct 0.514 &Direct 0.58 &Direct 0.643 &Direct 0.477 &Direct 0.729 &Direct 0.757 &Direct 0.671 &Direct 0.654 &Direct 0.7 &Direct 0.636  \\ 
+H2O-Danube3-500M-Chat &Direct 0.629 & 0.363 & 0.243 &Direct 0.463 &Direct 0.629 &Direct 0.586 &Direct 0.606 &Direct 0.6 &Direct 0.571 &Direct 0.521  \\ 
+H2O-Danube3-4B-Chat &Direct 0.486 & 0.351 &Direct 0.657 &Direct 0.531 &Direct 0.743 &Direct 0.614 &Direct 0.431 &Direct 0.503 &Direct 0.514 &Direct 0.537  \\ 
+
+\midrule
+SmoLM-135M-Instruct &Direct 0.486 &Direct 0.406 & 0.014 & 0.26 &Direct 0.4 &Direct 0.414 &Direct 0.4 &Direct 0.431 & 0.386 & 0.355  \\ 
+SmoLM-360M-Instruct &Direct 0.686 &Direct 0.649 & 0.029 &Direct 0.411 &Direct 0.629 &Direct 0.629 &Direct 0.663 &Direct 0.494 &Direct 0.629 &Direct 0.535  \\ 
+SmoLM-1.7B-Instruct &Direct 0.714 &Direct 0.717 & 0.243 &Direct 0.503 &Direct 0.686 &Direct 0.657 &Direct 0.711 &Direct 0.677 &Direct 0.7 &Direct 0.623  \\ 
+SmoLM2-135M-Instruct &Direct 0.471 & 0.274 & 0.0 & 0.306 & 0.314 &Direct 0.429 & 0.38 & 0.351 &Direct 0.414 & 0.327  \\ 
+SmoLM2-360M-Instruct &Direct 0.529 & 0.311 & 0.343 & 0.389 &Direct 0.586 &Direct 0.571 &Direct 0.506 &Direct 0.646 &Direct 0.6 &Direct 0.498  \\ 
+SmoLM2-1.7B-Instruct &Direct 0.443 &Direct 0.42 &Direct 0.614 &Direct 0.426 &Direct 0.729 &Direct 0.686 & 0.326 &Direct 0.614 &Direct 0.543 &Direct 0.533  \\ 
+
+\midrule
+StableLM-Zephyr-3B & 0.3 &Direct 0.543 &Direct 0.757 &Direct 0.411 &Direct 0.6 &Direct 0.6 & 0.386 &Direct 0.409 &Direct 0.4 &Direct 0.49  \\ 
+StableLM-2-1.6B-Chat &Direct 0.757 &Direct 0.591 &Direct 0.657 &Direct 0.503 &Direct 0.686 &Direct 0.757 &Direct 0.677 &Direct 0.686 &Direct 0.743 &Direct 0.673  \\ 
+StableLM-2-Zephyr-1.6B &Direct 0.614 &Direct 0.517 &Direct 0.743 &Direct 0.457 &Direct 0.729 &Direct 0.729 &Direct 0.543 &Direct 0.64 &Direct 0.629 &Direct 0.622  \\ 
+
+\midrule
+TinyLlama-1.1B-Chat-v0.1 &Direct 0.7 & 0.309 & 0.214 & 0.397 &Direct 0.457 &Direct 0.543 &Direct 0.557 &Direct 0.58 &Direct 0.614 &Direct 0.486  \\ 
+TinyLlama-1.1B-Chat-v0.2 &Direct 0.471 & 0.183 & 0.014 & 0.251 & 0.286 & 0.286 & 0.18 & 0.171 & 0.229 & 0.23  \\ 
+TinyLlama-1.1B-Chat-v0.3 &Direct 0.729 & 0.38 & 0.014 & 0.394 &Direct 0.486 &Direct 0.443 &Direct 0.509 &Direct 0.494 &Direct 0.6 &Direct 0.45  \\ 
+TinyLlama-1.1B-Chat-v0.4 &Direct 0.514 & 0.331 & 0.129 & 0.38 &Direct 0.6 &Direct 0.543 &Direct 0.54 &Direct 0.569 &Direct 0.571 &Direct 0.464  \\ 
+TinyLlama-1.1B-Chat-v0.5 &Direct 0.6 & 0.283 & 0.114 & 0.36 &Direct 0.471 & 0.371 &Direct 0.586 &Direct 0.526 &Direct 0.557 &Direct 0.43  \\ 
+TinyLlama-1.1B-Chat-v0.6 &Direct 0.671 &Direct 0.486 & 0.243 &Direct 0.474 &Direct 0.686 &Direct 0.586 &Direct 0.674 &Direct 0.683 &Direct 0.729 &Direct 0.581  \\ 
+TinyLlama-1.1B-Chat-v1.0 &Direct 0.714 &Direct 0.597 & 0.314 &Direct 0.477 &Direct 0.586 &Direct 0.743 &Direct 0.706 &Direct 0.74 &Direct 0.7 &Direct 0.62  \\ 
+
+\midrule
+MobileLLaMA-1.4B-Chat &Direct 0.771 &Direct 0.406 &Direct 0.529 & 0.397 &Direct 0.6 &Direct 0.514 &Direct 0.537 &Direct 0.474 &Direct 0.586 &Direct 0.535  \\ 
+MobileLLaMA-2.7B-Chat &Direct 0.714 &Direct 0.529 &Direct 0.814 &Direct 0.414 &Direct 0.6 &Direct 0.686 &Direct 0.494 &Direct 0.58 &Direct 0.586 &Direct 0.602  \\ 
+
+\midrule
+MobiLlama-0.5B-Chat &Direct 0.529 & 0.023 & 0.0 & 0.18 &Direct 0.443 &Direct 0.5 &Direct 0.437 &Direct 0.463 &Direct 0.471 & 0.338  \\ 
+MobiLlama-1B-Chat &Direct 0.643 & 0.091 & 0.2 & 0.34 &Direct 0.571 &Direct 0.514 &Direct 0.523 &Direct 0.477 &Direct 0.571 &Direct 0.437  \\ 
+
+\midrule
+Fox-1-1.6B-Instruct-v0.1 & 0.243 & 0.1 &Direct 0.786 & 0.397 &Direct 0.571 &Direct 0.429 & 0.157 & 0.374 & 0.229 & 0.365  \\ 
+
+\midrule
+Dolly-v1-6B &Direct 0.571 & - &Direct 0.714 & 0.354 &Direct 0.514 &Direct 0.614 &Direct 0.537 &Direct 0.563 &Direct 0.571 &Direct 0.555  \\ 
+Dolly-v2-3B &Direct 0.757 & 0.397 &Direct 0.486 & 0.36 &Direct 0.5 &Direct 0.486 &Direct 0.514 &Direct 0.511 &Direct 0.514 &Direct 0.503  \\ 
+Dolly-v2-7B &Direct 0.671 &Direct 0.494 &Direct 0.529 &Direct 0.454 &Direct 0.443 &Direct 0.471 &Direct 0.529 &Direct 0.491 &Direct 0.529 &Direct 0.512  \\ 
+
+\midrule
+OLMo-7B-SFT-hf & 0.329 & 0.26 &Direct 0.629 &Direct 0.414 &Direct 0.643 &Direct 0.571 & 0.246 & 0.26 & 0.329 &Direct 0.409  \\ 
+OLMo-7B-Instruct-hf &Direct 0.457 &Direct 0.586 &Direct 0.857 &Direct 0.503 &Direct 0.671 &Direct 0.614 &Direct 0.471 &Direct 0.474 &Direct 0.471 &Direct 0.567  \\ 
+
+
+\bottomrule
+\end{tabular}
+% }
+% \vspace{13pt}
+\vspace{-5pt}
+\label{tab:evaluation_result}
+\end{table*}
+
