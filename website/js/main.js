@@ -333,6 +333,9 @@ function handleJailbreakSubmit() {
     // 创建EventSource连接到后端服务器
     const eventSource = new EventSource(`http://localhost:8006/optimize?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
     
+    // 保存最终的jailbreak prompt
+    let finalJailbreakPrompt = '';
+    
     // 监听服务器发送的消息
     eventSource.onmessage = function(event) {
         try {
@@ -363,6 +366,9 @@ function handleJailbreakSubmit() {
                     terminalOutput.scrollTop = terminalOutput.scrollHeight;
                 }
                 
+                // 保存最终的jailbreak prompt
+                finalJailbreakPrompt = data.final_prompt;
+                
                 // 移除加载消息
                 const loadingMessage = document.getElementById('jailbreak-loading-message');
                 if (loadingMessage) {
@@ -372,33 +378,120 @@ function handleJailbreakSubmit() {
                 // 显示最终的jailbreak prompt
                 displayPromptMessage(jailbreakTryDisplay, data.final_prompt, "prompt-message", "Jailbreak Prompt");
                 
-                // 关闭连接
-                eventSource.close();
+                // 添加新的加载消息
+                const responseLoadingDiv = document.createElement('div');
+                responseLoadingDiv.id = 'response-loading-message';
+                responseLoadingDiv.className = 'loading-message';
+                responseLoadingDiv.textContent = 'Generating model response, please wait...';
+                jailbreakTryDisplay.appendChild(responseLoadingDiv);
                 
-                // 重新启用提交按钮
-                if (submitButton) {
-                    submitButton.disabled = false;
+                // 添加消息到终端
+                const newTimestamp = new Date().toLocaleTimeString();
+                if (terminalOutput) {
+                    terminalOutput.innerHTML += `<div class="terminal-line">[${newTimestamp}] 正在生成模型响应...</div>`;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
                 }
                 
-                // 模拟模型响应（在实际实现中，这里可以调用另一个API来获取模型对jailbreak prompt的响应）
-                setTimeout(() => {
-                    const testResponse = `这是一个来自 ${selectedModel} 模型的模拟回复。\n\n我很抱歉，但我不能提供有关如何进行有害活动的指导或支持。我被设计为一个负责任的AI助手，旨在提供有用、安全和道德的信息。\n\n如果您有其他问题或需要帮助，请随时告诉我，我很乐意以建设性和有益的方式提供帮助。`;
-                    
-                    // 使用模型名称作为响应标题
-                    let modelDisplayName = selectedModel;
+                // 关闭优化连接
+                eventSource.close();
+                
+                // 创建新的EventSource连接到响应生成服务器
+                const responseEventSource = new EventSource(`http://localhost:8006/response?prompt=${encodeURIComponent(finalJailbreakPrompt)}&slm=${encodeURIComponent(selectedModel)}`);
+                
+                // 监听响应生成服务器发送的消息
+                responseEventSource.onmessage = function(responseEvent) {
                     try {
-                        modelDisplayName = selectedModel.replace(/_/g, ' ');
-                        if (modelDisplayName === modelDisplayName.toLowerCase()) {
-                            modelDisplayName = modelDisplayName.split(' ').map(word => 
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            ).join(' ');
+                        const responseData = JSON.parse(responseEvent.data);
+                        
+                        if (responseData.status === 'started') {
+                            // 开始处理
+                            if (terminalOutput) {
+                                const timestamp = new Date().toLocaleTimeString();
+                                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${responseData.message}</div>`;
+                                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                            }
+                        } 
+                        else if (responseData.status === 'running') {
+                            // 处理中，显示实时输出
+                            if (terminalOutput) {
+                                const timestamp = new Date().toLocaleTimeString();
+                                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${responseData.message}</div>`;
+                                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                            }
+                        } 
+                        else if (responseData.status === 'completed') {
+                            // 处理完成，显示最终结果
+                            if (terminalOutput) {
+                                const timestamp = new Date().toLocaleTimeString();
+                                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 响应生成完成!</div>`;
+                                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                            }
+                            
+                            // 移除加载消息
+                            const responseLoadingMessage = document.getElementById('response-loading-message');
+                            if (responseLoadingMessage) {
+                                jailbreakTryDisplay.removeChild(responseLoadingMessage);
+                            }
+                            
+                            // 使用模型名称作为响应标题
+                            let modelDisplayName = selectedModel;
+                            try {
+                                modelDisplayName = selectedModel.replace(/_/g, ' ');
+                                if (modelDisplayName === modelDisplayName.toLowerCase()) {
+                                    modelDisplayName = modelDisplayName.split(' ').map(word => 
+                                        word.charAt(0).toUpperCase() + word.slice(1)
+                                    ).join(' ');
+                                }
+                            } catch (e) {
+                                console.warn('模型名称格式化失败:', e);
+                            }
+                            
+                            // 显示模型响应
+                            displayResponseWithTypewriter(jailbreakTryDisplay, responseData.final_response, "response-message", `${modelDisplayName} Response`, 0);
+                            
+                            // 关闭连接
+                            responseEventSource.close();
+                            
+                            // 重新启用提交按钮
+                            if (submitButton) {
+                                submitButton.disabled = false;
+                            }
                         }
-                    } catch (e) {
-                        console.warn('模型名称格式化失败:', e);
+                    } catch (error) {
+                        console.error('解析响应服务器消息时出错:', error);
+                        if (terminalOutput) {
+                            const timestamp = new Date().toLocaleTimeString();
+                            terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 错误: ${error.message}</div>`;
+                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                        }
+                        
+                        // 关闭连接
+                        responseEventSource.close();
+                        
+                        // 重新启用提交按钮
+                        if (submitButton) {
+                            submitButton.disabled = false;
+                        }
+                    }
+                };
+                
+                // 处理响应生成错误
+                responseEventSource.onerror = function(error) {
+                    console.error('ResponseEventSource错误:', error);
+                    if (terminalOutput) {
+                        const timestamp = new Date().toLocaleTimeString();
+                        terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 响应生成连接错误，请检查服务器状态</div>`;
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
                     }
                     
-                    displayResponseWithTypewriter(jailbreakTryDisplay, testResponse, "response-message", `${modelDisplayName} Response`, 0);
-                }, 1000);
+                    // 关闭连接
+                    responseEventSource.close();
+                    
+                    // 重新启用提交按钮
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                    }
+                };
             }
         } catch (error) {
             console.error('解析服务器消息时出错:', error);
