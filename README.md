@@ -1,6 +1,10 @@
 # SLM Jailbreak Website
 
-This repository contains the code for the SLM (Small Language Model) Jailbreak research website.
+This repository contains the code for the "Can Small Language Model Reliably Resist Jailbreak Attack?" research website.
+
+## Overview
+
+This project presents a comprehensive evaluation of jailbreak attacks on small language models (SLMs). The website showcases our research findings, methodology, and examples of various jailbreak techniques and defenses.
 
 ## Setup and Usage
 
@@ -22,23 +26,55 @@ pip install -r requirements.txt
 The simplest way to run the website is using a simple HTTP server:
 
 ```bash
-python -m http.server 8000
+python -m http.server 8005
 ```
 
 Then open your browser and navigate to:
 ```
-http://localhost:8000
+http://localhost:8005
 ```
 
-### Customizing Jailbreak Examples
+## Project Structure
+
+The website uses a component-based architecture for better organization:
+
+```
+SLM_Jailbreak_website/
+├── index.html              # Main website entry point
+├── leaderboard.html        # Leaderboard page showing model performance
+├── requirements.txt        # Python dependencies
+├── create_jailbreak_examples.py  # Script for generating jailbreak examples
+├── README.md               # This file
+└── website/                # Website assets and components
+    ├── components/         # HTML components loaded dynamically
+    │   ├── header.html     # Website header component
+    │   ├── hero.html       # Hero/banner section component
+    │   ├── overview.html   # Project overview component
+    │   ├── results.html    # Research results component
+    │   ├── ethics.html     # Ethics statement component
+    │   └── footer.html     # Footer component
+    ├── examples/           # Jailbreak and defense examples data
+    │   ├── jailbreak_examples.json  # Examples of jailbreak attacks
+    │   └── defense_examples.json    # Examples of defense techniques
+    ├── images/             # Website images and media assets
+    ├── js/                 # JavaScript files
+    │   ├── main.js         # Main website functionality
+    │   └── leaderboard.js  # Leaderboard page functionality
+    ├── styles/             # CSS stylesheets
+    │   ├── main.css        # Main website styles
+    │   └── leaderboard.css # Leaderboard page styles
+    └── tables/             # Data tables for results display
+```
+
+## Customizing Jailbreak Examples
 
 There are two ways to add or modify jailbreak examples:
 
-#### Method 1: Directly edit the JSON file
+### Method 1: Edit the JSON files
 
-Edit the `jailbreak_examples.json` file directly. The website will automatically load the examples from this file.
+Edit the `website/examples/jailbreak_examples.json` or `website/examples/defense_examples.json` files directly. The website will automatically load the examples from these files.
 
-Format:
+Format example:
 ```json
 {
   "category": {
@@ -49,16 +85,19 @@ Format:
 }
 ```
 
-#### Method 2: Use the fallback embedded data
+### Method 2: Use the create_jailbreak_examples.py script
 
-If you prefer not to use external JSON files, you can modify the embedded fallback data in the `index.html` file. This data is used if the JSON file cannot be loaded.
+You can use the provided Python script to generate or modify jailbreak examples programmatically.
 
-## File Structure
+## Website Architecture
 
-- `index.html`: Main website page with the implementation
-- `jailbreak_examples.json`: JSON file containing the jailbreak examples
-- `requirements.txt`: Python dependencies
-- `website/`: Directory containing website assets (CSS, images, etc.)
+The website uses a modular component-based architecture:
+
+1. **Main Index**: The `index.html` file serves as the entry point and loads all components dynamically
+2. **Components**: Individual HTML components in the `website/components/` directory are loaded at runtime
+3. **Styling**: CSS is organized in the `website/styles/` directory
+4. **JavaScript**: Frontend functionality is implemented in the `website/js/` directory
+5. **Examples**: Jailbreak and defense examples are stored as JSON in the `website/examples/` directory
 
 ## Citation
 
