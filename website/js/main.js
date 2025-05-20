@@ -333,8 +333,9 @@ function handleJailbreakSubmit() {
     // 创建EventSource连接到后端服务器
     const eventSource = new EventSource(`http://localhost:8006/optimize?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
     
-    // 保存最终的jailbreak prompt
+    // 保存最终的jailbreak prompt和response，用于后续评估
     let finalJailbreakPrompt = '';
+    let finalResponse = '';
     
     // 监听服务器发送的消息
     eventSource.onmessage = function(event) {
@@ -427,6 +428,9 @@ function handleJailbreakSubmit() {
                                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
                             }
                             
+                            // 保存最终的响应
+                            finalResponse = responseData.final_response;
+                            
                             // 移除加载消息
                             const responseLoadingMessage = document.getElementById('response-loading-message');
                             if (responseLoadingMessage) {
@@ -447,15 +451,119 @@ function handleJailbreakSubmit() {
                             }
                             
                             // 显示模型响应
-                            displayResponseWithTypewriter(jailbreakTryDisplay, responseData.final_response, "response-message", `${modelDisplayName} Response`, 0);
+                            displayResponseWithTypewriter(jailbreakTryDisplay, responseData.final_response, "response-message", `${modelDisplayName} Response`, undefined);
                             
                             // 关闭连接
                             responseEventSource.close();
                             
-                            // 重新启用提交按钮
-                            if (submitButton) {
-                                submitButton.disabled = false;
+                            // 添加新的加载消息
+                            const evaluationLoadingDiv = document.createElement('div');
+                            evaluationLoadingDiv.id = 'evaluation-loading-message';
+                            evaluationLoadingDiv.className = 'loading-message';
+                            evaluationLoadingDiv.textContent = 'Evaluating response, please wait...';
+                            jailbreakTryDisplay.appendChild(evaluationLoadingDiv);
+                            
+                            // 添加消息到终端
+                            const evalTimestamp = new Date().toLocaleTimeString();
+                            if (terminalOutput) {
+                                terminalOutput.innerHTML += `<div class="terminal-line">[${evalTimestamp}] 正在评估响应...</div>`;
+                                terminalOutput.scrollTop = terminalOutput.scrollHeight;
                             }
+                            
+                            // 创建新的EventSource连接到评估服务器
+                            const evaluateEventSource = new EventSource(`http://localhost:8006/evaluate?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&prompt=${encodeURIComponent(finalJailbreakPrompt)}&response=${encodeURIComponent(finalResponse)}`);
+                            
+                            // 监听评估服务器发送的消息
+                            evaluateEventSource.onmessage = function(evaluateEvent) {
+                                try {
+                                    const evaluateData = JSON.parse(evaluateEvent.data);
+                                    
+                                    if (evaluateData.status === 'started') {
+                                        // 开始处理
+                                        if (terminalOutput) {
+                                            const timestamp = new Date().toLocaleTimeString();
+                                            terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${evaluateData.message}</div>`;
+                                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                                        }
+                                    } 
+                                    else if (evaluateData.status === 'running') {
+                                        // 处理中，显示实时输出
+                                        if (terminalOutput) {
+                                            const timestamp = new Date().toLocaleTimeString();
+                                            terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${evaluateData.message}</div>`;
+                                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                                        }
+                                    } 
+                                    else if (evaluateData.status === 'completed') {
+                                        // 处理完成，显示最终结果
+                                        if (terminalOutput) {
+                                            const timestamp = new Date().toLocaleTimeString();
+                                            terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 评估完成!</div>`;
+                                            terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 评估结果: ${evaluateData.evaluation_label === 1 ? "Jailbreak Success!" : "Jailbreak Fail"}</div>`;
+                                            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                                        }
+                                        
+                                        // 移除加载消息
+                                        const evaluationLoadingMessage = document.getElementById('evaluation-loading-message');
+                                        if (evaluationLoadingMessage) {
+                                            jailbreakTryDisplay.removeChild(evaluationLoadingMessage);
+                                        }
+                                        
+                                        // 添加评估结果标签
+                                        const labelDiv = document.createElement('div');
+                                        labelDiv.className = 'response-label ' + (evaluateData.evaluation_label === 1 ? 'unsafe' : 'safe');
+                                        labelDiv.textContent = evaluateData.evaluation_label === 1 ? "Jailbreak Success!" : "Jailbreak Fail";
+                                        jailbreakTryDisplay.appendChild(labelDiv);
+                                        
+                                        // 关闭连接
+                                        evaluateEventSource.close();
+                                        
+                                        // 重新启用提交按钮
+                                        if (submitButton) {
+                                            submitButton.disabled = false;
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error('解析评估服务器消息时出错:', error);
+                                    if (terminalOutput) {
+                                        const timestamp = new Date().toLocaleTimeString();
+                                        terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 错误: ${error.message}</div>`;
+                                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                                    }
+                                    
+                                    // 关闭连接
+                                    evaluateEventSource.close();
+                                    
+                                    // 重新启用提交按钮
+                                    if (submitButton) {
+                                        submitButton.disabled = false;
+                                    }
+                                }
+                            };
+                            
+                            // 处理评估错误
+                            evaluateEventSource.onerror = function(error) {
+                                console.error('EvaluateEventSource错误:', error);
+                                if (terminalOutput) {
+                                    const timestamp = new Date().toLocaleTimeString();
+                                    terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 评估连接错误，请检查服务器状态</div>`;
+                                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                                }
+                                
+                                // 关闭连接
+                                evaluateEventSource.close();
+                                
+                                // 移除加载消息
+                                const evaluationLoadingMessage = document.getElementById('evaluation-loading-message');
+                                if (evaluationLoadingMessage) {
+                                    jailbreakTryDisplay.removeChild(evaluationLoadingMessage);
+                                }
+                                
+                                // 重新启用提交按钮
+                                if (submitButton) {
+                                    submitButton.disabled = false;
+                                }
+                            };
                         }
                     } catch (error) {
                         console.error('解析响应服务器消息时出错:', error);
@@ -1190,25 +1298,8 @@ function displayResponseWithTypewriter(container, text, className, title, label)
             messageDiv.appendChild(document.createTextNode(text[i]));
             i++;
             setTimeout(typeWriter, speed);
-        } else {
-            // 打字完成后，添加标签
-            if (label !== undefined) {
-                console.log('Adding label element:', label); // Debug日志
-                const labelDiv = document.createElement('div');
-                labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
-                if (label === 0) {
-                    labelDiv.textContent = "Jailbreak Fail";
-                } else {
-                    labelDiv.textContent = "Jailbreak Success!"
-                }
-                // labelDiv.textContent = "Label: " + label;
-
-                // 将标签添加到响应消息下方，而不是其中
-                container.appendChild(labelDiv);
-            } else {
-                console.log('No label provided to add'); // Debug日志
-            }
-        }
+        } 
+        // 不再在这里添加标签，因为我们现在使用单独的评估步骤
     }
     
     typeWriter();
