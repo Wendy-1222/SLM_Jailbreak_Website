@@ -1,113 +1,90 @@
 # SLM Jailbreak Website
 
-This repository contains the code for the "Can Small Language Model Reliably Resist Jailbreak Attack?" research website.
+这是一个用于展示和测试小型语言模型（SLM）越狱方法的网站。用户可以选择不同的SLM模型和越狱方法，输入查询，然后查看越狱提示的优化过程和结果。
 
-## Overview
+## 功能特点
 
-This project presents a comprehensive evaluation of jailbreak attacks on small language models (SLMs). The website showcases our research findings, methodology, and examples of various jailbreak techniques and defenses.
+- 支持多种SLM模型和越狱方法
+- 实时显示越狱提示优化过程
+- 终端输出可滚动查看
+- 响应式设计，适应不同设备
 
-## Setup and Usage
+## 系统要求
 
-### Installation
+- Python 3.6+
+- Flask
+- Flask-CORS
+- 浏览器支持EventSource（大多数现代浏览器都支持）
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/SLM_Jailbreak_website.git
-cd SLM_Jailbreak_website
-```
+## 安装与运行
 
-2. Install the required dependencies:
-```bash
-pip install -r requirements.txt
-```
+### Windows
 
-### Running the Website
+1. 安装依赖：
+   ```
+   pip install flask flask-cors
+   ```
 
-The simplest way to run the website is using a simple HTTP server:
+2. 启动后端服务器：
+   ```
+   python server.py
+   ```
 
-```bash
-python -m http.server 8005
-```
+3. 在浏览器中打开`index.html`查看网站
 
-Then open your browser and navigate to:
-```
-http://localhost:8005
-```
+### Linux/Mac
 
-## Project Structure
+1. 安装依赖：
+   ```
+   pip install flask flask-cors
+   ```
 
-The website uses a component-based architecture for better organization:
+2. 给启动脚本添加执行权限：
+   ```
+   chmod +x start_server.sh
+   ```
 
-```
-SLM_Jailbreak_website/
-├── index.html              # Main website entry point
-├── leaderboard.html        # Leaderboard page showing model performance
-├── requirements.txt        # Python dependencies
-├── create_jailbreak_examples.py  # Script for generating jailbreak examples
-├── README.md               # This file
-└── website/                # Website assets and components
-    ├── components/         # HTML components loaded dynamically
-    │   ├── header.html     # Website header component
-    │   ├── hero.html       # Hero/banner section component
-    │   ├── overview.html   # Project overview component
-    │   ├── results.html    # Research results component
-    │   ├── ethics.html     # Ethics statement component
-    │   └── footer.html     # Footer component
-    ├── examples/           # Jailbreak and defense examples data
-    │   ├── jailbreak_examples.json  # Examples of jailbreak attacks
-    │   └── defense_examples.json    # Examples of defense techniques
-    ├── images/             # Website images and media assets
-    ├── js/                 # JavaScript files
-    │   ├── main.js         # Main website functionality
-    │   └── leaderboard.js  # Leaderboard page functionality
-    ├── styles/             # CSS stylesheets
-    │   ├── main.css        # Main website styles
-    │   └── leaderboard.css # Leaderboard page styles
-    └── tables/             # Data tables for results display
-```
+3. 运行启动脚本：
+   ```
+   ./start_server.sh
+   ```
 
-## Customizing Jailbreak Examples
+4. 在浏览器中打开`index.html`查看网站
 
-There are two ways to add or modify jailbreak examples:
+## 使用方法
 
-### Method 1: Edit the JSON files
+1. 在网站上选择SLM家族、具体模型和越狱方法
+2. 输入您想要测试的查询
+3. 点击"Submit Query"按钮
+4. 观察终端输出，查看越狱提示的优化过程
+5. 优化完成后，查看生成的越狱提示和模型响应
 
-Edit the `website/examples/jailbreak_examples.json` or `website/examples/defense_examples.json` files directly. The website will automatically load the examples from these files.
+## 后端API
 
-Format example:
-```json
-{
-  "category": {
-    "slm_name": {
-      "attack_method": ["question", "prompt", "response"]
-    }
-  }
-}
-```
+后端服务器提供了以下API：
 
-### Method 2: Use the create_jailbreak_examples.py script
+- `GET/POST /optimize`：接收查询参数并返回优化结果
+  - 参数：
+    - `question`：用户查询
+    - `slm`：选择的SLM模型
+    - `method`：选择的越狱方法
+  - 返回：
+    - 使用Server-Sent Events (SSE)实时返回优化过程和结果
 
-You can use the provided Python script to generate or modify jailbreak examples programmatically.
+## 注意事项
 
-## Website Architecture
+- 后端服务器默认运行在`http://localhost:8006`
+- 确保HarmBench的main.py文件路径正确配置在server.py中
+  - 默认路径为`/data2/zwh/HarmBench_for_backend/main.py`
+  - 如需修改，请编辑server.py中的路径
+- 该系统仅用于研究和教育目的，请勿用于任何恶意或违法活动
 
-The website uses a modular component-based architecture:
+## 文件结构
 
-1. **Main Index**: The `index.html` file serves as the entry point and loads all components dynamically
-2. **Components**: Individual HTML components in the `website/components/` directory are loaded at runtime
-3. **Styling**: CSS is organized in the `website/styles/` directory
-4. **JavaScript**: Frontend functionality is implemented in the `website/js/` directory
-5. **Examples**: Jailbreak and defense examples are stored as JSON in the `website/examples/` directory
-
-## Citation
-
-If you find our project useful, please consider citing:
-
-```
-@article{zhang2025can,
-  title={Can Small Language Models Reliably Resist Jailbreak Attacks? A Comprehensive Evaluation},
-  author={Zhang, Wenhui and Xu, Huiyu and Wang, Zhibo and He, Zeqing and Zhu, Ziqi and Ren, Kui},
-  journal={arXiv preprint arXiv:2503.06519},
-  year={2025}
-}
-```
+- `index.html`：网站主页
+- `server.py`：后端服务器
+- `start_server.sh`：启动脚本
+- `website/`：前端资源目录
+  - `components/`：网站组件
+  - `styles/`：CSS样式
+  - `js/`：JavaScript脚本

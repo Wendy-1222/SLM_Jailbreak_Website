@@ -267,9 +267,11 @@ function handleJailbreakSubmit() {
     const slmSelect = document.getElementById('try-slm-select');
     const jailbreakSelect = document.getElementById('try-jailbreak-select');
     const jailbreakQuery = document.getElementById('jailbreak-query');
-    const displayContainer = document.getElementById('jailbreak-try-display');
+    const jailbreakTryDisplay = document.getElementById('jailbreak-try-display');
+    const terminalOutput = document.getElementById('terminal-output');
+    const emptyStateMessage = document.getElementById('empty-state-message');
     
-    if (!slmFamilySelect || !slmSelect || !jailbreakSelect || !jailbreakQuery || !displayContainer) {
+    if (!slmFamilySelect || !slmSelect || !jailbreakSelect || !jailbreakQuery || !jailbreakTryDisplay) {
         console.error('提交处理失败：缺少必要的元素');
         return;
     }
@@ -287,54 +289,152 @@ function handleJailbreakSubmit() {
         query: query
     });
     
-    // 清空显示容器
-    displayContainer.innerHTML = '';
+    // 禁用提交按钮，防止重复提交
+    const submitButton = document.getElementById('submit-query');
+    if (submitButton) {
+        submitButton.disabled = true;
+    }
     
-    // 在测试阶段，使用固定的值
-    const testPrompt = `这是一个使用 ${selectedJailbreak} 方法生成的测试Jailbreak提示。\n\n原始查询: "${query}"\n\n[这里是根据不同jailbreak方法生成的提示内容...]`;
-    const testResponse = `这是一个来自 ${selectedModel} 模型的测试回复。\n\n我很抱歉，但我不能提供有关如何进行有害活动的指导或支持。我被设计为一个负责任的AI助手，旨在提供有用、安全和道德的信息。\n\n如果您有其他问题或需要帮助，请随时告诉我，我很乐意以建设性和有益的方式提供帮助。`;
+    // 隐藏空状态消息（如果存在）
+    if (emptyStateMessage) {
+        emptyStateMessage.style.display = 'none';
+    }
     
-    // 随机生成测试标签（0表示拒绝，1表示成功）
-    const testLabel = Math.random() > 0.5 ? 1 : 0;
+    // 清空终端输出
+    if (terminalOutput) {
+        terminalOutput.innerHTML = '';
+    }
     
-    // 显示查询、提示和响应
-    displayQuestionWithTypewriter(displayContainer, query);
+    // 清空jailbreak-try-display容器，准备添加新内容
+    jailbreakTryDisplay.innerHTML = '';
     
-    // 创建并显示消息
-    setTimeout(() => {
-        displayPromptMessage(displayContainer, testPrompt, "prompt-message", "Jailbreak Prompt");
+    // 显示并设置问题区域（使用打字机效果）
+    displayQuestionWithTypewriter(jailbreakTryDisplay, query);
+    
+    // 添加加载消息
+    const loadingDiv = document.createElement('div');
+    loadingDiv.id = 'jailbreak-loading-message';
+    loadingDiv.className = 'loading-message';
+    loadingDiv.textContent = 'Optimizing jailbreak prompt, please wait for some time. You can refer to the terminal for detailed optimized process';
+    jailbreakTryDisplay.appendChild(loadingDiv);
+    
+    // 添加初始消息到终端
+    if (terminalOutput) {
+        const timestamp = new Date().toLocaleTimeString();
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 开始处理查询: "${query.substring(0, 30)}${query.length > 30 ? '...' : ''}"</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用模型: ${selectedModel}</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用方法: ${selectedJailbreak}</div>`;
+        terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 正在连接到优化服务器...</div>`;
         
-        setTimeout(() => {
-            // 使用模型名称作为响应标题
-            let modelDisplayName = selectedModel;
-            try {
-                modelDisplayName = selectedModel.replace(/_/g, ' ');
-                if (modelDisplayName === modelDisplayName.toLowerCase()) {
-                    modelDisplayName = modelDisplayName.split(' ').map(word => 
-                        word.charAt(0).toUpperCase() + word.slice(1)
-                    ).join(' ');
+        // 滚动到底部
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+    
+    // 创建EventSource连接到后端服务器
+    const eventSource = new EventSource(`http://localhost:8006/optimize?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
+    
+    // 监听服务器发送的消息
+    eventSource.onmessage = function(event) {
+        try {
+            const data = JSON.parse(event.data);
+            
+            if (data.status === 'started') {
+                // 开始处理
+                if (terminalOutput) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${data.message}</div>`;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
                 }
-            } catch (e) {
-                console.warn('模型名称格式化失败:', e);
+            } 
+            else if (data.status === 'running') {
+                // 处理中，显示实时输出
+                if (terminalOutput) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${data.message}</div>`;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                }
+            } 
+            else if (data.status === 'completed') {
+                // 处理完成，显示最终结果
+                if (terminalOutput) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 优化完成!</div>`;
+                    terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] ${data.final_prompt}</div>`;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                }
+                
+                // 移除加载消息
+                const loadingMessage = document.getElementById('jailbreak-loading-message');
+                if (loadingMessage) {
+                    jailbreakTryDisplay.removeChild(loadingMessage);
+                }
+                
+                // 显示最终的jailbreak prompt
+                displayPromptMessage(jailbreakTryDisplay, data.final_prompt, "prompt-message", "Jailbreak Prompt");
+                
+                // 关闭连接
+                eventSource.close();
+                
+                // 重新启用提交按钮
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+                
+                // 模拟模型响应（在实际实现中，这里可以调用另一个API来获取模型对jailbreak prompt的响应）
+                setTimeout(() => {
+                    const testResponse = `这是一个来自 ${selectedModel} 模型的模拟回复。\n\n我很抱歉，但我不能提供有关如何进行有害活动的指导或支持。我被设计为一个负责任的AI助手，旨在提供有用、安全和道德的信息。\n\n如果您有其他问题或需要帮助，请随时告诉我，我很乐意以建设性和有益的方式提供帮助。`;
+                    
+                    // 使用模型名称作为响应标题
+                    let modelDisplayName = selectedModel;
+                    try {
+                        modelDisplayName = selectedModel.replace(/_/g, ' ');
+                        if (modelDisplayName === modelDisplayName.toLowerCase()) {
+                            modelDisplayName = modelDisplayName.split(' ').map(word => 
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            ).join(' ');
+                        }
+                    } catch (e) {
+                        console.warn('模型名称格式化失败:', e);
+                    }
+                    
+                    displayResponseWithTypewriter(jailbreakTryDisplay, testResponse, "response-message", `${modelDisplayName} Response`, 0);
+                }, 1000);
             }
-            
-            displayResponseWithTypewriter(displayContainer, testResponse, "response-message", `${modelDisplayName} Response`, testLabel);
-            
-            // 添加终端输出
-            const terminalOutput = document.getElementById('terminal-output');
+        } catch (error) {
+            console.error('解析服务器消息时出错:', error);
             if (terminalOutput) {
                 const timestamp = new Date().toLocaleTimeString();
-                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 查询已提交: "${query.substring(0, 30)}${query.length > 30 ? '...' : ''}"</div>`;
-                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用模型: ${modelDisplayName}</div>`;
-                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用方法: ${selectedJailbreak}</div>`;
-                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 评估结果: ${testLabel === 0 ? 'Jailbreak Fail' : 'Jailbreak Success!'}</div>`;
-                terminalOutput.innerHTML += `<div class="terminal-line">--------------------------------------------------</div>`;
-                
-                // 滚动到底部
+                terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 错误: ${error.message}</div>`;
                 terminalOutput.scrollTop = terminalOutput.scrollHeight;
             }
-        }, 1000);
-    }, 3000); // 问题打字机完成后的延迟
+            
+            // 关闭连接
+            eventSource.close();
+            
+            // 重新启用提交按钮
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+        }
+    };
+    
+    // 处理错误
+    eventSource.onerror = function(error) {
+        console.error('EventSource错误:', error);
+        if (terminalOutput) {
+            const timestamp = new Date().toLocaleTimeString();
+            terminalOutput.innerHTML += `<div class="terminal-line error">[${timestamp}] 连接错误，请检查服务器状态</div>`;
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+        
+        // 关闭连接
+        eventSource.close();
+        
+        // 重新启用提交按钮
+        if (submitButton) {
+            submitButton.disabled = false;
+        }
+    };
 }
 
 // 更新提交按钮的启用/禁用状态

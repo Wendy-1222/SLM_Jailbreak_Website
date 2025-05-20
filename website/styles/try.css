@@ -1,55 +1,56 @@
 /* Terminal Styles */
 .terminal-container {
     margin-top: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .terminal-header {
-    background-color: #f5f5f5;
-    padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ccc;
+    padding: 8px 15px;
+    background-color: #333;
+    color: white;
 }
 
 .terminal-title {
     font-weight: bold;
-    font-size: 14px;
 }
 
 .terminal-controls {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .terminal-content {
-    height: auto;
     max-height: 300px;
     overflow-y: auto;
-    transition: all 0.3s ease-in-out;
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
 }
 
 .terminal-content.collapsed {
     max-height: 0;
-    height: 0;
-    overflow: hidden;
     padding: 0;
-    border-top: none;
+    overflow: hidden;
 }
 
 .terminal-output {
-    background-color: #1e1e1e;
-    color: #f0f0f0;
-    font-family: 'Consolas', 'Monaco', monospace;
-    padding: 12px;
-    min-height: 100px;
     white-space: pre-wrap;
-    font-size: 14px;
+    word-break: break-word;
+}
+
+.terminal-line {
+    margin-bottom: 5px;
     line-height: 1.5;
+}
+
+.terminal-line.error {
+    color: #ff6b6b;
 }
 
 /* Terminal button styles */
@@ -75,18 +76,136 @@
     line-height: 1;
 }
 
-/* Terminal line styling */
-.terminal-line {
-    margin-bottom: 4px;
-}
-
 /* For mobile responsiveness */
 @media (max-width: 768px) {
-    .terminal-container {
-        margin-top: 15px;
+    .dropdown-row {
+        flex-direction: column;
     }
     
-    .terminal-output {
-        font-size: 12px;
+    .dropdown-col {
+        width: 100%;
+        margin-bottom: 10px;
     }
+}
+
+/* 试用区域样式 */
+.jailbreak-examples-container {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-container-box {
+    margin-bottom: 20px;
+}
+
+.dropdown-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.dropdown-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+}
+
+.input-area {
+    margin-bottom: 20px;
+}
+
+.jailbreak-query-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    resize: vertical;
+}
+
+/* Try部分特有的提交按钮样式 */
+.submit-button {
+    padding: 10px 20px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover:not(:disabled) {
+    background-color: #3a5a80;
+}
+
+.submit-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.submit-button.active {
+    background-color: #4a6fa5;
+    cursor: pointer;
+}
+
+.output-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Empty state styles */
+.empty-state {
+    padding: 30px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    color: #888;
+    font-size: 16px;
+}
+
+/* 加载消息样式 */
+.loading-message {
+    color: #666;
+    font-style: italic;
+    padding: 15px;
+    text-align: center;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px dashed #ddd;
+}
+
+/* Question container styles */
+.question-container {
+    /* 这些样式已被main.css中的样式替代 */
+}
+
+.question-display {
+    /* 这些样式已被main.css中的样式替代 */
 } 
