@@ -9,24 +9,56 @@ var activeCard = null;
 // 添加初始化标志
 var defenseExamplesInitialized = false;
 
-// 定义SLM模型数据，用于填充二级下拉菜单
-var slmModelsData = {
-    "Llama3.2": ["LLaMA 3.2 1B", "LLaMA 3.2 3B", "LLaMA 3.2 8B", "LLaMA 3.2 11B", "LLaMA 3.2 70B"],
-    "DeepSeek-R1": ["DeepSeek-R1 1.3B", "DeepSeek-R1 1.3B-Chat", "DeepSeek-R1 3B", "DeepSeek-R1 3B-Chat"],
-    "Qwen": ["Qwen 1.5 0.5B", "Qwen 1.5 1.8B", "Qwen 1.5 4B", "Qwen 1.5 7B", "Qwen 1.5 14B", "Qwen 1.5 32B", "Qwen 1.5 72B"],
-    "Gemma": ["Gemma 2B", "Gemma 7B"],
-    "Phi": ["Phi-1 1.3B", "Phi-1.5 1.3B", "Phi-2 2.7B", "Phi-3 3.8B", "Phi-3 7B", "Phi-3 14B"],
-    "MiniCPM": ["MiniCPM 2B", "MiniCPM-V 2B", "MiniCPM-Llama3 2.4B"],
-    "H2O-Danube": ["H2O-Danube 1.8B"],
-    "SmolLM": ["SmolLM 1.7B"],
-    "StableLM": ["StableLM 3B"],
-    "TinyLlama": ["TinyLlama 1.1B"],
-    "MobileLlama": ["MobileLLaMA 1.4B"],
-    "MobiLlama": ["MobiLlama 1B", "MobiLlama 2.7B"],
-    "Fox": ["Fox 1B"],
-    "Dolly": ["Dolly 3B"],
-    "OLMo": ["OLMo 1B", "OLMo 7B"]
-};
+// 定义SLM模型数据变量，将从JSON文件加载
+var slmModelsData = {};
+
+// 从JSON文件加载SLM模型数据
+function loadSLMModelsData() {
+    console.log('开始加载SLM模型数据...');
+    fetch('./website/examples/model_series_order.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load model_series_order.json: ${response.status} ${response.statusText}`);
+            }
+            console.log('成功获取model_series_order.json响应');
+            return response.json();
+        })
+        .then(data => {
+            // 将加载的数据存储在全局变量中
+            slmModelsData = data;
+            console.log('成功解析model_series_order.json数据');
+            console.log('可用的SLM家族:', Object.keys(slmModelsData));
+            
+            // 加载完成后，初始化try.html页面的下拉菜单
+            setupSLMFamilyDropdown();
+        })
+        .catch(error => {
+            console.error('Error loading model_series_order.json:', error);
+            console.log('使用备用数据');
+            
+            // 使用备用数据
+            slmModelsData = {
+                "Llama3.2": ["LLaMA 3.2 1B", "LLaMA 3.2 3B"],
+                "DeepSeek-R1": ["DeepSeek-R1-Distill-Qwen-1.5B", "DeepSeek-R1-Distill-Qwen-7B"],
+                "Qwen": ["Qwen 1.8B Chat", "Qwen 7B Chat", "Qwen 1.5 0.5B Chat"],
+                "Gemma": ["Gemma 2B", "Gemma 7B"],
+                "Phi": ["Phi-3 Mini 4K Instruct", "Phi-3 Mini 128K Instruct"],
+                "MiniCPM": ["MiniCPM 1B", "MiniCPM 2B"],
+                "H2O-Danube": ["H2O-Danube 1.8B"],
+                "SmolLM": ["SmolLM 1.7B"],
+                "StableLM": ["StableLM 3B"],
+                "TinyLlama": ["TinyLlama 1.1B"],
+                "MobileLlama": ["MobileLLaMA 1.4B"],
+                "MobiLlama": ["MobiLlama 1B"],
+                "Fox": ["Fox 1B"],
+                "Dolly": ["Dolly 3B"],
+                "OLMo": ["OLMo 7B"]
+            };
+            
+            // 即使使用备用数据，也尝试初始化下拉菜单
+            setupSLMFamilyDropdown();
+        });
+}
 
 // 当文档加载完成后运行
 document.addEventListener('DOMContentLoaded', function() {
@@ -37,13 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 设置滚动导航栏
     setupScrollNavbar();
 
-    // 初始化try.html页面的SLM家族下拉菜单
-    try {
-        setupSLMFamilyDropdown();
-        console.log('SLM家族下拉菜单初始化完成');
-    } catch (e) {
-        console.warn('SLM家族下拉菜单初始化失败：', e);
-    }
+    // 加载SLM模型数据
+    loadSLMModelsData();
     
     // 尝试直接调用defense下拉菜单初始化
     try {
@@ -52,6 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (e) {
         console.warn('Defense下拉菜单初始化失败：', e);
     }
+    
+    // 设置清除终端按钮
+    setupClearTerminalButton();
     
     // 添加延迟检查，确保所有组件加载后再尝试初始化RQ3相关功能
     setTimeout(() => {
@@ -70,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // 再次检查try.html的下拉菜单，确保它们被正确初始化
-        if (try_slm_family_select) {
+        if (try_slm_family_select && Object.keys(slmModelsData).length > 0) {
             console.log('找到try-slm-family-select，重新初始化');
             setupSLMFamilyDropdown();
         }
@@ -87,15 +117,23 @@ function setupSLMFamilyDropdown() {
     const slmFamilySelect = document.getElementById('try-slm-family-select');
     const slmSelect = document.getElementById('try-slm-select');
     const jailbreakSelect = document.getElementById('try-jailbreak-select');
+    const submitButton = document.getElementById('submit-query');
     
     // 添加详细的调试日志
     console.log('setupSLMFamilyDropdown 开始执行');
     console.log('找到try-slm-family-select元素:', !!slmFamilySelect);
     console.log('找到try-slm-select元素:', !!slmSelect);
     console.log('找到try-jailbreak-select元素:', !!jailbreakSelect);
+    console.log('找到submit-query元素:', !!submitButton);
     
     if (!slmFamilySelect || !slmSelect) {
         console.warn('SLM家族下拉菜单或SLM模型下拉菜单未找到');
+        return;
+    }
+    
+    // 检查是否已加载模型数据
+    if (Object.keys(slmModelsData).length === 0) {
+        console.warn('SLM模型数据尚未加载，无法初始化下拉菜单');
         return;
     }
     
@@ -121,7 +159,26 @@ function setupSLMFamilyDropdown() {
             models.forEach(model => {
                 const option = document.createElement('option');
                 option.value = model;
-                option.textContent = model;
+                
+                // 显示更友好的模型名称（去除下划线，保持原始大小写）
+                let displayName = model;
+                
+                // 尝试美化模型名称显示
+                try {
+                    // 替换下划线为空格
+                    displayName = model.replace(/_/g, ' ');
+                    
+                    // 首字母大写处理（保持原有大小写的单词）
+                    if (displayName === displayName.toLowerCase()) {
+                        displayName = displayName.split(' ').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ');
+                    }
+                } catch (e) {
+                    console.warn('模型名称格式化失败:', e);
+                }
+                
+                option.textContent = displayName;
                 slmSelect.appendChild(option);
             });
             
@@ -160,11 +217,97 @@ function setupSLMFamilyDropdown() {
         console.warn('未找到jailbreak-query元素');
     }
     
+    // 为提交按钮添加点击事件监听器
+    if (submitButton) {
+        submitButton.addEventListener('click', function() {
+            handleJailbreakSubmit();
+        });
+    }
+    
     // 初始化时更新提交按钮状态
     updateSubmitButtonState();
     
     // 记录初始化完成
     console.log('SLM家族下拉菜单初始化完成');
+}
+
+// 处理Jailbreak查询提交
+function handleJailbreakSubmit() {
+    console.log('处理Jailbreak查询提交...');
+    
+    // 获取所有必要的元素
+    const slmFamilySelect = document.getElementById('try-slm-family-select');
+    const slmSelect = document.getElementById('try-slm-select');
+    const jailbreakSelect = document.getElementById('try-jailbreak-select');
+    const jailbreakQuery = document.getElementById('jailbreak-query');
+    const displayContainer = document.getElementById('jailbreak-try-display');
+    
+    if (!slmFamilySelect || !slmSelect || !jailbreakSelect || !jailbreakQuery || !displayContainer) {
+        console.error('提交处理失败：缺少必要的元素');
+        return;
+    }
+    
+    // 获取用户选择和输入的值
+    const selectedFamily = slmFamilySelect.value;
+    const selectedModel = slmSelect.value;
+    const selectedJailbreak = jailbreakSelect.value;
+    const query = jailbreakQuery.value.trim();
+    
+    console.log('提交的值:', {
+        family: selectedFamily,
+        model: selectedModel,
+        jailbreak: selectedJailbreak,
+        query: query
+    });
+    
+    // 清空显示容器
+    displayContainer.innerHTML = '';
+    
+    // 在测试阶段，使用固定的值
+    const testPrompt = `这是一个使用 ${selectedJailbreak} 方法生成的测试Jailbreak提示。\n\n原始查询: "${query}"\n\n[这里是根据不同jailbreak方法生成的提示内容...]`;
+    const testResponse = `这是一个来自 ${selectedModel} 模型的测试回复。\n\n我很抱歉，但我不能提供有关如何进行有害活动的指导或支持。我被设计为一个负责任的AI助手，旨在提供有用、安全和道德的信息。\n\n如果您有其他问题或需要帮助，请随时告诉我，我很乐意以建设性和有益的方式提供帮助。`;
+    
+    // 随机生成测试标签（0表示拒绝，1表示成功）
+    const testLabel = Math.random() > 0.5 ? 1 : 0;
+    
+    // 显示查询、提示和响应
+    displayQuestionWithTypewriter(displayContainer, query);
+    
+    // 创建并显示消息
+    setTimeout(() => {
+        displayPromptMessage(displayContainer, testPrompt, "prompt-message", "Jailbreak Prompt");
+        
+        setTimeout(() => {
+            // 使用模型名称作为响应标题
+            let modelDisplayName = selectedModel;
+            try {
+                modelDisplayName = selectedModel.replace(/_/g, ' ');
+                if (modelDisplayName === modelDisplayName.toLowerCase()) {
+                    modelDisplayName = modelDisplayName.split(' ').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
+                }
+            } catch (e) {
+                console.warn('模型名称格式化失败:', e);
+            }
+            
+            displayResponseWithTypewriter(displayContainer, testResponse, "response-message", `${modelDisplayName} Response`, testLabel);
+            
+            // 添加终端输出
+            const terminalOutput = document.getElementById('terminal-output');
+            if (terminalOutput) {
+                const timestamp = new Date().toLocaleTimeString();
+                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 查询已提交: "${query.substring(0, 30)}${query.length > 30 ? '...' : ''}"</div>`;
+                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用模型: ${modelDisplayName}</div>`;
+                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 使用方法: ${selectedJailbreak}</div>`;
+                terminalOutput.innerHTML += `<div class="terminal-line">[${timestamp}] 评估结果: ${testLabel === 0 ? 'Jailbreak Fail' : 'Jailbreak Success!'}</div>`;
+                terminalOutput.innerHTML += `<div class="terminal-line">--------------------------------------------------</div>`;
+                
+                // 滚动到底部
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+            }
+        }, 1000);
+    }, 3000); // 问题打字机完成后的延迟
 }
 
 // 更新提交按钮的启用/禁用状态
@@ -880,4 +1023,20 @@ function closeDropdownsOnOutsideClick(event) {
             content.classList.remove('active');
         });
     }
+}
+
+// 设置清除终端按钮
+function setupClearTerminalButton() {
+    const clearButton = document.getElementById('clear-terminal');
+    const terminalOutput = document.getElementById('terminal-output');
+    
+    if (!clearButton || !terminalOutput) {
+        console.log('清除终端按钮或终端输出元素未找到');
+        return;
+    }
+    
+    clearButton.addEventListener('click', function() {
+        console.log('清除终端输出');
+        terminalOutput.innerHTML = '';
+    });
 } 
