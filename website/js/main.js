@@ -367,6 +367,13 @@ function handleJailbreakSubmit() {
                     terminalOutput.scrollTop = terminalOutput.scrollHeight;
                 }
                 
+                // 添加调试日志
+                console.log('Optimize server response:', {
+                    originalData: data,
+                    finalPrompt: data.final_prompt,
+                    finalPromptEncoded: encodeURIComponent(data.final_prompt)
+                });
+                
                 // 保存最终的jailbreak prompt
                 finalJailbreakPrompt = data.final_prompt;
                 
@@ -397,7 +404,7 @@ function handleJailbreakSubmit() {
                 eventSource.close();
                 
                 // 创建新的EventSource连接到响应生成服务器
-                const responseEventSource = new EventSource(`http://localhost:8006/response?prompt=${encodeURIComponent(finalJailbreakPrompt)}&slm=${encodeURIComponent(selectedModel)}`);
+                const responseEventSource = new EventSource(`http://localhost:8006/response?prompt=${encodeURIComponent(finalJailbreakPrompt)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
                 
                 // 监听响应生成服务器发送的消息
                 responseEventSource.onmessage = function(responseEvent) {
@@ -471,7 +478,24 @@ function handleJailbreakSubmit() {
                             }
                             
                             // 创建新的EventSource连接到评估服务器
-                            const evaluateEventSource = new EventSource(`http://localhost:8006/evaluate?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&prompt=${encodeURIComponent(finalJailbreakPrompt)}&response=${encodeURIComponent(finalResponse)}`);
+                            const evaluateUrl = `http://localhost:8006/evaluate?` + 
+                                `question=${encodeURIComponent(query)}&` +
+                                `slm=${encodeURIComponent(selectedModel)}&` +
+                                `prompt=${encodeURIComponent(finalJailbreakPrompt)}&` +
+                                `response=${encodeURIComponent(finalResponse)}&` +
+                                `method=${encodeURIComponent(selectedJailbreak)}`;
+
+                            console.log('Sending data to evaluate:', {
+                                originalQuestion: query,
+                                originalPrompt: finalJailbreakPrompt,
+                                originalResponse: finalResponse,
+                                encodedQuestion: encodeURIComponent(query),
+                                encodedPrompt: encodeURIComponent(finalJailbreakPrompt),
+                                encodedResponse: encodeURIComponent(finalResponse),
+                                evaluateUrl: evaluateUrl
+                            });
+
+                            const evaluateEventSource = new EventSource(evaluateUrl);
                             
                             // 监听评估服务器发送的消息
                             evaluateEventSource.onmessage = function(evaluateEvent) {
@@ -552,12 +576,6 @@ function handleJailbreakSubmit() {
                                 
                                 // 关闭连接
                                 evaluateEventSource.close();
-                                
-                                // 移除加载消息
-                                const evaluationLoadingMessage = document.getElementById('evaluation-loading-message');
-                                if (evaluationLoadingMessage) {
-                                    jailbreakTryDisplay.removeChild(evaluationLoadingMessage);
-                                }
                                 
                                 // 重新启用提交按钮
                                 if (submitButton) {
@@ -1237,6 +1255,7 @@ function displayDefenseExample(slm, jailbreak, defense, category) {
 function displayQuestionWithTypewriter(container, text) {
     const questionDiv = document.createElement('div');
     questionDiv.className = 'question-display';
+    questionDiv.style.whiteSpace = 'pre-wrap'; // 保留换行符和空格
     
     // 为前缀文本创建一个包装器
     const prefixSpan = document.createElement('span');
@@ -1246,19 +1265,31 @@ function displayQuestionWithTypewriter(container, text) {
     
     container.appendChild(questionDiv);
     
-    // 逐个字符应用打字机效果
-    let i = 0;
+    // 将文本分割成行
+    const lines = text.split('\n');
+    let currentLine = 0;
+    let charInLine = 0;
     const speed = 30; // 问题的打字速度
     
     function typeWriter() {
-        if (i < text.length) {
-            questionDiv.appendChild(document.createTextNode(text[i]));
-            i++;
-            setTimeout(typeWriter, speed);
+        if (currentLine < lines.length) {
+            if (charInLine < lines[currentLine].length) {
+                questionDiv.appendChild(document.createTextNode(lines[currentLine][charInLine]));
+                charInLine++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // 当前行完成，添加换行符
+                if (currentLine < lines.length - 1) {
+                    questionDiv.appendChild(document.createTextNode('\n'));
+                }
+                currentLine++;
+                charInLine = 0;
+                setTimeout(typeWriter, speed);
+            }
         }
     }
     
-    // 开始输入文本
+    // 开始打字效果
     typeWriter();
 }
 
@@ -1266,21 +1297,25 @@ function displayQuestionWithTypewriter(container, text) {
 function displayPromptMessage(container, text, className, title) {
     const messageDiv = document.createElement('div');
     messageDiv.className = className;
+    messageDiv.style.whiteSpace = 'pre-wrap'; // 保留换行符和空格
     
     const messageTitle = document.createElement('span');
     messageTitle.className = 'message-title';
     messageTitle.textContent = title;
     messageDiv.appendChild(messageTitle);
     
+    // 直接添加文本，让浏览器处理换行符
     messageDiv.appendChild(document.createTextNode(text));
+    
     container.appendChild(messageDiv);
 }
 
 // 带打字机效果显示响应
 function displayResponseWithTypewriter(container, text, className, title, label) {
-    console.log('displayResponseWithTypewriter received label:', label); // Debug日志
+    console.log('displayResponseWithTypewriter received text:', text); // Debug日志
     const messageDiv = document.createElement('div');
     messageDiv.className = className;
+    messageDiv.style.whiteSpace = 'pre-wrap'; // 保留换行符和空格
     
     const messageTitle = document.createElement('span');
     messageTitle.className = 'message-title';
@@ -1289,19 +1324,42 @@ function displayResponseWithTypewriter(container, text, className, title, label)
     
     container.appendChild(messageDiv);
     
-    // 应用打字机效果
-    let i = 0;
-    const speed = 3; // 加快打字速度（原来是10）
+    // 将文本分割成行
+    const lines = text.split('\n');
+    let currentLine = 0;
+    let charInLine = 0;
+    const speed = 3; // 加快打字速度
     
     function typeWriter() {
-        if (i < text.length) {
-            messageDiv.appendChild(document.createTextNode(text[i]));
-            i++;
-            setTimeout(typeWriter, speed);
-        } 
-        // 不再在这里添加标签，因为我们现在使用单独的评估步骤
+        if (currentLine < lines.length) {
+            if (charInLine < lines[currentLine].length) {
+                messageDiv.appendChild(document.createTextNode(lines[currentLine][charInLine]));
+                charInLine++;
+                setTimeout(typeWriter, speed);
+            } else {
+                // 当前行完成，添加换行符
+                if (currentLine < lines.length - 1) {
+                    messageDiv.appendChild(document.createTextNode('\n'));
+                }
+                currentLine++;
+                charInLine = 0;
+                
+                if (currentLine < lines.length) {
+                    setTimeout(typeWriter, speed);
+                } else {
+                    // 所有行都完成了，添加标签
+                    if (label !== undefined) {
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'response-label ' + (label === 0 ? 'safe' : 'unsafe');
+                        labelDiv.textContent = label === 0 ? "Jailbreak Fail" : "Jailbreak Success!";
+                        container.appendChild(labelDiv);
+                    }
+                }
+            }
+        }
     }
     
+    // 开始打字效果
     typeWriter();
 }
 
