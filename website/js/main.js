@@ -331,7 +331,7 @@ function handleJailbreakSubmit() {
     }
     
     // 创建EventSource连接到后端服务器
-    const eventSource = new EventSource(`http://localhost:8006/optimize?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
+    const eventSource = new EventSource(`http://10.98.36.115:8007/optimize?question=${encodeURIComponent(query)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
     
     // 保存最终的jailbreak prompt和response，用于后续评估
     let finalJailbreakPrompt = '';
@@ -404,7 +404,7 @@ function handleJailbreakSubmit() {
                 eventSource.close();
                 
                 // 创建新的EventSource连接到响应生成服务器
-                const responseEventSource = new EventSource(`http://localhost:8006/response?prompt=${encodeURIComponent(finalJailbreakPrompt)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
+                const responseEventSource = new EventSource(`http://10.98.36.115:8007/response?prompt=${encodeURIComponent(finalJailbreakPrompt)}&slm=${encodeURIComponent(selectedModel)}&method=${encodeURIComponent(selectedJailbreak)}`);
                 
                 // 监听响应生成服务器发送的消息
                 responseEventSource.onmessage = function(responseEvent) {
@@ -478,7 +478,7 @@ function handleJailbreakSubmit() {
                             }
                             
                             // 创建新的EventSource连接到评估服务器
-                            const evaluateUrl = `http://localhost:8006/evaluate?` + 
+                            const evaluateUrl = `http://10.98.36.115:8007/evaluate?` + 
                                 `question=${encodeURIComponent(query)}&` +
                                 `slm=${encodeURIComponent(selectedModel)}&` +
                                 `prompt=${encodeURIComponent(finalJailbreakPrompt)}&` +
